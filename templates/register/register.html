@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Register</h2>
-    <form method="post" class="form">
+    <form method="post">
         {% csrf_token %}
-        {{ form|crispy }}
+        <table>{{ form.as_table }}</table>
+        <button type="submit">Sign in</button>
     </form>
 {% endblock %}

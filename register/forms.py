@@ -2,6 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
+
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=30)
     first_name = forms.CharField(max_length=30)
