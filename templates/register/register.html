@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Register</h2>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}
+    </form>
+{% endblock %}
