@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% block header %}
+
+{% include 'navbar.html' %}
+
+{% endblock %}
 
 {% block content %}
     <form method="post">
@@ -7,3 +12,7 @@
         <button type="submit">Register</button>
     </form>
 {% endblock %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+

@@ -1,18 +1,20 @@
-// ---------Responsive-navbar-active-animation-----------
 function test() {
     var tabsNewAnim = $("#navbarSupportedContent");
     var selectorNewAnim = $("#navbarSupportedContent").find("li").length;
     var activeItemNewAnim = tabsNewAnim.find(".active");
-    var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
-    var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
-    var itemPosNewAnimTop = activeItemNewAnim.position();
-    var itemPosNewAnimLeft = activeItemNewAnim.position();
-    $(".hori-selector").css({
-        top: itemPosNewAnimTop.top + "px",
-        left: itemPosNewAnimLeft.left + "px",
-        height: activeWidthNewAnimHeight + "px",
-        width: activeWidthNewAnimWidth + "px"
-    });
+    if (activeItemNewAnim.length > 0) {
+        var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
+        var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+        var itemPosNewAnimTop = activeItemNewAnim.position();
+        var itemPosNewAnimLeft = activeItemNewAnim.position();
+
+        $(".hori-selector").css({
+            top: itemPosNewAnimTop.top + "px",
+            left: itemPosNewAnimLeft.left + "px",
+            height: activeWidthNewAnimHeight + "px",
+            width: activeWidthNewAnimWidth + "px"
+        });
+    }
     $("#navbarSupportedContent").on("click", "li", function (e) {
         $("#navbarSupportedContent ul li").removeClass("active");
         $(this).addClass("active");
@@ -45,13 +47,12 @@ $(".navbar-toggler").click(function () {
     });
 });
 
-// --------------add active class-on another-page move----------
 jQuery(document).ready(function ($) {
     // Get current path and find target link
     var path = window.location.pathname.split("/").pop();
 
     // Account for home page with empty path
-    if (path == "") {
+    if (path === "") {
         path = "index.html";
     }
 
@@ -60,8 +61,6 @@ jQuery(document).ready(function ($) {
     target.parent().addClass("active");
 });
 
-// Add active class on another page linked
-// ==========================================
 // $(window).on('load',function () {
 //     var current = location.pathname;
 //     console.log(current);
