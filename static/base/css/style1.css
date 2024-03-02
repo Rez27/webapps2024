@@ -51,14 +51,14 @@ a {
     color: inherit;
 }
 
-.responsive-wrapper {
+.res-wrap {
     width: 90%;
     max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.app {
+.payapp {
     min-height: 80vh;
     width: 95%;
     max-width: 1600px;
@@ -68,7 +68,7 @@ a {
     flex-direction: column;
 }
 
-.app-header {
+.pay-header {
     display: grid;
     grid-template-columns: minmax(-webkit-min-content, 175px) minmax(-webkit-max-content, 1fr) minmax(-webkit-max-content, 400px);
     grid-template-columns: minmax(min-content, 175px) minmax(max-content, 1fr) minmax(max-content, 400px);
@@ -77,7 +77,7 @@ a {
     align-items: flex-end;
 }
 @media (max-width: 1200px) {
-    .app-header {
+    .pay-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -86,41 +86,41 @@ a {
 }
 
 @media (max-width: 1200px) {
-    .app-header-navigation {
+    .pay-nav {
         display: none;
     }
 }
 
-.app-header-actions {
+.pay-actions {
     display: flex;
     align-items: center;
 }
 @media (max-width: 1200px) {
-    .app-header-actions {
+    .pay-actions {
         display: none;
     }
 }
 
-.app-header-actions-buttons {
+.pay-action-header-button {
     display: flex;
     border-left: 1px solid var(--c-gray-600);
     margin-left: 2rem;
     padding-left: 2rem;
 }
-.app-header-actions-buttons > * + * {
+.pay-action-header-button > * + * {
     margin-left: 1rem;
 }
 
-.app-header-mobile {
+.pay-head-mob {
     display: none;
 }
 @media (max-width: 1200px) {
-    .app-header-mobile {
+    .pay-head-mob {
         display: flex;
     }
 }
 
-.app-body {
+.payapp-body {
     height: 100%;
     display: grid;
     grid-template-columns: minmax(-webkit-min-content, 175px) minmax(-webkit-max-content, 1fr) minmax(-webkit-min-content, 400px);
@@ -130,10 +130,10 @@ a {
     padding-top: 2.5rem;
 }
 @media (max-width: 1200px) {
-    .app-body {
+    .payapp-body {
         grid-template-columns: 1fr;
     }
-    .app-body > * {
+    .payapp-body > * {
         margin-bottom: 3.5rem;
     }
 }
