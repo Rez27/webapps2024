@@ -1,18 +1,14 @@
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
-class RegistrationForm(forms.Form):
-    username = forms.CharField(max_length=30)
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    email = forms.EmailField()
+class SignupForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2']
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
-
-    def __init__(self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Register'))

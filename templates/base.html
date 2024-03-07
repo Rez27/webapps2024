@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <link rel="stylesheet" href="{% static 'base/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'base/css/style1.css' %}">
 
-    {% block additional_css %}{% endblock %}
+{#    {% block additional_css %}{% endblock %}#}
 
     <title>{% block title %}My Website{% endblock %}</title>
 </head>
@@ -26,9 +26,7 @@
     {% block content %}{% endblock %}
 </main>
     {% block footer %}{% endblock %}
-
-
-<script src="{% static 'base/js/navbar.js' %}"></script>
+{#<script src="{% static 'base/js/navbar.js' %}"></script>#}
 
 </body>
 </html>

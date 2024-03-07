@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
-{% block header %}
 
-{% include 'navbar.html' %}
-
-{% endblock %}
 
 {% block content %}
+    <div class="card-container">
+    <div class="card">
+    <h2>Registration Form</h2>
+    
     <form method="post">
         {% csrf_token %}
         <table>{{ form.as_table }}</table>
         <button type="submit">Register</button>
     </form>
-{% endblock %}
-{% block footer %}
-    {% include 'footer.html' %}
+    </div>
+    </div>
 {% endblock %}
 

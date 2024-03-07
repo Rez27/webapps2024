@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <body class="body-login">
+    <div class="container-login">
+        <section id="formHolder">
+
+            <div class="row">
+
+                <!-- Brand Box -->
+                <div class="col-sm-6 brand">
+{#                    <a href="#" class="logo">MR <span>.</span></a>#}
+
+                    <div class="heading">
+                        <h2>RKPAY</h2>
+                        <p>Your Right Choice</p>
+                    </div>
+
+                    <div class="success-msg">
+                        <p>Great! You are one of our members now</p>
+                        <a href="#" class="profile">Your Profile</a>
+                    </div>
+                </div>
+
+                <!-- Form Box -->
+                <div class="col-sm-6 form">
+
+                    <!-- Login Form -->
+                    <div class="login form-peice switched">
+                        <form class="login-form" action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+
+                            <div class="CTA">
+                                <input type="submit" value="Login">
+                                <a href="{% url 'login' %}">I'm New</a>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Login Form -->
+
+                    <!-- Signup Form -->
+                    <div class="signup form-peice">
+                        <form class="signup-form" action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="CTA">
+                                <input type="submit" value="Signup Now" id="submit">
+                                <a href="#" class="switch">I have an account</a>
+                            </div>
+                        </form>
+                    </div><!-- End Signup Form -->
+                </div>
+            </div>
+
+        </section>
+        </div>
+    </body>
+    <script src="{% static 'base/js/login.js' %}"></script>
+
+{% endblock %}
+

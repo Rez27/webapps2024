@@ -1,37 +1,43 @@
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+from .forms import UserCreationForm, LoginForm
 
 
-from django.shortcuts import render, redirect
-from .forms import RegistrationForm
-
-def register_user(request):
+def main(request):
+    return render(request, 'register/ui.html')
+def user_signup(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Your custom validation logic
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-
-            # Example: Check if the username is already taken
-            if User.objects.filter(username=username).exists():
-                form.add_error('username', 'This username is already taken.')
-
-            # Example: Check if the email is already registered
-            if User.objects.filter(email=email).exists():
-                form.add_error('email', 'This email is already registered.')
-
-            # If there are no validation errors, proceed with user registration
-            if not form.errors:
-
-                return redirect('success_page')
-
+            form.save()
+            return redirect('login')
     else:
-        form = RegistrationForm()
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
 
-    return render(request, 'register/register.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            print(user)
+
+            if user:
+                    login(request, user)
+                    main_page_url = reverse('payapp:main_page')
+                    # Redirect to the main page
+                    return redirect(main_page_url)
+    else:
+        form = LoginForm()
+    return render(request, 'register/login.html', {'form': form})
 
 
-def success_page(request):
-    return render(request, 'register/success_page.html')
+def user_logout(request):
+    logout(request)
+    return redirect('login')
