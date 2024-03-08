@@ -27,22 +27,22 @@
                 <div class="col-sm-6 form">
 
                     <!-- Login Form -->
-                    <div class="login form-peice switched">
-                        <form class="login-form" action="{% url 'login' %}" method="post">
+                    <div class="login form-piece switched">
+                        <form class="login-form" action="{% url 'register' %}" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
 
                             <div class="CTA">
                                 <input type="submit" value="Login">
-                                <a href="{% url 'login' %}">I'm New</a>
+                                <a href="#" class="switch">I'm New</a>
                             </div>
                         </form>
                     </div>
                     <!-- End Login Form -->
 
                     <!-- Signup Form -->
-                    <div class="signup form-peice">
-                        <form class="signup-form" action="{% url 'login' %}" method="post">
+                    <div class="signup form-piece">
+                        <form class="signup-form" action="{% url 'register' %}" method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <div class="CTA">

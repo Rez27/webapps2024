@@ -123,15 +123,15 @@ $(document).ready(function () {
 
         if ($("a.switch").hasClass("active")) {
             $(this)
-                .parents(".form-peice")
+                .parents(".form-piece")
                 .addClass("switched")
-                .siblings(".form-peice")
+                .siblings(".form-piece")
                 .removeClass("switched");
         } else {
             $(this)
-                .parents(".form-peice")
+                .parents(".form-piece")
                 .removeClass("switched")
-                .siblings(".form-peice")
+                .siblings(".form-piece")
                 .addClass("switched");
         }
     });
@@ -141,10 +141,10 @@ $(document).ready(function () {
         event.preventDefault();
 
         if (
-            usernameError == true ||
-            emailError == true ||
-            passwordError == true ||
-            passConfirm == true
+            usernameError === true ||
+            emailError === true ||
+            passwordError === true ||
+            passConfirm === true
         ) {
             $(".name, .email, .pass, .passConfirm").blur();
         } else {

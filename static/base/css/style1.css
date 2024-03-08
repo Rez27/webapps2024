@@ -482,7 +482,7 @@ a {
 }
 
 .flat-button {
-    background-color: #3498db;
+    background-color: #5b5555;
     color: #ffffff;
     border: none;
     padding: 10px 20px;
@@ -901,7 +901,7 @@ button:focus {
     justify-content: center;
 }
 .container-login {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto; /* Add this line to center the container horizontally */
 
 }
@@ -927,7 +927,7 @@ section#formHolder {
     background-size: cover;
     background-position: center center;
     color: #fff;
-    min-height: 540px;
+    min-height: 710px;
     position: relative;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
     transition: all 0.6s cubic-bezier(1, -0.375, 0.285, 0.995);
@@ -1023,9 +1023,9 @@ section#formHolder {
 .form {
     position: relative;
 }
-.form .form-peice {
+.form .form-piece {
     background: #fff;
-    min-height: 480px;
+    min-height: 680px;
     margin-top: 30px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     color: #bbbbbb;
@@ -1036,8 +1036,11 @@ section#formHolder {
     left: -30%;
     width: 130%;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.form .form-peice.switched {
+.form .form-piece.switched {
     transform: translateX(-100%);
     width: 100%;
     left: 0;
@@ -1045,7 +1048,7 @@ section#formHolder {
 .form form {
     padding: 0 40px;
     margin: 0;
-    width: 70%;
+    width: 80%; /* Increase the width to provide more space for form elements */
     position: absolute;
     top: 50%;
     left: 60%;
@@ -1108,6 +1111,7 @@ section#formHolder {
     color: #f95959;
 }
 .form form .CTA {
+    text-align: center;
     margin-top: 30px;
 }
 .form form .CTA input {
@@ -1179,19 +1183,19 @@ footer p a:hover, footer p a:focus:hover {
         min-height: 500px;
         margin-left: 10vw;
     }
-    section#formHolder .form .form-peice {
+    section#formHolder .form .form-piece {
         margin: 0;
         top: 0;
         left: 0;
         width: 100% !important;
         transition: all 0.5s ease-in-out;
     }
-    section#formHolder .form .form-peice.switched {
+    section#formHolder .form .form-piece.switched {
         transform: translateY(-100%);
         width: 100%;
         left: 0;
     }
-    section#formHolder .form .form-peice > form {
+    section#formHolder .form .form-piece > form {
         width: 100% !important;
         padding: 60px;
         left: 50%;
