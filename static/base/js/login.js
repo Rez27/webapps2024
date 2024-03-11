@@ -2,7 +2,7 @@
 $(document).ready(function () {
     "use strict";
 
-    var usernameError = true,
+    let usernameError = true,
         emailError = true,
         passwordError = true,
         passConfirm = true;

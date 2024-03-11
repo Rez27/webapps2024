@@ -22,5 +22,4 @@ urlpatterns = [
     path('', include('register.urls')),
     path('payapp/', include('payapp.urls')),
 
-
 ]
