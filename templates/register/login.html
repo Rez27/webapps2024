@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
-{% load crispy_forms_tags %}
+{#{% load crispy_forms_tags %}#}
 
 {% block content %}
     <body class="body-login">
@@ -12,7 +12,7 @@
 
                 <!-- Brand Box -->
                 <div class="col-sm-6 brand">
-{#                    <a href="#" class="logo">MR <span>.</span></a>#}
+                    <a href="#" class="logo">MR <span>.</span></a>
 
                     <div class="heading">
                         <h2>RKPAY</h2>
@@ -42,8 +42,8 @@
 
                     <!-- Signup Form -->
                     <div class="signup form-piece">
-                        <form id= "loginForm" class="signup-form" method="post">
-                            {%csrf_token%}
+                        <form id= "loginForm" class="signup-form" action="{% url 'register' %}" method="POST">
+                            {% csrf_token %}
                             {{ form.firstname|as_crispy_field }}
                             {{ form.lastname|as_crispy_field }}
                             {{ form.username|as_crispy_field }}
@@ -52,15 +52,15 @@
                             {{ form.location|as_crispy_field }}
                             {{ form.password|as_crispy_field }}
                             {{ form.confirm_password|as_crispy_field }}
+
                             <div class="CTA">
-                                <button type="submit">Sign Up</button>
+                                <input type="submit" id="submit" value="Count me In">
                                 <a href="#" class="switch">I have an account</a>
                             </div>
                         </form>
                     </div><!-- End Signup Form -->
                 </div>
             </div>
-
         </section>
         </div>
     </body>

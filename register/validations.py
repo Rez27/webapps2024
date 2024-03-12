@@ -15,5 +15,6 @@ def identifier_search(identifiers):
         Q(email__contains=identifiers) |
         Q(username__contains=identifiers) |
         Q(first_name__contains=identifiers) |
-        Q(last_name__contains=identifiers))
+        Q(last_name__contains=identifiers)
+    )
     return results

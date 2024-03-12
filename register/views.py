@@ -1,17 +1,20 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm
 
 
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
+        print("Form Data:", form)
         if form.is_valid():
             form.save()
+            print("Register view success")
             return redirect('main')
         else:
+            print("Register view Fail1", form.errors)
             return render(request, 'register/login.html', {'form': form})
     else:
+        print("Register view Fail2")
         return render(request, 'register/login.html', {'form': UserRegistrationForm()})
 
 # def user_signup(request):

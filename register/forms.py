@@ -1,11 +1,6 @@
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
 from .validations import user_email_check, username_check
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-
-from .models import UserProfile
 
 
 def email_val(email):
@@ -22,13 +17,9 @@ class UserRegistrationForm(forms.Form):
     location = forms.CharField(required=False)
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
-    is_superuser: bool = False
+    is_superuser = forms.BooleanField(initial=False, required=False)
 
     def __init__(self, is_superuser: bool = False, *args, **kwargs):
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
-        self.is_superuser = is_superuser
-
-    def __int__(self, is_superuser: bool = False, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.is_superuser = is_superuser
 
@@ -38,10 +29,10 @@ class UserRegistrationForm(forms.Form):
         confirm_password = cleaned_data.get("confirm_password")
 
         if password and confirm_password and password != confirm_password:
-            raise forms.ValidationError("Passwords do not match.")
+            self.add_error('confirm_password', "The passwords you entered do not match.")
 
         if not self.is_superuser == False:
-            raise forms.ValidationError("No superuser")
+            self.add_error(None, "Superuser registration is not allowed.")
 
     def save(self, is_admin: bool = False):
         username = self.cleaned_data['username']
@@ -53,7 +44,7 @@ class UserRegistrationForm(forms.Form):
         password = self.cleaned_data['password']
         confirm_password = self.cleaned_data['confirm_password']
         superuser = User.objects.create_superuser if is_admin else User.objects.create_user
-        user = superuser(username, email, password)
+        user = superuser(username=username, email=email, password=password, is_superuser=is_admin)
         user.first_name = firstname
         user.last_name = lastname
         user.save()
