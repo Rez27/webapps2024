@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
-{#{% load crispy_forms_tags %}#}
 
 {% block content %}
     <body class="body-login">
@@ -12,7 +11,7 @@
 
                 <!-- Brand Box -->
                 <div class="col-sm-6 brand">
-                    <a href="#" class="logo">MR <span>.</span></a>
+{#                    <a href="#" class="logo">MR <span>.</span></a>#}
 
                     <div class="heading">
                         <h2>RKPAY</h2>
@@ -27,37 +26,25 @@
 
                 <!-- Form Box -->
                 <div class="col-sm-6 form">
-
                     <!-- Login Form -->
-                    <div class="login form-piece switched">
-                        <form class="login-form" action="{% url 'register' %}" method="post">
-
-                            <div class="CTA">
-                                <input type="submit" value="Login">
-                                <a href="#" class="switch">I'm New</a>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End Login Form -->
-
-                    <!-- Signup Form -->
-                    <div class="signup form-piece">
-                        <form id= "loginForm" class="signup-form" method="post">
+                    <div class="login form-piece">
+                        <form class="login-form" action="{% url 'login' %}" method="post">
                             {% csrf_token %}
                             {{ form | crispy }}
 
                             <div class="CTA">
-                                <input type="submit" id="submit" value="Count me In">
-                                <a href="#" class="switch">I have an account</a>
+                                <input type="submit" id="login" value="Login">
+                                <a href="{% url 'register' %}">I'm New</a>
                             </div>
                         </form>
-                    </div><!-- End Signup Form -->
+                    </div>
+                    <!-- End Login Form -->
                 </div>
             </div>
         </section>
-        </div>
+    </div>
     </body>
-    <script src="{% static 'base/js/login.js' %}"></script>
+{#    <script src="{% static 'base/js/login.js' %}"></script>#}
 
 {% endblock %}
 

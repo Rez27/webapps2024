@@ -15,7 +15,7 @@ class UserRegistrationForm(UserCreationForm):
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs):
-        super(UserRegistrationForm, self).__init__( *args, **kwargs)
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
@@ -23,21 +23,6 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password1'].required = True
         self.fields['password2'].required = True
 
-    # def __init__(self, is_superuser: bool = False, *args, **kwargs):
-    #     super(UserRegistrationForm, self).__init__(*args, **kwargs)
-    #     self.is_superuser = is_superuser
-    #
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     password = cleaned_data.get("password")
-    #     confirm_password = cleaned_data.get("confirm_password")
-    #
-    #     if password and confirm_password and password != confirm_password:
-    #         self.add_error('confirm_password', "The passwords you entered do not match.")
-    #
-    #     if not self.is_superuser == False:
-    #         self.add_error(None, "Superuser registration is not allowed.")
-    #
     def save(self, commit=True):
         """
         Saves the user and creates an account for the user
@@ -59,6 +44,10 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Eg: Rez'}), required=True)
+    username = forms.CharField(widget=forms.TextInput(), required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].required = True
+        self.fields['password'].required = True
 
