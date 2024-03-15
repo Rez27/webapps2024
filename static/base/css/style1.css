@@ -932,6 +932,7 @@ section#formHolder {
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
     transition: all 0.6s cubic-bezier(1, -0.375, 0.285, 0.995);
     z-index: 9999;
+    height: 730px;
 }
 .brand.active {
     width: 100%;
@@ -1025,11 +1026,11 @@ section#formHolder {
 }
 .form .form-piece {
     background: #fff;
-    min-height: 680px;
-    margin-top: 30px;
+    min-height: 720px;
+    margin-top: 10px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
     color: #bbbbbb;
-    padding: 30px 0 60px;
+    padding: 10px 0 20px;
     transition: all 0.9s cubic-bezier(1, -0.375, 0.285, 0.995);
     position: absolute;
     top: 0;

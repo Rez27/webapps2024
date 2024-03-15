@@ -42,16 +42,9 @@
 
                     <!-- Signup Form -->
                     <div class="signup form-piece">
-                        <form id= "loginForm" class="signup-form" action="{% url 'register' %}" method="POST">
+                        <form id= "loginForm" class="signup-form" method="post">
                             {% csrf_token %}
-                            {{ form.firstname|as_crispy_field }}
-                            {{ form.lastname|as_crispy_field }}
-                            {{ form.username|as_crispy_field }}
-                            {{ form.email|as_crispy_field }}
-                            {{ form.phone|as_crispy_field }}
-                            {{ form.location|as_crispy_field }}
-                            {{ form.password|as_crispy_field }}
-                            {{ form.confirm_password|as_crispy_field }}
+                            {{ form | crispy }}
 
                             <div class="CTA">
                                 <input type="submit" id="submit" value="Count me In">
