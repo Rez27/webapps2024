@@ -1,13 +1,15 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm
+from .models import UserProfile
 
 
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            profile = UserProfile.objects.create(user=user, email=user.email)
             print("Register view success")
             return redirect('login')
         else:
