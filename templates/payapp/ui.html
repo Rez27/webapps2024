@@ -38,8 +38,9 @@
                 <div class="logo">
                     <h1 class="logo-title">
                         <span>Account Balance</span>
-                        {% if balance %}
-                            <span> {{ balance }}</span>
+                        {% if balance and cur %}
+                            <span> {{ balance }} {{ cur }}</span> 
+
                         {% else %}
                             <Span>Balance information not available</Span>
                         {% endif %}

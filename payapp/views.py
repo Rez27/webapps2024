@@ -30,8 +30,18 @@ def main_page(request):
             return redirect('main')  # Redirect to a success page
     else:
         form = AddMoneyForm()
+    currency = user_profile.currency
+    if currency == 'GBP':
+        cur = '£'
+    elif currency == 'Euro':
+        cur = '€'
+    elif currency == 'Dollar':
+        cur = '$'
+    else:
+        cur = "Error in getting currency"
     context = {
         'balance': user_profile.bal,
-        'form': form
+        'form': form,
+        'cur': cur
     }
     return render(request, 'payapp/ui.html', context)
