@@ -1212,3 +1212,12 @@ footer p a:hover, footer p a:focus:hover {
         font-size: 50px !important;
     }
 }
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/*Add Money Modal*/

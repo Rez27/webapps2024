@@ -17,3 +17,14 @@ function closeRequestModal() {
     var requestModal = document.getElementById("requestModal");
     requestModal.style.display = "none";
 }
+
+/*Add Money Modal*/
+function openAddMoney() {
+    var requestModal = document.getElementById("AddMoney");
+    requestModal.style.display = "flex";
+}
+
+function closeAddMoney() {
+    var requestModal = document.getElementById("AddMoney");
+    requestModal.style.display = "none";
+}
