@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     // Form submit
     $('form.signup-form').submit(function (event) {
-        event.preventDefault();
+        // event.preventDefault();
         $('.signup, .login').addClass('switched');
 
         setTimeout(function () { $('.signup, .login').hide(); }, 700);

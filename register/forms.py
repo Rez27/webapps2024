@@ -10,9 +10,17 @@ def email_val(email):
 
 
 class UserRegistrationForm(UserCreationForm):
+    currency_choices = [
+        ('GBP', 'GBP'),
+        ('Euro', 'Euro'),
+        ('Dollar', 'Dollar')
+    ]
+
+    currency = forms.ChoiceField(choices=currency_choices)
+
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
 
     def __init__(self, *args, **kwargs):
         super(UserRegistrationForm, self).__init__(*args, **kwargs)
@@ -22,14 +30,10 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['email'].required = True
         self.fields['password1'].required = True
         self.fields['password2'].required = True
+        self.fields['currency'].required = True
 
-    def save(self, commit=True):
-        """
-        Saves the user and creates an account for the user
 
-        :param commit:
-        :return:
-        """
+def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
@@ -46,8 +50,8 @@ class UserRegistrationForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(), required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
+
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['password'].required = True
-
