@@ -14,8 +14,7 @@
 				</span>
                     <h1 class="logo-title">
                         <span>Hello</span>
-                        <span>Rohan</span>
-                        <span>Kadam</span>
+                        <span>{{ username }}</span>
                     </h1>
                 </div>
             </div>
@@ -42,7 +41,7 @@
                             <span> {{ balance }} {{ cur }}</span> 
 
                         {% else %}
-                            <Span>Balance information not available</Span>
+                            <Span> <h5>Add Money to get started</h5></Span>
                         {% endif %}
                     </h1>
                 </div>
@@ -172,39 +171,19 @@
                         </button>
                     </div>
                     <div class="tiles">
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-lightning-light"></i>
-                                <h3>
-                                    <span>User 1</span>
-                                    <span>Brighton</span>
-                                </h3>
-                            </div>
-                            <button class="flat-button" onclick="openPayModal()">Pay</button>
-                            <button class="flat-button" onclick="openRequestModal()">Request</button>
-                        </article>
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-fire-simple-light"></i>
-                                <h3>
-                                    <span>User 2</span>
-                                    <span>Sussex</span>
-                                </h3>
-                            </div>
-                            <button class="flat-button" onclick="openPayModal()">Pay</button>
-                            <button class="flat-button" onclick="openRequestModal()">Request</button>
-                        </article>
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-file-light"></i>
-                                <h3>
-                                    <span>User 3</span>
-                                    <span>Mumbai</span>
-                                </h3>
-                            </div>
-                            <button class="flat-button" onclick="openPayModal()">Pay</button>
-                            <button class="flat-button" onclick="openRequestModal()">Request</button>
-                        </article>
+                        {% for user in users %}
+                            <article class="tile">
+                                <div class="tile-header">
+                                    <i class="ph-lightning-light"></i>
+                                    <h3>
+                                        <span>{{ user.first_name }}</span>
+                                        <span>{{ user.last_name }}</span>
+                                    </h3>
+                                </div>
+                                <button class="flat-button" onclick="openPayModal()">Pay</button>
+                                <button class="flat-button" onclick="openRequestModal()">Request</button>
+                            </article>
+                        {% endfor %}
                     </div>
                     <div class="service-section-footer">
                         <p>Services are paid according to the current state of the currency and tariff.</p>

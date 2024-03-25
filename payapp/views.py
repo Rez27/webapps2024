@@ -2,11 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import AddMoneyForm
 from .models import UserProfile
+from django.contrib.auth.models import User
 
 
 @login_required
 def main_page(request):
     user = request.user
+    username = request.user.username
+    users = User.objects.all() #All Users
+    # Excluding the currently authenticated user
+    logged_in_user = request.user
+    users = users.exclude(pk=logged_in_user.pk)
     try:
         user_profile = user.payapp_profile
         # If the user profile exists, update the balance
@@ -42,6 +48,8 @@ def main_page(request):
     context = {
         'balance': user_profile.bal,
         'form': form,
-        'cur': cur
+        'cur': cur,
+        'username': username,
+        'users': users
     }
     return render(request, 'payapp/ui.html', context)

@@ -316,12 +316,14 @@ a {
 }
 
 .tiles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    -moz-column-gap: 1rem;
-    column-gap: 1rem;
-    row-gap: 1rem;
-    margin-top: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    height: 200px; /* Adjust height as needed */
+    max-width: 700px;
+    padding: 0 1rem; /* Add padding to prevent items from sticking to the edges */
 }
 @media (max-width: 700px) {
     .tiles {
@@ -334,12 +336,9 @@ a {
     border-radius: 8px;
     background-color: var(--c-olive-500);
     color: var(--c-gray-900);
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    transition: 0.25s ease;
+    min-width: 200px; /* Set the minimum width for each tile */
+    flex: 0 0 auto; /* Prevent tiles from growing or shrinking */
+    scroll-snap-align: start;
 }
 .tile:hover {
     transform: translateY(-5px);
