@@ -1,30 +1,34 @@
-function openPayModal() {
-    var payModal = document.getElementById("payModal");
+function openPayModal(first_name, last_name, currency_type) {
+    let payModal = document.getElementById("payModal");
+    document.getElementById("first_name").value = first_name;
+    document.getElementById("last_name").value = last_name;
+    document.getElementById("currency_type").value = currency_type;
     payModal.style.display = "block";
 }
 
 function closePayModal() {
-    var payModal = document.getElementById("payModal");
+    let payModal = document.getElementById("payModal");
     payModal.style.display = "none";
 }
 
 function openRequestModal() {
-    var requestModal = document.getElementById("requestModal");
+    let requestModal = document.getElementById("requestModal");
     requestModal.style.display = "flex";
 }
 
 function closeRequestModal() {
-    var requestModal = document.getElementById("requestModal");
+    let requestModal = document.getElementById("requestModal");
     requestModal.style.display = "none";
 }
 
 /*Add Money Modal*/
 function openAddMoney() {
-    var requestModal = document.getElementById("AddMoney");
+    let requestModal = document.getElementById("AddMoney");
     requestModal.style.display = "flex";
 }
 
 function closeAddMoney() {
-    var requestModal = document.getElementById("AddMoney");
+    let requestModal = document.getElementById("AddMoney");
     requestModal.style.display = "none";
 }
+

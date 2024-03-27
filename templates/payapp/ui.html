@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 {% load static %}
 {% block additional_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'base/css/style1.css' %}">
+{#    <link rel="stylesheet" type="text/css" href="{% static 'base/css/style1.css' %}">#}
 {% endblock %}
 {% block content %}
     <div class="payapp">
@@ -98,6 +98,14 @@
                     </div>
                     <div class="modal-body">
                         <p>Pay Modal Content</p>
+                        <form method="post" action="{% url 'main_page' %}">
+                            {% csrf_token %}
+                            {{ pay_form | crispy }}
+                            <input type="hidden" name="first_name" id="first_name">
+                            <input type="hidden" name="currency_type" id="currency_type">
+                            <input type="hidden" name="last_name" id="last_name">
+                            <input type="submit" id="submit" value="Pay">
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button class="flat-button" onclick="closePayModal()">Close</button>
@@ -130,13 +138,11 @@
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
-                            <form method="post" action="{% url 'main' %}">
+                            <form method="post" action="{% url 'main_page' %}">
                                 {% csrf_token %}
-                                {{ form | crispy }}
+                                {{ addMoneyForm | crispy }}
                                 <input type="submit" id="submit" value="Add Money">
-
                             </form>
-
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -176,11 +182,14 @@
                                 <div class="tile-header">
                                     <i class="ph-lightning-light"></i>
                                     <h3>
-                                        <span>{{ user.first_name }}</span>
-                                        <span>{{ user.last_name }}</span>
+                                        <span> {{ user.first_name }}</span>
+                                        <span> {{ user.last_name }}</span>
+                                        <span> <h6>Currency type - </h6></span>
+                                        <span> <small>{{ user.payapp_profile.get_currency_display }}</small></span>
+
                                     </h3>
                                 </div>
-                                <button class="flat-button" onclick="openPayModal()">Pay</button>
+                                <button class="flat-button" onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')" >Pay</button>
                                 <button class="flat-button" onclick="openRequestModal()">Request</button>
                             </article>
                         {% endfor %}

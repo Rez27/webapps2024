@@ -321,7 +321,7 @@ a {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    height: 200px; /* Adjust height as needed */
+    height: 250px; /* Adjust height as needed */
     max-width: 700px;
     padding: 0 1rem; /* Add padding to prevent items from sticking to the edges */
 }
