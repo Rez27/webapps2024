@@ -15,9 +15,19 @@ class AddMoneyForm(forms.Form):
 
 
 class PaymentForm(forms.Form):
-    amount = forms.DecimalField(label='Amount', required=True,
+    amount = forms.DecimalField(label='Pay Amount', required=True,
                                 widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
     first_name = forms.CharField(widget=forms.HiddenInput())
     last_name = forms.CharField(widget=forms.HiddenInput())
     currency_type = forms.CharField(widget=forms.HiddenInput())
     pay_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+
+class RequestForm(forms.Form):
+    requested_amount = forms.DecimalField(label='Request Amount', required=True,
+                                widget=forms.NumberInput(attrs={'placeholder': 'Enter amount'}))
+    request_first_name = forms.CharField(widget=forms.HiddenInput())
+    request_last_name = forms.CharField(widget=forms.HiddenInput())
+    request_currency_type = forms.CharField(widget=forms.HiddenInput())
+    request_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+

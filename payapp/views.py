@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import AddMoneyForm, PaymentForm
-from .models import UserProfile, Transaction
+from .forms import AddMoneyForm, PaymentForm, RequestForm
+from .models import UserProfile, Transaction, Notification
 from django.contrib.auth.models import User
 
 
@@ -78,6 +78,7 @@ def main_page(request):
     user_profile, user_profile_exists = get_or_create_user_profile(user)
     addMoneyForm = AddMoneyForm()
     pay_form = PaymentForm()
+    request_form = RequestForm()
     if request.method == 'POST':
         if 'addMoneyForm' in request.POST:
             print("In add money")
@@ -94,7 +95,6 @@ def main_page(request):
                 return redirect('main_page')  # Redirect to a success page
 
         elif 'pay_form' in request.POST:
-            print("In pay form")
             pay_form = PaymentForm(request.POST)
             if pay_form.is_valid():
                 amount = pay_form.cleaned_data['amount']
@@ -124,9 +124,32 @@ def main_page(request):
                 transaction.save()
 
                 return redirect('main_page')  # Redirect to a success page
+
+        elif 'request_form' in request.POST:
+            request_form = RequestForm(request.POST)
+        if request_form.is_valid():
+                print("In valid request_form")
+                amount = request_form.cleaned_data['request_currency_type']
+                request_first_name = request.POST['request_first_name']
+                request_last_name = request.POST['request_last_name']
+                print("This is user", request_first_name, request_last_name)
+                try:
+                    Notification.objects.create(
+                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
+                        sender=request.user,
+                        amount=amount,
+                    )
+                except:
+                    print("Notification not created")
+                    return redirect('main_page')
+
+                sender_profile = request.user.payapp_profile
+
+                return redirect('main_page')  # Redirect to a success page
     else:
         addMoneyForm = AddMoneyForm()
         pay_form = PaymentForm()
+        request_form = RequestForm()
 
     currency = user_profile.currency
     cur = get_currency_symbol(currency)
@@ -135,6 +158,7 @@ def main_page(request):
         'balance': user_profile.bal,
         'addMoneyForm': addMoneyForm,
         'pay_form': pay_form,
+        'request_form': request_form,
         'cur': cur,
         'username': username,
         'users': users

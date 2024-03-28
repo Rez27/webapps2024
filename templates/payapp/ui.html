@@ -16,6 +16,8 @@
                         <span>Hello</span>
                         <span>{{ username }}</span>
                     </h1>
+                    <button class="icon-notification" onclick="openNotificationModal()">Money Requests
+                    </button>
                 </div>
             </div>
 
@@ -93,7 +95,7 @@
             <div class="modal" id="payModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Pay Modal Title</h2>
+                        <h2>Pay Modal</h2>
                         <span class="close" onclick="closePayModal()">&times;</span>
                     </div>
                     <div class="modal-body">
@@ -117,11 +119,19 @@
             <div class="modal" id="requestModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Request Modal Title</h2>
+                        <h2>Request Modal</h2>
                         <span class="close" onclick="closeRequestModal()">&times;</span>
                     </div>
                     <div class="modal-body">
                         <p>Request Modal Content</p>
+                        <form method="post" action="{% url 'main_page' %}">
+                            {% csrf_token %}
+                            {{ request_form | crispy }}
+                            <input type="hidden" name="request_first_name" id="request_first_name">
+                            <input type="hidden" name="request_currency_type" id="request_currency_type">
+                            <input type="hidden" name="request_last_name" id="request_last_name">
+                            <input type="submit" id="submit" value="Request">
+                        </form>
                     </div>
                     <div class="modal-footer">
                         <button class="flat-button" onclick="closeRequestModal()">Close</button>
@@ -147,6 +157,27 @@
                     </div>
                     <div class="modal-footer">
                         <button class="flat-button" onclick="closeAddMoney()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Request Money Notification Modal-->
+            <div class="modal" id="NotificationModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Notification Modal</h2>
+                        <span class="close" onclick="closeNotificationModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-content">
+                            <form method="post" action="{% url 'main_page' %}">
+                                <input type="submit" id="accept_submit" value="Accept">
+                                <input type="submit" id="reject_submit" value="Reject">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="flat-button" onclick="closeNotificationModal()">Close</button>
                     </div>
                 </div>
             </div>
@@ -180,17 +211,15 @@
                         {% for user in users %}
                             <article class="tile">
                                 <div class="tile-header">
-                                    <i class="ph-lightning-light"></i>
                                     <h3>
                                         <span> {{ user.first_name }}</span>
                                         <span> {{ user.last_name }}</span>
                                         <span> <h6>Currency type - </h6></span>
                                         <span> <small>{{ user.payapp_profile.get_currency_display }}</small></span>
-
                                     </h3>
                                 </div>
                                 <button class="flat-button" onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')" >Pay</button>
-                                <button class="flat-button" onclick="openRequestModal()">Request</button>
+                                <button class="flat-button" onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')">Request</button>
                             </article>
                         {% endfor %}
                     </div>
