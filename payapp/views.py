@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import AddMoneyForm, PaymentForm, RequestForm
 from .models import UserProfile, Transaction, Notification
@@ -79,7 +79,10 @@ def main_page(request):
     addMoneyForm = AddMoneyForm()
     pay_form = PaymentForm()
     request_form = RequestForm()
+    notifications = Notification.objects.filter(receiver=user)
+
     if request.method == 'POST':
+
         # Add Money Logic
         if 'addMoneyForm' in request.POST:
             print("In add money")
@@ -129,27 +132,57 @@ def main_page(request):
         # Request Money form
         elif 'request_form' in request.POST:
             request_form = RequestForm(request.POST)
-        if request_form.is_valid():
-            print("In valid request_form")
-            amount = request_form.cleaned_data['requested_amount']
-            currency_amount = request_form.cleaned_data['request_currency_type']
-            request_first_name = request.POST['request_first_name']
-            request_last_name = request.POST['request_last_name']
-            print("This is user to request", request_first_name, request_last_name, "Requested by", request.user,
-                  "And ammount is", amount)
+            if request_form.is_valid():
+                print("In valid request_form")
+                amount = request_form.cleaned_data['requested_amount']
+                currency_amount = request_form.cleaned_data['request_currency_type']
+                request_first_name = request.POST['request_first_name']
+                request_last_name = request.POST['request_last_name']
+                print("This is user to request", request_first_name, request_last_name, "Requested by", request.user,
+                      "And ammount is", amount)
+                try:
+                    Notification.objects.create(
+                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
+                        requester=request.user,
+                        amount=amount,
+                    )
+                except:
+                    print("Notification not created")
+                    return redirect('main_page')
+
+                sender_profile = request.user.payapp_profile
+
+                return redirect('main_page')  # Redirect to a success page
+
+        # Accept Notification
+        elif 'accept_notification' in request.POST:
+            requester = request.POST['requester_username']
+            requested_amount = request.POST['requested_amount']
+
             try:
-                Notification.objects.create(
-                    receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
-                    sender=request.user,
-                    amount=amount,
-                )
-            except:
-                print("Notification not created")
+                sender_user = User.objects.get(username=requester)
+                sender_profile = sender_user.payapp_profile
+            except User.DoesNotExist:
                 return redirect('main_page')
+            print("This is sender_profile.bal",type(sender_profile.bal))
+            sender_profile.bal = float(sender_profile.bal)
+            requested_amount = float(requested_amount)
+            
+            sender_profile.bal += requested_amount
+            sender_profile.save()
 
-            sender_profile = request.user.payapp_profile
+            user_profile.bal -= requested_amount
+            user_profile.save()
 
-            return redirect('main_page')  # Redirect to a success page
+            notification_id = request.POST['notification_id']
+            notification = get_object_or_404(Notification, pk=notification_id)
+            # Mark the notification as accepted
+            notification.is_accepted = True
+            notification.save()
+            # Delete the notification after all transactions are successful
+            notification.delete()
+
+            return redirect('main_page')
     else:
         addMoneyForm = AddMoneyForm()
         pay_form = PaymentForm()
@@ -165,7 +198,8 @@ def main_page(request):
         'request_form': request_form,
         'cur': cur,
         'username': username,
-        'users': users
+        'users': users,
+        'notifications': notifications
     }
     return render(request, 'payapp/ui.html', context)
 

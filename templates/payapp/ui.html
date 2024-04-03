@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 {% load static %}
 {% block additional_css %}
-{#    <link rel="stylesheet" type="text/css" href="{% static 'base/css/style1.css' %}">#}
+    {#    <link rel="stylesheet" type="text/css" href="{% static 'base/css/style1.css' %}">#}
 {% endblock %}
 {% block content %}
     <div class="payapp">
@@ -40,7 +40,7 @@
                     <h1 class="logo-title">
                         <span>Account Balance</span>
                         {% if balance and cur %}
-                            <span> {{ balance }} {{ cur }}</span> 
+                            <span> {{ balance }} {{ cur }}</span>
 
                         {% else %}
                             <Span> <h5>Add Money to get started</h5></Span>
@@ -91,6 +91,7 @@
                 {#                    </div>#}
                 {#                </footer>#}
             </div>
+
             <!-- Pay Modal -->
             <div class="modal" id="payModal">
                 <div class="modal-content">
@@ -161,23 +162,58 @@
                 </div>
             </div>
 
-            <!-- Request Money Notification Modal-->
+            <!-- Requested Money Notification Modal-->
             <div class="modal" id="NotificationModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Notification Modal</h2>
+                        <h2>Pending Requests</h2>
                         <span class="close" onclick="closeNotificationModal()">&times;</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
-                            <form method="post" action="{% url 'main_page' %}">
-                                <input type="submit" id="accept_submit" value="Accept">
-                                <input type="submit" id="reject_submit" value="Reject">
-                            </form>
+                            <div class="table-container">
+
+                                <table class="notification-table">
+                                    <tbody>
+                                    <th>
+                                        Requester
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Accept/Deny
+                                    </th>
+                                    {% for notification in notifications %}
+                                        <tr>
+                                            <td>{{ notification.requester }}</td>
+                                            <td>{{ notification.amount }}</td>
+                                            <td>
+                                                <form method="post" action="{% url 'main_page' %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="requester_username"
+                                                           value="{{ notification.requester }}">
+                                                    <input type="hidden" name="notification_id"
+                                                           value="{{ notification.id }}">
+                                                    <input type="hidden" name="requested_amount"
+                                                           value="{{ notification.amount }}">
+                                                    <input type="submit" class="flat-button-accept" id="accept_submit"
+                                                           name="accept_notification"
+                                                           value="Accept">
+                                                    <input type="submit" class="flat-button-reject" id="reject_submit"
+                                                           name="reject_notification"
+                                                           value="Reject">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="flat-button" onclick="closeNotificationModal()">Close</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="flat-button" onclick="closeNotificationModal()">Close</button>
                     </div>
                 </div>
             </div>
@@ -218,8 +254,14 @@
                                         <span> <small>{{ user.payapp_profile.get_currency_display }}</small></span>
                                     </h3>
                                 </div>
-                                <button class="flat-button" onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')" >Pay</button>
-                                <button class="flat-button" onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')">Request</button>
+                                <button class="flat-button"
+                                        onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')">
+                                    Pay
+                                </button>
+                                <button class="flat-button"
+                                        onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')">
+                                    Request
+                                </button>
                             </article>
                         {% endfor %}
                     </div>
