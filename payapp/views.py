@@ -72,7 +72,7 @@ from django.contrib.auth.models import User
 
 @login_required
 def main_page(request):
-    user = request.user
+    user = request.user  # Logged in User
     username = request.user.username
     users = User.objects.exclude(pk=user.pk)  # Exclude the logged-in user
     user_profile, user_profile_exists = get_or_create_user_profile(user)
@@ -80,6 +80,7 @@ def main_page(request):
     pay_form = PaymentForm()
     request_form = RequestForm()
     if request.method == 'POST':
+        # Add Money Logic
         if 'addMoneyForm' in request.POST:
             print("In add money")
             addMoneyForm = AddMoneyForm(request.POST)
@@ -93,7 +94,7 @@ def main_page(request):
                     user_profile.bal = amount
                 user_profile.save()
                 return redirect('main_page')  # Redirect to a success page
-
+        # Pay Money Form
         elif 'pay_form' in request.POST:
             pay_form = PaymentForm(request.POST)
             if pay_form.is_valid():
@@ -125,27 +126,30 @@ def main_page(request):
 
                 return redirect('main_page')  # Redirect to a success page
 
+        # Request Money form
         elif 'request_form' in request.POST:
             request_form = RequestForm(request.POST)
         if request_form.is_valid():
-                print("In valid request_form")
-                amount = request_form.cleaned_data['request_currency_type']
-                request_first_name = request.POST['request_first_name']
-                request_last_name = request.POST['request_last_name']
-                print("This is user", request_first_name, request_last_name)
-                try:
-                    Notification.objects.create(
-                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
-                        sender=request.user,
-                        amount=amount,
-                    )
-                except:
-                    print("Notification not created")
-                    return redirect('main_page')
+            print("In valid request_form")
+            amount = request_form.cleaned_data['requested_amount']
+            currency_amount = request_form.cleaned_data['request_currency_type']
+            request_first_name = request.POST['request_first_name']
+            request_last_name = request.POST['request_last_name']
+            print("This is user to request", request_first_name, request_last_name, "Requested by", request.user,
+                  "And ammount is", amount)
+            try:
+                Notification.objects.create(
+                    receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
+                    sender=request.user,
+                    amount=amount,
+                )
+            except:
+                print("Notification not created")
+                return redirect('main_page')
 
-                sender_profile = request.user.payapp_profile
+            sender_profile = request.user.payapp_profile
 
-                return redirect('main_page')  # Redirect to a success page
+            return redirect('main_page')  # Redirect to a success page
     else:
         addMoneyForm = AddMoneyForm()
         pay_form = PaymentForm()
