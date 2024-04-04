@@ -45,3 +45,9 @@ function closeNotificationModal() {
     requestModal.style.display = "none";
 }
 
+//Show Transactions
+$('#toggle').click(function() {
+    $('#transfers > .toggle-transactions').toggle('slow');
+    $('html, body').animate({scrollTop: $(document).height()}, 'slow');
+
+});

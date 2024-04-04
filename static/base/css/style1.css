@@ -719,6 +719,29 @@ a {
     display: flex;
     flex-direction: column;
     margin-top: 1.5rem;
+    overflow-y: auto;
+    max-height: 220px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #e3ffa8;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #a6a6a6;
 }
 
 .transfer {
@@ -1407,9 +1430,9 @@ color: #45ffbc;
     right: 0; /* Adjust if needed */
     border-radius: 5%;
     border: 0;
-    background-color: #D37676;
-    border: 5px solid #D37676;
-    color: #ffffff;
+    background-color: #45ffbc;
+    /*border: 5px solid #45ffbc;*/
+    color: black;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1429,8 +1452,8 @@ color: #45ffbc;
 }
 
 .icon-notification:hover, .icon-notification:focus {
-    background-color: var(--c-gray-600);
-    box-shadow: 0 0 0 4px var(--c-gray-800), 0 0 0 5px var(--c-text-tertiary);
+    background-color:  var(--c-olive-500);
+    box-shadow: 0 0 0 4px var(--c-olive-500), 0 0 0 5px var(--c-text-tertiary);
 }
 
 /*Notification Table*/

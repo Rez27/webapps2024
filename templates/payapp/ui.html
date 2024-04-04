@@ -277,43 +277,68 @@
                 </section>
                 <section class="transfer-section">
                     <div class="transfer-section-header">
-                        <h2>Latest transfers</h2>
+                        <a href='#' id='toggle'><h2>Received Money</h2>
+                        </a>
                         <div class="filter-options">
-                            <p>Filter selected: more than 100 $</p>
-                            <button class="icon-button">
-                                <i class="ph-funnel"></i>
-                            </button>
-                            <button class="icon-button">
-                                <i class="ph-plus"></i>
-                            </button>
+                            <a href='#' id='toggle'><h2>Paid Money</h2></a>
                         </div>
                     </div>
                     <div class="transfers">
-                        {% for transaction in received_transactions %}
-                            <div class="transfer">
-                                <div class="transfer-logo">
-                                    <img src="https://assets.codepen.io/285131/apple.svg"/>
+                        <div id="received-transactions" class='toggle-transactions'>
+                            {% for transaction in received_transactions %}
+                                <div class="transfer">
+                                    <div class="transfer-logo">
+                                        <img src="{% static 'base/images/people.svg' %}"/>
+                                    </div>
+                                    <dl class="transfer-details">
+                                        <div>
+                                            <dt>{{ transaction.sender.user.first_name }}</dt>
+                                            <dd>{{ transaction.sender.user.last_name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>4012</dt>
+                                            <dd>Last four digits</dd>
+                                        </div>
+                                        <div>
+                                            <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
+                                            <dd>Date payment</dd>
+                                        </div>
+                                    </dl>
+                                    <div class="transfer-number">
+                                        $ {{ transaction.amount }}
+                                    </div>
                                 </div>
-                                <dl class="transfer-details">
-                                    <div>
-                                        <dt>{{ transaction.sender.user.first_name }}</dt>
-                                        <dd>{{ transaction.sender.user.last_name }}</dd>
+                            {% endfor %}
+                        </div>
+
+                        <div class='toggle-transactions' id="sent-transactions" style="display:none">
+                            {% for transaction in sent_transactions %}
+                                <div class="transfer">
+                                    <div class="transfer-logo">
+                                        <img src="{% static 'base/images/people.svg' %}"/>
                                     </div>
-                                    <div>
-                                        <dt>4012</dt>
-                                        <dd>Last four digits</dd>
+                                    <dl class="transfer-details">
+                                        <div>
+                                            <dt>{{ transaction.sender.user.first_name }}</dt>
+                                            <dd>{{ transaction.sender.user.last_name }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>4012</dt>
+                                            <dd>Last four digits</dd>
+                                        </div>
+                                        <div>
+                                            <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
+                                            <dd>Date payment</dd>
+                                        </div>
+                                    </dl>
+                                    <div class="transfer-number">
+                                        $ {{ transaction.amount }}
                                     </div>
-                                    <div>
-                                        <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
-                                        <dd>Date payment</dd>
-                                    </div>
-                                </dl>
-                                <div class="transfer-number">
-                                    $ {{ transaction.amount }}
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
+
                 </section>
             </div>
 
