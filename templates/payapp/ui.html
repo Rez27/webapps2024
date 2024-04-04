@@ -13,11 +13,14 @@
 					<img src="https://assets.codepen.io/285131/almeria-logo.svg"/>
 				</span>
                     <h1 class="logo-title">
-                        <span>Hello</span>
-                        <span>{{ username }}</span>
+                        <h1>Hello {{ username }}</h1>
+                        <div class="payment-section-header" onclick="openAddMoney()">
+                            <div class="container-add">
+                                <h5>Add</h5>
+                                <h5>Money</h5>
+                            </div>
+                        </div>
                     </h1>
-                    <button class="icon-notification" onclick="openNotificationModal()">Money Requests
-                    </button>
                 </div>
             </div>
 
@@ -41,10 +44,13 @@
                         <span>Account Balance</span>
                         {% if balance and cur %}
                             <span> {{ balance }} {{ cur }}</span>
-
                         {% else %}
                             <Span> <h5>Add Money to get started</h5></Span>
                         {% endif %}
+                        {#                        {% if notifications %}#}
+                        <button class="icon-notification" onclick="openNotificationModal()"><h4>Your open money requests
+                        </h4></button>
+                        {#                        {% endif %}#}
                     </h1>
                 </div>
             </div>
@@ -251,7 +257,7 @@
                                         <span> {{ user.first_name }}</span>
                                         <span> {{ user.last_name }}</span>
                                         <span> <h6>Currency type - </h6></span>
-                                        <span> <small>{{ user.payapp_profile.get_currency_display }}</small></span>
+                                        <span> <small>{{ user.payapp_profile.get_currency_display }} {{ cur }}</small></span>
                                     </h3>
                                 </div>
                                 <button class="flat-button"
@@ -283,72 +289,30 @@
                         </div>
                     </div>
                     <div class="transfers">
-                        <div class="transfer">
-                            <div class="transfer-logo">
-                                <img src="https://assets.codepen.io/285131/apple.svg"/>
+                        {% for transaction in received_transactions %}
+                            <div class="transfer">
+                                <div class="transfer-logo">
+                                    <img src="https://assets.codepen.io/285131/apple.svg"/>
+                                </div>
+                                <dl class="transfer-details">
+                                    <div>
+                                        <dt>{{ transaction.sender.user.first_name }}</dt>
+                                        <dd>{{ transaction.sender.user.last_name }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>4012</dt>
+                                        <dd>Last four digits</dd>
+                                    </div>
+                                    <div>
+                                        <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
+                                        <dd>Date payment</dd>
+                                    </div>
+                                </dl>
+                                <div class="transfer-number">
+                                    $ {{ transaction.amount }}
+                                </div>
                             </div>
-                            <dl class="transfer-details">
-                                <div>
-                                    <dt>Apple Inc.</dt>
-                                    <dd>Apple ID Payment</dd>
-                                </div>
-                                <div>
-                                    <dt>4012</dt>
-                                    <dd>Last four digits</dd>
-                                </div>
-                                <div>
-                                    <dt>28 Oct. 21</dt>
-                                    <dd>Date payment</dd>
-                                </div>
-                            </dl>
-                            <div class="transfer-number">
-                                - $ 550
-                            </div>
-                        </div>
-                        <div class="transfer">
-                            <div class="transfer-logo">
-                                <img src="https://assets.codepen.io/285131/pinterest.svg"/>
-                            </div>
-                            <dl class="transfer-details">
-                                <div>
-                                    <dt>Pinterest</dt>
-                                    <dd>2 year subscription</dd>
-                                </div>
-                                <div>
-                                    <dt>5214</dt>
-                                    <dd>Last four digits</dd>
-                                </div>
-                                <div>
-                                    <dt>26 Oct. 21</dt>
-                                    <dd>Date payment</dd>
-                                </div>
-                            </dl>
-                            <div class="transfer-number">
-                                - $ 120
-                            </div>
-                        </div>
-                        <div class="transfer">
-                            <div class="transfer-logo">
-                                <img src="https://assets.codepen.io/285131/warner-bros.svg"/>
-                            </div>
-                            <dl class="transfer-details">
-                                <div>
-                                    <dt>Warner Bros.</dt>
-                                    <dd>Cinema</dd>
-                                </div>
-                                <div>
-                                    <dt>2228</dt>
-                                    <dd>Last four digits</dd>
-                                </div>
-                                <div>
-                                    <dt>22 Oct. 21</dt>
-                                    <dd>Date payment</dd>
-                                </div>
-                            </dl>
-                            <div class="transfer-number">
-                                - $ 70
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </section>
             </div>
@@ -356,20 +320,6 @@
 
             <div class="app-body-sidebar">
                 <section class="payment-section">
-                    <div class="payment-section-header ">
-                        <div class="container">
-                            <h2>Add Money</h2>
-                            <button class="card-button" onclick="openAddMoney()">Add
-                                <svg width="2001" height="1237" viewBox="0 0 2001 1237" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <g>
-
-                                    </g>
-                                </svg>
-                            </button>
-
-                        </div>
-                    </div>
                     <div class="payments">
                         <div class="payment">
                             <div class="card green">

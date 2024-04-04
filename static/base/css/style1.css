@@ -1390,17 +1390,26 @@ footer p a:hover, footer p a:focus:hover {
     align-items: center;
 }
 
+.container-add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container-add:hover {
+color: #45ffbc;
+}
+
 .icon-notification {
     position: absolute;
-    width: 170px;
+    width: 430px;
     height: 52px;
     top: 130px;
     right: 0; /* Adjust if needed */
     border-radius: 5%;
     border: 0;
-    background-color: transparent;
+    background-color: #D37676;
     border: 5px solid #D37676;
-    color: #D37676;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1420,7 +1429,7 @@ footer p a:hover, footer p a:focus:hover {
 }
 
 .icon-notification:hover, .icon-notification:focus {
-    /*background-color: var(--c-gray-600);*/
+    background-color: var(--c-gray-600);
     box-shadow: 0 0 0 4px var(--c-gray-800), 0 0 0 5px var(--c-text-tertiary);
 }
 

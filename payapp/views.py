@@ -164,10 +164,10 @@ def main_page(request):
                 sender_profile = sender_user.payapp_profile
             except User.DoesNotExist:
                 return redirect('main_page')
-            print("This is sender_profile.bal",type(sender_profile.bal))
+            print("This is sender_profile.bal", type(sender_profile.bal))
             sender_profile.bal = float(sender_profile.bal)
             requested_amount = float(requested_amount)
-            
+
             sender_profile.bal += requested_amount
             sender_profile.save()
 
@@ -191,6 +191,10 @@ def main_page(request):
     currency = user_profile.currency
     cur = get_currency_symbol(currency)
 
+    # To Show latest transactions
+    received_transactions = Transaction.objects.filter(receiver=user.payapp_profile)
+    sent_transactions = Transaction.objects.filter(sender=user.payapp_profile)
+
     context = {
         'balance': user_profile.bal,
         'addMoneyForm': addMoneyForm,
@@ -199,7 +203,9 @@ def main_page(request):
         'cur': cur,
         'username': username,
         'users': users,
-        'notifications': notifications
+        'notifications': notifications,
+        'received_transactions': received_transactions,
+        'sent_transactions': sent_transactions
     }
     return render(request, 'payapp/ui.html', context)
 
