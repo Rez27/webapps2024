@@ -98,7 +98,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Pay Modal</h2>
-                        <button class="flat-button" onclick="closePayModal()">&times;</button>
+                        <button class="flat-button" onclick="closePayModal()"
+                                style="background-color: var(--c-olive-500); color: #121212">X
+                        </button>
                     </div>
                     <div class="modal-body">
                         <p>Pay Modal Content</p>
@@ -119,7 +121,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Request Modal</h2>
-                        <button class="flat-button" onclick="closeRequestModal()">&times;</button>
+                        <button class="flat-button" onclick="closeRequestModal()" style="background-color: var(--c-olive-500); color: #121212">X</button>
                     </div>
                     <div class="modal-body">
                         <p>Request Modal Content</p>
@@ -140,7 +142,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Add Money</h2>
-                        <span class="flat-button" onclick="closeAddMoney()">&times;</span>
+                        <span class="flat-button" onclick="closeAddMoney()" style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
@@ -162,7 +164,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Pending Requests</h2>
-                        <span class="close" onclick="closeNotificationModal()">&times;</span>
+                        <span class="flat-button" onclick="closeNotificationModal()" style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
@@ -343,12 +345,9 @@
                                     {% else %}
                                         <span> <h5>Add Money to get started</h5></span>
                                     {% endif %}
-                                    <button class="save-button" onclick="openAddMoney()">
+                                    <button class="save-button" onclick="openAddMoney()" style="background-color: var(--c-olive-500); color: #121212">
                                         Add Money
                                     </button>
-                                    {#                                    <div onclick="openAddMoney()">#}
-                                    {#                                            <h5>Add Money</h5>#}
-                                    {#                                    </div>#}
                                 </div>
                             </div>
                         </div>

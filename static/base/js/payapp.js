@@ -45,6 +45,18 @@ function closeNotificationModal() {
     requestModal.style.display = "none";
 }
 
+function openTransactionModal(transac_first_name, transac_last_name) {
+    let TransactionModal = document.getElementById("TransactionModal");
+    // document.getElementById("first_name").value = transac_first_name;
+    // document.getElementById("last_name").value = transac_last_name;
+    TransactionModal.style.display = "block";
+}
+
+function closeTransactionModal() {
+    let TransactionModal = document.getElementById("TransactionModal");
+    TransactionModal.style.display = "none";
+}
+
 //Show Transactions
 $('#toggle').click(function() {
     $('#transfers > .toggle-transactions').toggle('slow');

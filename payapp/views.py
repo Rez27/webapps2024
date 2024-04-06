@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import AddMoneyForm, PaymentForm, RequestForm
+from .forms import AddMoneyForm, PaymentForm, RequestForm, ShowTransactionsForm
 from .models import UserProfile, Transaction, Notification
 from django.contrib.auth.models import User
 
@@ -172,11 +172,29 @@ def get_currency_symbol(currency):
 
 def admin_ui(request):
     users = User.objects.all()
-    user_profiles = UserProfile.objects.all()
-
     user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
+    if request.method == 'POST':
+        show_transactions_form = ShowTransactionsForm(request.POST)
+        if show_transactions_form.is_valid():
+            first_name = show_transactions_form.cleaned_data['first_name']
+            last_name = show_transactions_form.cleaned_data['last_name']
+            try:
+                user = User.objects.get(first_name=first_name, last_name=last_name)
+                user_profile = UserProfile.objects.get(user=user)
+                transactions_sent = Transaction.objects.filter(sender=user_profile)
+                transactions_received = Transaction.objects.filter(receiver=user_profile)
+                # transactions = transactions_sent | transactions_received
+                print("These are transactions for user",user_profile, "which is",transactions_sent)
+            except (User.DoesNotExist, UserProfile.DoesNotExist):
+                transactions = None
+
+    else:
+        show_transactions_form = ShowTransactionsForm()
 
     context = {
         'user_data': user_data,
+        'show_transactions_form': show_transactions_form,
+        'transactions_sent':transactions_sent,
+        'transactions_received':transactions_received,
     }
     return render(request, 'payapp/admin_ui.html', context)

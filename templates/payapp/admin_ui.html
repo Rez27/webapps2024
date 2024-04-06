@@ -39,12 +39,48 @@
         <div class="service-section-header">
             <div class="search-field">
                 <i class="ph-magnifying-glass"></i>
-                <input type="text" placeholder="Account number">
+                <input type="text" placeholder="Search by Account Name">
             </div>
 
-            <button class="flat-button">
+            <button class="flat-button" style="background-color: var(--c-olive-500); color: #121212">
                 Search
             </button>
+        </div>
+
+        {#        Show Transactions Modal#}
+        <div class="modal" id="TransactionModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Money Sent by User</h2>
+                    <button class="flat-button" onclick="closeTransactionModal()" style="background-color: var(--c-olive-500); color: #121212">X</button>
+                </div>
+                <div class="modal-body">
+                    <div class="transfers">
+                        {% for transaction in transactions_sent %}
+                            <div class="transfer">
+                                <div class="transfer-logo">
+                                    <img src="{% static 'base/images/people.svg' %}"/>
+                                </div>
+                                <dl class="transfer-details">
+                                    <div>
+                                        <dt>{{ transaction.sender }}</dt>
+                                    </div>
+                                    <div>
+                                        <dt>{{ transaction.receiver }}</dt>
+                                        <dd>
+                                            {{ transaction.amount }}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dd>Transaction Time</dd>
+                                        <dt>{{ transaction.timestamp }}</dt>
+                                    </div>
+                                </dl>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="transfers">
@@ -56,11 +92,11 @@
                     <dl class="transfer-details">
                         <div>
                             <dt>{{ user.first_name }}</dt>
-                            <dd>{{ user.last_name }}</dd>
+                            <dd>{{ user.last_name }} </dd>
                         </div>
                         <div>
                             <dt>{{ user.username }}</dt>
-                            <dd>{{ user_profile.bal }} - {% if user_profile.currency == 'GBP' %}
+                            <dd>{{ user_profile.bal }} {% if user_profile.currency == 'GBP' %}
                                 £
                             {% elif user_profile.currency == 'Euro' %}
                                 €
@@ -70,16 +106,21 @@
                             </dd>
                         </div>
                         <div>
-                            <dt>{{ user.date_joined }}</dt>
                             <dd>Date Joined</dd>
+                            <dt>{{ user.date_joined }}</dt>
                         </div>
                     </dl>
-                    <button class="flat-button">
+
+                    <button class="flat-button"
+                            style="background-color: var(--c-olive-500); color: #121212"
+                            type="submit"
+                            onclick="openTransactionModal('{{ user.first_name }}', '{{ user.last_name }}')">
                         Show Transactions
                     </button>
-
                 </div>
             {% endfor %}
         </div>
     </div>
+    <script src="{% static 'base/js/payapp.js' %}"></script>
+
 {% endblock %}

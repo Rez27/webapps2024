@@ -33,3 +33,7 @@ class RequestForm(forms.Form):
     request_last_name = forms.CharField(widget=forms.HiddenInput())
     request_currency_type = forms.CharField(widget=forms.HiddenInput())
     request_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+class ShowTransactionsForm(forms.Form):
+    first_name = forms.CharField(widget=forms.HiddenInput())
+    last_name = forms.CharField(widget=forms.HiddenInput())
