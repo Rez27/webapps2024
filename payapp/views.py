@@ -179,7 +179,7 @@ def admin_ui(request):
             first_name = show_transactions_form.cleaned_data['first_name']
             last_name = show_transactions_form.cleaned_data['last_name']
             try:
-                user = User.objects.get(first_name=first_name, last_name=last_name)
+                user = User.objects.get(first_name=first_name, last_name=last_name) #Here try to get the user selected for Show Transaction button
                 user_profile = UserProfile.objects.get(user=user)
                 transactions_sent = Transaction.objects.filter(sender=user_profile)
                 transactions_received = Transaction.objects.filter(receiver=user_profile)
