@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block content %}
+    <div class="payapp">
+        <header class="pay-header">
+            <div class="app-header-logo">
+                <div class="logo">
+				<span class="logo-icon">
+					<img src="https://assets.codepen.io/285131/almeria-logo.svg"/>
+				</span>
+                    <h1 class="logo-title">
+                        <h1>Hello Admin</h1>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="pay-nav">
+                <div class="tabs">
+                    <h1 class="logo-title">
+                        <h1>Welcome to RKPAY</h1>
+                    </h1>
+                </div>
+            </div>
+            <div class="app-header-logo">
+                <div class="logo">
+                    <h1 class="logo-title">
+                        <div class="payments">
+                            <div class="payment">
+
+                            </div>
+                        </div>
+                    </h1>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="service-section-header">
+            <div class="search-field">
+                <i class="ph-magnifying-glass"></i>
+                <input type="text" placeholder="Account number">
+            </div>
+
+            <button class="flat-button">
+                Search
+            </button>
+        </div>
+
+        <div class="transfers">
+            {% for user, user_profile in user_data %}
+                <div class="transfer">
+                    <div class="transfer-logo">
+                        <img src="{% static 'base/images/people.svg' %}"/>
+                    </div>
+                    <dl class="transfer-details">
+                        <div>
+                            <dt>{{ user.first_name }}</dt>
+                            <dd>{{ user.last_name }}</dd>
+                        </div>
+                        <div>
+                            <dt>{{ user.username }}</dt>
+                            <dd>{{ user_profile.bal }} - {% if user_profile.currency == 'GBP' %}
+                                £
+                            {% elif user_profile.currency == 'Euro' %}
+                                €
+                            {% elif user_profile.currency == 'Dollar' %}
+                                $
+                            {% endif %}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>{{ user.date_joined }}</dt>
+                            <dd>Date Joined</dd>
+                        </div>
+                    </dl>
+                    <button class="flat-button">
+                        Show Transactions
+                    </button>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

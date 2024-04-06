@@ -48,6 +48,5 @@ function closeNotificationModal() {
 //Show Transactions
 $('#toggle').click(function() {
     $('#transfers > .toggle-transactions').toggle('slow');
-    $('html, body').animate({scrollTop: $(document).height()}, 'slow');
-
 });
+

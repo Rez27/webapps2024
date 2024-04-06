@@ -14,43 +14,39 @@
 				</span>
                     <h1 class="logo-title">
                         <h1>Hello {{ username }}</h1>
-                        <div class="payment-section-header" onclick="openAddMoney()">
-                            <div class="container-add">
-                                <h5>Add</h5>
-                                <h5>Money</h5>
-                            </div>
-                        </div>
                     </h1>
                 </div>
             </div>
 
             <div class="pay-nav">
                 <div class="tabs">
-                    <a href="#" class="active">
-                        Main
-                    </a>
-                    <a href="#">
-                        About
-                    </a>
-                    <a href="#">
-                        History
-                    </a>
+                    <h1 class="logo-title">
+                        <h1>Welcome to RKPAY</h1>
+                    </h1>
+                    {#                    <a href="#" class="active">#}
+                    {#                        Main#}
+                    {#                    </a>#}
+                    {#                    <a href="#">#}
+                    {#                        About#}
+                    {#                    </a>#}
+                    {#                    <a href="#">#}
+                    {#                        History#}
+                    {#                    </a>#}
 
                 </div>
             </div>
             <div class="app-header-logo">
                 <div class="logo">
                     <h1 class="logo-title">
-                        <span>Account Balance</span>
-                        {% if balance and cur %}
-                            <span> {{ balance }} {{ cur }}</span>
-                        {% else %}
-                            <Span> <h5>Add Money to get started</h5></Span>
-                        {% endif %}
-                        {#                        {% if notifications %}#}
-                        <button class="icon-notification" onclick="openNotificationModal()"><h4>Your open money requests
-                        </h4></button>
-                        {#                        {% endif %}#}
+                        <div class="payments" onclick="openNotificationModal()">
+                            <div class="payment">
+                                <div class="card-open-money-req olive">
+                                    <span style="color: #121212">Your Open Money requests</span>
+                                </div>
+                            </div>
+                        </div>
+                        {#                        <button class="icon-notification" onclick="openNotificationModal()"><h4>Your open money#}
+                        {#                            requests</h4></button>#}
                     </h1>
                 </div>
             </div>
@@ -59,7 +55,6 @@
                     <i class="ph-list"></i>
                 </button>
             </div>
-
         </header>
         <div class="payapp-body">
             <div class="app-body-navigation">
@@ -103,7 +98,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Pay Modal</h2>
-                        <span class="close" onclick="closePayModal()">&times;</span>
+                        <button class="flat-button" onclick="closePayModal()">&times;</button>
                     </div>
                     <div class="modal-body">
                         <p>Pay Modal Content</p>
@@ -116,9 +111,6 @@
                             <input type="submit" id="submit" value="Pay">
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button class="flat-button" onclick="closePayModal()">Close</button>
-                    </div>
                 </div>
             </div>
 
@@ -127,7 +119,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Request Modal</h2>
-                        <span class="close" onclick="closeRequestModal()">&times;</span>
+                        <button class="flat-button" onclick="closeRequestModal()">&times;</button>
                     </div>
                     <div class="modal-body">
                         <p>Request Modal Content</p>
@@ -140,9 +132,6 @@
                             <input type="submit" id="submit" value="Request">
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button class="flat-button" onclick="closeRequestModal()">Close</button>
-                    </div>
                 </div>
             </div>
 
@@ -151,7 +140,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Add Money</h2>
-                        <span class="close" onclick="closeAddMoney()">&times;</span>
+                        <span class="flat-button" onclick="closeAddMoney()">&times;</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
@@ -159,11 +148,11 @@
                                 {% csrf_token %}
                                 {{ addMoneyForm | crispy }}
                                 <input type="submit" id="submit" value="Add Money">
+                                <p id="paymentError" style="color: red; display: none;">Amount must be between 1 and
+                                    1000</p>
+
                             </form>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="flat-button" onclick="closeAddMoney()">Close</button>
                     </div>
                 </div>
             </div>
@@ -233,13 +222,6 @@
                             <i class="ph-magnifying-glass"></i>
                             <input type="text" placeholder="Account number">
                         </div>
-                        <div class="dropdown-field">
-                            <select>
-                                <option>Home</option>
-                                <option>Work</option>
-                            </select>
-                            <i class="ph-caret-down"></i>
-                        </div>
                         <button class="flat-button">
                             Search
                         </button>
@@ -277,7 +259,7 @@
                 </section>
                 <section class="transfer-section">
                     <div class="transfer-section-header">
-                        <a href='#' id='toggle'><h2>Received Money</h2>
+                        <a href='#' id='toggle' class='active'><h2>Received Money</h2>
                         </a>
                         <div class="filter-options">
                             <a href='#' id='toggle'><h2>Paid Money</h2></a>
@@ -354,44 +336,19 @@
 							</span>
                             </div>
                             <div class="payment-details">
-                                <h3>Balance</h3>
+                                <h3>Your Acc Balance</h3>
                                 <div>
-                                    <span>$ 2,110</span>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="payment">
-                            <div class="card olive">
-                                <span>12/23</span>
-                                <span>
-								•••• 2228
-							</span>
-                            </div>
-                            <div class="payment-details">
-                                <h3>Universal</h3>
-                                <div>
-                                    <span>$ 5,621</span>
-                                    <button class="icon-button">
-                                        <i class="ph-caret-right-bold"></i>
+                                    {% if balance and cur %}
+                                        <span> {{ balance }} {{ cur }}</span>
+                                    {% else %}
+                                        <span> <h5>Add Money to get started</h5></span>
+                                    {% endif %}
+                                    <button class="save-button" onclick="openAddMoney()">
+                                        Add Money
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="payment">
-                            <div class="card gray">
-                                <span>03/22</span>
-                                <span>
-								•••• 5214
-							</span>
-                            </div>
-                            <div class="payment-details">
-                                <h3>Gold</h3>
-                                <div>
-                                    <span>$ 3,473</span>
-                                    <button class="icon-button">
-                                        <i class="ph-caret-right-bold"></i>
-                                    </button>
+                                    {#                                    <div onclick="openAddMoney()">#}
+                                    {#                                            <h5>Add Money</h5>#}
+                                    {#                                    </div>#}
                                 </div>
                             </div>
                         </div>

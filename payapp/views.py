@@ -5,71 +5,6 @@ from .models import UserProfile, Transaction, Notification
 from django.contrib.auth.models import User
 
 
-# @login_required
-# def main_page(request):
-#     user = request.user
-#     username = request.user.username
-#     users = User.objects.all() #All Users
-#     # Excluding the currently authenticated user
-#     logged_in_user = request.user
-#     users = users.exclude(pk=logged_in_user.pk)
-#
-#     try:
-#         user_profile = user.payapp_profile
-#         # If the user profile exists, update the balance
-#         user_profile_exists = True
-#     except UserProfile.DoesNotExist:
-#         # If the user profile doesn't exist, create a new profile with default balance
-#         user_profile = UserProfile.objects.create(user=user)
-#         user_profile_exists = False
-#
-#     if request.method == 'POST':
-#         form = AddMoneyForm(request.POST)
-#         pay_form = PaymentForm(request.POST)
-#         if form.is_valid():
-#             amount = form.cleaned_data['amount']
-#             if user_profile_exists:
-#                 # If the user profile exists, update the existing balance
-#                 user_profile.bal += amount
-#             else:
-#                 # If the user profile doesn't exist, set the initial balance
-#                 user_profile.bal = amount
-#             user_profile.save()
-#             return redirect('main')  # Redirect to a success page
-#
-#         elif pay_form.is_valid():
-#             amount = pay_form.cleaned_data['amount']
-#             # receiver_id = request.POST.get('receiver_id')
-#             receiver_profile = UserProfile.objects.get(user__id=receiver_id)
-#             sender_profile = request.user.payapp_profile
-#
-#             # Deduct amount from sender
-#             sender_profile.bal -= amount
-#             sender_profile.save()
-#
-#             # Add amount to receiver
-#             receiver_profile.bal += amount
-#             receiver_profile.save()
-#
-#             # Create transaction record
-#             transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile, amount=amount)
-#             transaction.save()
-#
-#             return redirect('main')  # Redirect to a success page
-#     else:
-#         form = AddMoneyForm()
-#
-#     currency = user_profile.currency
-#
-#     context = {
-#         'balance': user_profile.bal,
-#         'form': form,
-#         'cur': get_currency_symbol(currency),
-#         'username': username,
-#         'users': users
-#     }
-#     return render(request, 'payapp/ui.html', context)
-
 @login_required
 def main_page(request):
     user = request.user  # Logged in User
@@ -82,7 +17,6 @@ def main_page(request):
     notifications = Notification.objects.filter(receiver=user)
 
     if request.method == 'POST':
-
         # Add Money Logic
         if 'addMoneyForm' in request.POST:
             print("In add money")
@@ -90,13 +24,14 @@ def main_page(request):
             if addMoneyForm.is_valid():
                 amount = addMoneyForm.cleaned_data['amount']
                 if user_profile_exists:
-                    # If the user profile exists, update the existing balance
                     user_profile.bal += amount
                 else:
-                    # If the user profile doesn't exist, set the initial balance
                     user_profile.bal = amount
                 user_profile.save()
-                return redirect('main_page')  # Redirect to a success page
+                return redirect('main_page')
+            else:
+                addMoneyForm = AddMoneyForm()
+
         # Pay Money Form
         elif 'pay_form' in request.POST:
             pay_form = PaymentForm(request.POST)
@@ -128,6 +63,8 @@ def main_page(request):
                 transaction.save()
 
                 return redirect('main_page')  # Redirect to a success page
+            else:
+                pay_form = PaymentForm()
 
         # Request Money form
         elif 'request_form' in request.POST:
@@ -153,6 +90,8 @@ def main_page(request):
                 sender_profile = request.user.payapp_profile
 
                 return redirect('main_page')  # Redirect to a success page
+            else:
+                request_form = RequestForm()
 
         # Accept Notification
         elif 'accept_notification' in request.POST:
@@ -229,3 +168,15 @@ def get_currency_symbol(currency):
         return '$'
     else:
         return "Error in getting currency"
+
+
+def admin_ui(request):
+    users = User.objects.all()
+    user_profiles = UserProfile.objects.all()
+
+    user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
+
+    context = {
+        'user_data': user_data,
+    }
+    return render(request, 'payapp/admin_ui.html', context)

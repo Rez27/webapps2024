@@ -22,7 +22,7 @@
 body {
     line-height: 1.5;
     min-height: 100vh;
-    font-family: "Be Vietnam Pro", sans-serif;
+    font-family: sans-serif;
     background-color: var(--c-gray-900);
     color: var(--c-text-primary);
     display: flex;
@@ -495,6 +495,7 @@ a {
     padding-bottom: 0.5rem;
     border: 0;
     border-bottom: 1px solid var(--c-gray-600);
+    color: white;
     background-color: transparent;
     padding-left: 1.5rem;
 }
@@ -646,6 +647,25 @@ a {
     font-weight: 600;
 }
 
+.card-open-money-req {
+    width: 325px;
+    padding: 0.375rem;
+    aspect-ratio: 6/2;
+    flex-shrink: 0;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 1.9rem;
+    font-weight: 600;
+}
+.card-open-money-req.olive:hover {
+    background-color: var(--c-gray-100);
+}
+
+.card-open-money-req.olive{
+    background-color: var(--c-olive-500);
+}
 .card.green {
     background-color: var(--c-green-500);
 }
@@ -1042,7 +1062,7 @@ button:focus {
 .body-login {
     line-height: 1.5;
     min-height: 100vh;
-    font-family: "Be Vietnam Pro", sans-serif;
+    font-family: sans-serif;
     background-color: var(--c-gray-900);
     color: var(--c-text-primary);
     display: block;
@@ -1190,7 +1210,7 @@ section#formHolder {
 }
 
 .form .form-piece {
-    background: #fff;
+    background: var(--c-gray-700);
     min-height: 1000px;
     margin-top: 10px;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
@@ -1237,18 +1257,15 @@ section#formHolder {
 }
 
 .form form label {
-    font-size: 12px;
+    font-size: 15px;
+    color: var(--c-olive-500);
     font-weight: 400;
-    text-transform: uppercase;
-    font-family: "Montserrat", sans-serif;
-    transform: translateY(40px);
     transition: all 0.4s;
     cursor: text;
     z-index: -1;
 }
 
 .form form label.active {
-    transform: translateY(10px);
     font-size: 10px;
 }
 
@@ -1298,8 +1315,8 @@ section#formHolder {
     font-size: 12px;
     text-transform: uppercase;
     padding: 5px 30px;
-    background: #f95959;
-    color: #fff;
+    background: var(--c-olive-500);
+    color: var(--c-gray-900);
     border-radius: 30px;
     margin-right: 20px;
     border: none;

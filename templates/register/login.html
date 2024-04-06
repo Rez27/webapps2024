@@ -31,7 +31,7 @@
                         <form class="login-form" action="{% url 'login' %}" method="post">
                             {% csrf_token %}
                             {{ form | crispy }}
-
+                            <br>
                             <div class="CTA">
                                 <input type="submit" id="login" value="Login">
                                 <a href="{% url 'register' %}">I'm New</a>

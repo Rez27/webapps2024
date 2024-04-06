@@ -2,7 +2,8 @@ from django import forms
 
 
 class AddMoneyForm(forms.Form):
-    amount = forms.IntegerField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    amount = forms.IntegerField(label='Amount', widget=forms.NumberInput(attrs={'class': 'form-control'}), min_value=1,
+                                max_value=1001)
     addMoneyForm = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
     def clean_amount(self):
@@ -16,7 +17,8 @@ class AddMoneyForm(forms.Form):
 
 class PaymentForm(forms.Form):
     amount = forms.DecimalField(label='Pay Amount', required=True,
-                                widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to pay'}))
+                                widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to pay'}), min_value=1,
+                                max_value=100)
     first_name = forms.CharField(widget=forms.HiddenInput())
     last_name = forms.CharField(widget=forms.HiddenInput())
     currency_type = forms.CharField(widget=forms.HiddenInput())
@@ -25,7 +27,8 @@ class PaymentForm(forms.Form):
 
 class RequestForm(forms.Form):
     requested_amount = forms.DecimalField(label='Request Amount', required=True,
-                                          widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to request'}))
+                                          widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to request'}), min_value=1,
+                                          max_value=100)
     request_first_name = forms.CharField(widget=forms.HiddenInput())
     request_last_name = forms.CharField(widget=forms.HiddenInput())
     request_currency_type = forms.CharField(widget=forms.HiddenInput())
