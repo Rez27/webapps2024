@@ -648,15 +648,16 @@ a {
 }
 
 .card-open-money-req {
-    width: 325px;
+    width: 370px;
     padding: 0.375rem;
-    aspect-ratio: 6/2;
+    /*aspect-ratio: 5/2;*/
+    height: 50px;
     flex-shrink: 0;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-size: 1.9rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 .card-open-money-req.olive:hover {

@@ -41,7 +41,11 @@
                         <div class="payments" onclick="openNotificationModal()">
                             <div class="payment">
                                 <div class="card-open-money-req olive">
+                                    {% if notifications%}
                                     <span style="color: #121212">Your Open Money requests</span>
+                                        {% else %}
+                                        <span style="color: #121212">No Money requests</span>
+                                    {% endif%}
                                 </div>
                             </div>
                         </div>
@@ -110,7 +114,7 @@
                             <input type="hidden" name="first_name" id="first_name">
                             <input type="hidden" name="currency_type" id="currency_type">
                             <input type="hidden" name="last_name" id="last_name">
-                            <input type="submit" id="submit" value="Pay">
+                            <input type="submit" class="flat-button" id="submit" value="Pay">
                         </form>
                     </div>
                 </div>
@@ -121,7 +125,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Request Modal</h2>
-                        <button class="flat-button" onclick="closeRequestModal()" style="background-color: var(--c-olive-500); color: #121212">X</button>
+                        <button class="flat-button" onclick="closeRequestModal()"
+                                style="background-color: var(--c-olive-500); color: #121212">X
+                        </button>
                     </div>
                     <div class="modal-body">
                         <p>Request Modal Content</p>
@@ -131,7 +137,7 @@
                             <input type="hidden" name="request_first_name" id="request_first_name">
                             <input type="hidden" name="request_currency_type" id="request_currency_type">
                             <input type="hidden" name="request_last_name" id="request_last_name">
-                            <input type="submit" id="submit" value="Request">
+                            <input type="submit" class="flat-button" id="submit" value="Request">
                         </form>
                     </div>
                 </div>
@@ -142,7 +148,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Add Money</h2>
-                        <span class="flat-button" onclick="closeAddMoney()" style="background-color: var(--c-olive-500); color: #121212">X</span>
+                        <span class="flat-button" onclick="closeAddMoney()"
+                              style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
@@ -164,7 +171,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h2>Pending Requests</h2>
-                        <span class="flat-button" onclick="closeNotificationModal()" style="background-color: var(--c-olive-500); color: #121212">X</span>
+                        <span class="flat-button" onclick="closeNotificationModal()"
+                              style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
@@ -219,15 +227,6 @@
             <div class="app-body-main-content">
                 <section class="service-section">
                     <h2>Connections</h2>
-                    <div class="service-section-header">
-                        <div class="search-field">
-                            <i class="ph-magnifying-glass"></i>
-                            <input type="text" placeholder="Account number">
-                        </div>
-                        <button class="flat-button">
-                            Search
-                        </button>
-                    </div>
                     <div class="mobile-only">
                         <button class="flat-button">
                             Toggle search
@@ -285,7 +284,7 @@
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
-                                            <dd>Date payment</dd>
+                                            <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
@@ -345,7 +344,8 @@
                                     {% else %}
                                         <span> <h5>Add Money to get started</h5></span>
                                     {% endif %}
-                                    <button class="save-button" onclick="openAddMoney()" style="background-color: var(--c-olive-500); color: #121212">
+                                    <button class="save-button" onclick="openAddMoney()"
+                                            style="background-color: var(--c-olive-500); color: #121212">
                                         Add Money
                                     </button>
                                 </div>

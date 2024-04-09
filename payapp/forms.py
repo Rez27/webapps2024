@@ -27,12 +27,14 @@ class PaymentForm(forms.Form):
 
 class RequestForm(forms.Form):
     requested_amount = forms.DecimalField(label='Request Amount', required=True,
-                                          widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to request'}), min_value=1,
+                                          widget=forms.NumberInput(attrs={'placeholder': 'Enter amount to request'}),
+                                          min_value=1,
                                           max_value=100)
     request_first_name = forms.CharField(widget=forms.HiddenInput())
     request_last_name = forms.CharField(widget=forms.HiddenInput())
     request_currency_type = forms.CharField(widget=forms.HiddenInput())
     request_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
 
 class ShowTransactionsForm(forms.Form):
     first_name = forms.CharField(widget=forms.HiddenInput())

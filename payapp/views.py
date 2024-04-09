@@ -131,7 +131,7 @@ def main_page(request):
     cur = get_currency_symbol(currency)
 
     # To Show latest transactions
-    received_transactions = Transaction.objects.filter(receiver=user.payapp_profile)
+    received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
     sent_transactions = Transaction.objects.filter(sender=user.payapp_profile)
 
     context = {
@@ -173,6 +173,8 @@ def get_currency_symbol(currency):
 def admin_ui(request):
     users = User.objects.all()
     user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
+    transactions_sent = None
+    transactions_received = None
     if request.method == 'POST':
         show_transactions_form = ShowTransactionsForm(request.POST)
         if show_transactions_form.is_valid():
@@ -181,10 +183,11 @@ def admin_ui(request):
             try:
                 user = User.objects.get(first_name=first_name, last_name=last_name) #Here try to get the user selected for Show Transaction button
                 user_profile = UserProfile.objects.get(user=user)
+                print("This is user_profile",user_profile)
                 transactions_sent = Transaction.objects.filter(sender=user_profile)
                 transactions_received = Transaction.objects.filter(receiver=user_profile)
                 # transactions = transactions_sent | transactions_received
-                print("These are transactions for user",user_profile, "which is",transactions_sent)
+                print("These are transactions for user", user_profile, "which is",transactions_sent)
             except (User.DoesNotExist, UserProfile.DoesNotExist):
                 transactions = None
 
@@ -194,7 +197,7 @@ def admin_ui(request):
     context = {
         'user_data': user_data,
         'show_transactions_form': show_transactions_form,
-        'transactions_sent':transactions_sent,
-        'transactions_received':transactions_received,
+        'transactions_sent': transactions_sent,
+        'transactions_received': transactions_received,
     }
     return render(request, 'payapp/admin_ui.html', context)

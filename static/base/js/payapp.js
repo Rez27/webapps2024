@@ -49,7 +49,7 @@ function openTransactionModal(transac_first_name, transac_last_name) {
     let TransactionModal = document.getElementById("TransactionModal");
     // document.getElementById("first_name").value = transac_first_name;
     // document.getElementById("last_name").value = transac_last_name;
-    TransactionModal.style.display = "block";
+    TransactionModal.style.display = "flex";
 }
 
 function closeTransactionModal() {

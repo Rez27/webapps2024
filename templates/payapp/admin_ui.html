@@ -47,12 +47,14 @@
             </button>
         </div>
 
-        {#        Show Transactions Modal#}
+        {#Show Transactions Modal#}
         <div class="modal" id="TransactionModal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Money Sent by User</h2>
-                    <button class="flat-button" onclick="closeTransactionModal()" style="background-color: var(--c-olive-500); color: #121212">X</button>
+                    <button class="flat-button" onclick="closeTransactionModal()"
+                            style="background-color: var(--c-olive-500); color: #121212">X
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="transfers">
@@ -96,7 +98,7 @@
                         </div>
                         <div>
                             <dt>{{ user.username }}</dt>
-                            <dd>{{ user_profile.bal }} {% if user_profile.currency == 'GBP' %}
+                            <dd>Balance - {{ user_profile.bal }} {% if user_profile.currency == 'GBP' %}
                                 £
                             {% elif user_profile.currency == 'Euro' %}
                                 €
@@ -110,7 +112,6 @@
                             <dt>{{ user.date_joined }}</dt>
                         </div>
                     </dl>
-
                     <button class="flat-button"
                             style="background-color: var(--c-olive-500); color: #121212"
                             type="submit"
