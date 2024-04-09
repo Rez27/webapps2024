@@ -1,8 +1,11 @@
+import requests
+from requests.exceptions import RequestException
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import AddMoneyForm, PaymentForm, RequestForm, ShowTransactionsForm
 from .models import UserProfile, Transaction, Notification
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 @login_required
@@ -39,7 +42,7 @@ def main_page(request):
                 amount = pay_form.cleaned_data['amount']
                 receiver_first_name = request.POST['first_name']
                 receiver_last_name = request.POST['last_name']
-                print("This is user", receiver_first_name, receiver_last_name)
+                # print("This is user", receiver_first_name, receiver_last_name)
                 try:
                     receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name)
                     receiver_profile = receiver_user.payapp_profile
@@ -48,7 +51,16 @@ def main_page(request):
                     return redirect('main_page')
 
                 sender_profile = request.user.payapp_profile
-
+                # Perform currency conversion
+                currency1 = user_profile.currency  # Get logged in user's (Sender's currency)
+                currency2 = receiver_profile.currency  # Get receiver's currency
+                converted_amount = convert_currency(currency1, currency2, amount)
+                print("This is converted_amount", converted_amount)
+                if converted_amount is None:
+                    # Handle currency conversion error
+                    context = {
+                        'conversion_error': 'Failed to convert currency.'}
+                    return render(request, 'payapp/ui.html', context)
                 # Deduct amount from sender
                 sender_profile.bal -= amount
                 sender_profile.save()
@@ -127,9 +139,6 @@ def main_page(request):
         pay_form = PaymentForm()
         request_form = RequestForm()
 
-    currency = user_profile.currency
-    cur = get_currency_symbol(currency)
-
     # To Show latest transactions
     received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
     sent_transactions = Transaction.objects.filter(sender=user.payapp_profile)
@@ -139,7 +148,6 @@ def main_page(request):
         'addMoneyForm': addMoneyForm,
         'pay_form': pay_form,
         'request_form': request_form,
-        'cur': cur,
         'username': username,
         'users': users,
         'notifications': notifications,
@@ -170,6 +178,29 @@ def get_currency_symbol(currency):
         return "Error in getting currency"
 
 
+def convert_currency(currency1, currency2, amount):
+    try:
+        print("This is currency 1", currency1, "and this is currency 2", currency2)
+        # Generate the URL for the currency conversion endpoint
+        url = f"http://127.0.0.1:8000/conversion/{currency1}/{currency2}/{amount}/"
+        response = requests.get(url)
+        print(response.status_code)
+        print(response.json())
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            # Parse the JSON response to get the conversion rate and converted amount
+            data = response.json()
+            conversion_rate = data['conversion_rate']
+            converted_amount = data['converted_amount']
+            return conversion_rate, converted_amount
+        else:
+            # Handle the case where the request was not successful (e.g., invalid currencies)
+            return None, None
+    except requests.RequestException:
+        # Handle exceptions related to network errors or invalid URLs
+        return None, None
+
+
 def admin_ui(request):
     users = User.objects.all()
     user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
@@ -181,13 +212,14 @@ def admin_ui(request):
             first_name = show_transactions_form.cleaned_data['first_name']
             last_name = show_transactions_form.cleaned_data['last_name']
             try:
-                user = User.objects.get(first_name=first_name, last_name=last_name) #Here try to get the user selected for Show Transaction button
+                user = User.objects.get(first_name=first_name,
+                                        last_name=last_name)  # Here try to get the user selected for Show Transaction button
                 user_profile = UserProfile.objects.get(user=user)
-                print("This is user_profile",user_profile)
+                print("This is user_profile", user_profile)
                 transactions_sent = Transaction.objects.filter(sender=user_profile)
                 transactions_received = Transaction.objects.filter(receiver=user_profile)
                 # transactions = transactions_sent | transactions_received
-                print("These are transactions for user", user_profile, "which is",transactions_sent)
+                print("These are transactions for user", user_profile, "which is", transactions_sent)
             except (User.DoesNotExist, UserProfile.DoesNotExist):
                 transactions = None
 

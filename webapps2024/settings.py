@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'register',
     'payapp',
+    'currency_conversion',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

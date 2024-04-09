@@ -6,9 +6,9 @@ from django.db.models.signals import post_save
 
 class UserProfile(models.Model):
     CURRENCY_CHOICES = [
-        ('GBP', 'British Pound'),
-        ('USD', 'US Dollar'),
-        ('EUR', 'Euro'),
+        ('GBP', 'GBP'),
+        ('USD', 'USD'),
+        ('EUR', 'EUR'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='payapp_profile')
     bal = models.IntegerField(default=0)
