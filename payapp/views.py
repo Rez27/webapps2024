@@ -68,12 +68,13 @@ def main_page(request):
                 # Add amount to receiver
                 receiver_profile.bal += float("{:.2f}".format(converted_amount))
                 receiver_profile.save()
-
+                sent_currency = currency1
+                received_currency = currency2
                 # Create transaction record
                 transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
-                                                         amount=amount)
+                                                         amount=amount, sent_currency=sent_currency, received_currency=received_currency )
                 transaction.save()
-
+                PaymentForm()
                 return redirect('main_page')  # Redirect to a success page
             else:
                 pay_form = PaymentForm()
@@ -100,7 +101,7 @@ def main_page(request):
                     return redirect('main_page')
 
                 sender_profile = request.user.payapp_profile
-
+                RequestForm()
                 return redirect('main_page')  # Redirect to a success page
             else:
                 request_form = RequestForm()
@@ -141,7 +142,9 @@ def main_page(request):
 
     # To Show latest transactions
     received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
-    sent_transactions = Transaction.objects.filter(sender=user.payapp_profile)
+    sent_transactions = list(reversed(Transaction.objects.filter(sender=user.payapp_profile)))
+    print("These are received Transactions", received_transactions)
+    print("These are sent Transactions", sent_transactions)
 
     context = {
         'user_balance': user_profile.bal,

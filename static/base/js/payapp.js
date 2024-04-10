@@ -11,7 +11,7 @@ function closePayModal() {
     payModal.style.display = "none";
 }
 
-function openRequestModal(request_first_name, request_last_name, request_currency_type ) {
+function openRequestModal(request_first_name, request_last_name, request_currency_type) {
     let requestModal = document.getElementById("requestModal");
     document.getElementById("request_first_name").value = request_first_name;
     document.getElementById("request_last_name").value = request_last_name;
@@ -58,7 +58,27 @@ function closeTransactionModal() {
 }
 
 //Show Transactions
-$('#toggle').click(function() {
-    $('#transfers > .toggle-transactions').toggle('slow');
+const toggleReceived = document.getElementById('toggle-received');
+const toggleSent = document.getElementById('toggle-sent');
+const receivedTransactions = document.getElementById('received-transactions');
+const sentTransactions = document.getElementById('sent-transactions');
+// Add click event listeners to the anchor tags
+toggleReceived.addEventListener('click', function (event) {
+    event.preventDefault();
+    receivedTransactions.style.display = 'block';
+    sentTransactions.style.display = 'none';
+    // Update active class
+    toggleReceived.classList.add('active');
+    toggleSent.classList.remove('active');
 });
+
+toggleSent.addEventListener('click', function (event) {
+    event.preventDefault();
+    sentTransactions.style.display = 'block';
+    receivedTransactions.style.display = 'none';
+    // Update active class
+    toggleSent.classList.add('active');
+    toggleReceived.classList.remove('active');
+});
+
 

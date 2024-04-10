@@ -15,6 +15,10 @@
                     <h1 class="logo-title">
                         <h1>Hello {{ username }}</h1>
                     </h1>
+                    <button class="save-button"
+                            style="color: #121212">
+                        Logout
+                    </button>
                 </div>
             </div>
 
@@ -108,8 +112,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Note: Your amount will be exchanged based on fixed forex rate </p>
-
-                        <form method="post" action="{% url 'main_page' %}">
+                        <form method="post" action="{% url 'main_page' %}" class="form">
                             {% csrf_token %}
                             {{ pay_form | crispy }}
                             <input type="hidden" name="first_name" id="first_name">
@@ -157,7 +160,7 @@
                             <form method="post" action="{% url 'main_page' %}">
                                 {% csrf_token %}
                                 {{ addMoneyForm | crispy }}
-                                <input type="submit" id="submit" value="Add Money">
+                                <input type="submit" id="submit" value="Add Money" class="flat-button">
                                 <p id="paymentError" style="color: red; display: none;">Amount must be between 1 and
                                     1000</p>
 
@@ -271,10 +274,10 @@
                 </section>
                 <section class="transfer-section">
                     <div class="transfer-section-header">
-                        <a href='#' id='toggle' class='active'><h2>Received Money</h2>
+                        <a href='#' id='toggle-received' class='active'><h2>Received Money</h2>
                         </a>
                         <div class="filter-options">
-                            <a href='#' id='toggle'><h2>Paid Money</h2></a>
+                            <a href='#' id='toggle-sent'><h2>Paid Money</h2></a>
                         </div>
                     </div>
                     <div class="transfers">
@@ -322,7 +325,7 @@
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
-                                            <dd>Date payment</dd>
+                                            <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
@@ -363,7 +366,6 @@
                             <div class="payment-details">
                                 <h3>Your Acc Balance</h3>
                                 <div>
-
                                     <button class="save-button" onclick="openAddMoney()"
                                             style="background-color: var(--c-olive-500); color: #121212">
                                         Add Money
@@ -372,22 +374,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="faq">
-                        <p>Most frequently asked questions</p>
-                        <div>
-                            <label>Question</label>
-                            <input type="text" placeholder="Type here">
-                        </div>
-                    </div>
-                    <div class="payment-section-footer">
-                        <button class="save-button">
-                            Save
-                        </button>
-                        <button class="settings-button">
-                            <i class="ph-gear"></i>
-                            <span>More settings</span>
-                        </button>
-                    </div>
+
                 </section>
             </div>
         </div>

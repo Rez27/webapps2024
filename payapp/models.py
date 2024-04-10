@@ -11,7 +11,7 @@ class UserProfile(models.Model):
         ('EUR', 'EUR'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='payapp_profile')
-    bal = models.FloatField(default=0)
+    bal = models.IntegerField(default=0)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='GBP')
 
     def __str__(self):
@@ -34,6 +34,8 @@ class Transaction(models.Model):
     receiver = models.ForeignKey(UserProfile, related_name='received_transactions', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
+    sent_currency = models.CharField(max_length=3, default='')
+    received_currency = models.CharField(max_length=3, default='')
 
     def __str__(self):
         return f"{self.sender.user.username} -> {self.receiver.user.username}: {self.amount}"
