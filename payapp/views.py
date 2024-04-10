@@ -62,11 +62,11 @@ def main_page(request):
                         'conversion_error': 'Failed to convert currency.'}
                     return render(request, 'payapp/ui.html', context)
                 # Deduct amount from sender
-                sender_profile.bal -= amount
+                sender_profile.bal -= float("{:.2f}".format(amount))
                 sender_profile.save()
 
                 # Add amount to receiver
-                receiver_profile.bal += amount
+                receiver_profile.bal += float("{:.2f}".format(converted_amount))
                 receiver_profile.save()
 
                 # Create transaction record
@@ -144,7 +144,8 @@ def main_page(request):
     sent_transactions = Transaction.objects.filter(sender=user.payapp_profile)
 
     context = {
-        'balance': user_profile.bal,
+        'user_balance': user_profile.bal,
+        'user_currency': user_profile.currency,
         'addMoneyForm': addMoneyForm,
         'pay_form': pay_form,
         'request_form': request_form,
@@ -186,18 +187,14 @@ def convert_currency(currency1, currency2, amount):
         response = requests.get(url)
         print(response.status_code)
         print(response.json())
-        # Check if the request was successful (status code 200)
         if response.status_code == 200:
-            # Parse the JSON response to get the conversion rate and converted amount
             data = response.json()
-            conversion_rate = data['conversion_rate']
+            conversion_rate = data['conversion_rate']  # NOt returned for now. Can use this to show the conversion rate
             converted_amount = data['converted_amount']
-            return conversion_rate, converted_amount
+            return converted_amount
         else:
-            # Handle the case where the request was not successful (e.g., invalid currencies)
             return None, None
     except requests.RequestException:
-        # Handle exceptions related to network errors or invalid URLs
         return None, None
 
 

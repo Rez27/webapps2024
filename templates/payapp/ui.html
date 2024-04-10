@@ -41,11 +41,11 @@
                         <div class="payments" onclick="openNotificationModal()">
                             <div class="payment">
                                 <div class="card-open-money-req olive">
-                                    {% if notifications%}
-                                    <span style="color: #121212">Your Open Money requests</span>
-                                        {% else %}
+                                    {% if notifications %}
+                                        <span style="color: #121212">Your Open Money requests</span>
+                                    {% else %}
                                         <span style="color: #121212">No Money requests</span>
-                                    {% endif%}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Pay Modal Content</p>
+                        <p>Note: Your amount will be exchanged based on fixed forex rate </p>
+
                         <form method="post" action="{% url 'main_page' %}">
                             {% csrf_token %}
                             {{ pay_form | crispy }}
@@ -240,7 +241,17 @@
                                         <span> {{ user.first_name }}</span>
                                         <span> {{ user.last_name }}</span>
                                         <span> <h6>Currency type - </h6></span>
-                                        <span> <small>{{ user.payapp_profile.get_currency_display }} {{ cur }}</small></span>
+                                        <span> {{ user.payapp_profile.get_currency_display }}
+
+                                            {% if user.payapp_profile.get_currency_display == "GBP" %}
+                                                £
+                                            {% elif user.payapp_profile.get_currency_display == "EUR" %}
+                                                €
+                                            {% elif user.payapp_profile.get_currency_display == "USD" %}
+                                                $
+                                            {% endif %}
+
+                                        </span>
                                     </h3>
                                 </div>
                                 <button class="flat-button"
@@ -255,7 +266,7 @@
                         {% endfor %}
                     </div>
                     <div class="service-section-footer">
-                        <p>Services are paid according to the current state of the currency and tariff.</p>
+                        <p>Money transfer as per fixed base exchange rate, no extra charges.</p>
                     </div>
                 </section>
                 <section class="transfer-section">
@@ -339,8 +350,15 @@
                             <div class="payment-details">
                                 <h3>Your Acc Balance</h3>
                                 <div>
-                                    {% if balance %}
-                                        <span> {{ balance }} </span>
+                                    {% if user_balance %}
+                                        <span> {% if user_currency == "GBP" %}
+                                            £
+                                        {% elif user_currency == "EUR" %}
+                                            €
+                                        {% elif user_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ user_balance|floatformat:2 }} {{ user_currency }}
+                                            </span>
                                     {% else %}
                                         <span> <h5>Add Money to get started</h5></span>
                                     {% endif %}
