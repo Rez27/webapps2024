@@ -21,7 +21,7 @@
             <div class="pay-nav">
                 <div class="tabs">
                     <h1 class="logo-title">
-                        <h1>Welcome to RKPAY</h1>
+                        <h1>Welcome to FINNOVA</h1>
                     </h1>
                     {#                    <a href="#" class="active">#}
                     {#                        Main#}
@@ -343,6 +343,19 @@
                         <div class="payment">
                             <div class="card green">
                                 <span>01/22</span>
+                                {% if user_balance %}
+                                    <span> <h5>{% if user_currency == "GBP" %}
+                                        £
+                                    {% elif user_currency == "EUR" %}
+                                        €
+                                    {% elif user_currency == "USD" %}
+                                        $
+                                    {% endif %}{{ user_balance|floatformat:2 }} {{ user_currency }}
+                                    </h5>
+                                    </span>
+                                {% else %}
+                                    <span> <h5>Add Money to get started</h5></span>
+                                {% endif %}
                                 <span>
 								•••• 4012
 							</span>
@@ -350,18 +363,7 @@
                             <div class="payment-details">
                                 <h3>Your Acc Balance</h3>
                                 <div>
-                                    {% if user_balance %}
-                                        <span> {% if user_currency == "GBP" %}
-                                            £
-                                        {% elif user_currency == "EUR" %}
-                                            €
-                                        {% elif user_currency == "USD" %}
-                                            $
-                                        {% endif %}{{ user_balance|floatformat:2 }} {{ user_currency }}
-                                            </span>
-                                    {% else %}
-                                        <span> <h5>Add Money to get started</h5></span>
-                                    {% endif %}
+
                                     <button class="save-button" onclick="openAddMoney()"
                                             style="background-color: var(--c-olive-500); color: #121212">
                                         Add Money
