@@ -15,10 +15,10 @@
                     <h1 class="logo-title">
                         <h1>Hello {{ username }}</h1>
                     </h1>
-                    <button class="save-button"
-                            style="color: #121212">
-                        Logout
-                    </button>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="save-button" style="color: #121212">Logout</button>
+                    </form>
                 </div>
             </div>
 
@@ -293,8 +293,8 @@
                                             <dd>{{ transaction.sender.user.last_name }}</dd>
                                         </div>
                                         <div>
-                                            <dt>4012</dt>
-                                            <dd>Last four digits</dd>
+                                            <dt>{{ transaction.sent_currency }}</dt>
+                                            <dd>Sender's Currency</dd>
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
@@ -316,12 +316,12 @@
                                     </div>
                                     <dl class="transfer-details">
                                         <div>
-                                            <dt>{{ transaction.sender.user.first_name }}</dt>
-                                            <dd>{{ transaction.sender.user.last_name }}</dd>
+                                            <dt>{{ transaction.receiver.user.first_name }}</dt>
+                                            <dd>{{ transaction.receiver.user.last_name }}</dd>
                                         </div>
                                         <div>
-                                            <dt>4012</dt>
-                                            <dd>Last four digits</dd>
+                                            <dt>{{ transaction.received_currency }}</dt>
+                                            <dd>Receiver's Currency</dd>
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
