@@ -302,7 +302,13 @@
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
-                                        $ {{ transaction.amount }}
+                                        {% if transaction.sent_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.sent_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.sent_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.amount }}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -329,7 +335,13 @@
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
-                                        $ {{ transaction.amount }}
+                                        {% if transaction.received_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.received_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.received_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.amount }}
                                     </div>
                                 </div>
                             {% endfor %}

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm
 from .models import UserProfile
+from payapp.views import admin_ui
 
 
 def register(request):
@@ -27,10 +28,15 @@ def user_login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            is_superuser = form.cleaned_data['is_superuser']
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('main')
+                if is_superuser and user.userprofile.is_superuser:
+                    # Redirect the superuser to the admin UI page
+                    return redirect('admin_ui')
+                else:
+                    return redirect('main')
         else:
             return render(request, 'register/login.html', {'form': form})
     else:
