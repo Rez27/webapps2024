@@ -21,6 +21,7 @@ class PaymentForm(forms.Form):
                                 max_value=100)
     first_name = forms.CharField(widget=forms.HiddenInput())
     last_name = forms.CharField(widget=forms.HiddenInput())
+    user_name = forms.CharField(widget=forms.HiddenInput())
     currency_type = forms.CharField(widget=forms.HiddenInput())
     pay_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 

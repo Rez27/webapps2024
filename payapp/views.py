@@ -36,15 +36,16 @@ def main_page(request):
                 print("Add money not valid")
                 addMoneyForm = AddMoneyForm()
 
-        # Pay Money Form
+        # Pay Money To selected user logic
         elif 'pay_form' in request.POST:
             pay_form = PaymentForm(request.POST)
             if pay_form.is_valid():
                 amount = pay_form.cleaned_data['amount']
                 receiver_first_name = request.POST['first_name']
                 receiver_last_name = request.POST['last_name']
+                receiver_user_name = request.POST['user_name']
                 try:
-                    receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name)
+                    receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name, username=receiver_user_name)
                     receiver_profile = receiver_user.payapp_profile
                 except:
                     print("Did not find receiver in app")
@@ -216,6 +217,7 @@ def admin_ui(request):
                     transactions_sent = list(reversed(Transaction.objects.filter(sender=user_profile)))
                     transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))
                     # transactions = transactions_sent | transactions_received
+                    print("THis is transactions_sent", transactions_sent)
                 except (User.DoesNotExist, UserProfile.DoesNotExist):
                     print("Error in getting user data")
                     transactions = None

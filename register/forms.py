@@ -2,6 +2,8 @@ from django import forms
 from .validations import user_email_check, username_check
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import UserProfile
+import random
 
 
 def email_val(email):
@@ -32,8 +34,7 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].required = True
         self.fields['currency'].required = True
 
-
-def save(self, commit=True):
+    def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
@@ -42,10 +43,18 @@ def save(self, commit=True):
         #     account = Account(user=user, currency=self.cleaned_data['currency'])
         #     if account.currency != "gbp":
         #         account.balance = convert_currency("GBP", account.currency, 1000)
-        user.save()
-        # account.save()
+        # Generate 8-digit bank account number
+        user_profile = UserProfile.objects.create(user=user, email=user.email)
+        user_profile.currency = self.cleaned_data['currency']
+        user_profile.bank_account_number = generate_bank_account_number()
+        user_profile.save()
+
+        if commit:
+            user.save()
         return user
 
+def generate_bank_account_number():
+    return ''.join([str(random.randint(0, 9)) for _ in range(8)])
 
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(), required=True)
@@ -54,6 +63,6 @@ class LoginForm(forms.Form):
 
 
 def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
-        self.fields['username'].required = True
-        self.fields['password'].required = True
+    super(LoginForm, self).__init__(*args, **kwargs)
+    self.fields['username'].required = True
+    self.fields['password'].required = True

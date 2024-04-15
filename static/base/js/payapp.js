@@ -1,8 +1,9 @@
-function openPayModal(first_name, last_name, currency_type) {
+function openPayModal(first_name, last_name, currency_type, user_name) {
     let payModal = document.getElementById("payModal");
     document.getElementById("first_name").value = first_name;
     document.getElementById("last_name").value = last_name;
     document.getElementById("currency_type").value = currency_type;
+    document.getElementById("user_name").value = user_name;
     payModal.style.display = "block";
 }
 

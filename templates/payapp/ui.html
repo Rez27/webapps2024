@@ -118,6 +118,7 @@
                             <input type="hidden" name="first_name" id="first_name">
                             <input type="hidden" name="currency_type" id="currency_type">
                             <input type="hidden" name="last_name" id="last_name">
+                            <input type="hidden" name="user_name" id="user_name">
                             <input type="submit" class="flat-button" id="submit" value="Pay">
                         </form>
                     </div>
@@ -258,7 +259,7 @@
                                     </h3>
                                 </div>
                                 <button class="flat-button"
-                                        onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}')">
+                                        onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
                                     Pay
                                 </button>
                                 <button class="flat-button"
