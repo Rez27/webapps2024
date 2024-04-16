@@ -23,8 +23,8 @@ if __name__ == "__main__":
     handler = TimestampHandler()
 
     # Create a server with the handler
-    server = make_server(Timestamp, handler, '127.0.0.1', 8000)
+    server = make_server(Timestamp, handler, '127.0.0.1', 9090)
 
     # Start serving requests
-    print("Thrift server started. Listening on port 8000...")
+    print("Thrift server started. Listening on port 9090...")
     server.serve()
