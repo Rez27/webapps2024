@@ -33,7 +33,7 @@ class Transaction(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_transactions', on_delete=models.CASCADE)
     receiver = models.ForeignKey(UserProfile, related_name='received_transactions', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=False)
     sent_currency = models.CharField(max_length=3, default='')
     received_currency = models.CharField(max_length=3, default='')
 
