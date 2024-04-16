@@ -1,5 +1,7 @@
 namespace py timestamp
+typedef i64 Timestamp
+
 
 service TimestampService {
-    i64 echoTimestamp(1:i64 timestamp)
+    Timestamp getCurrentTimestamp()
 }

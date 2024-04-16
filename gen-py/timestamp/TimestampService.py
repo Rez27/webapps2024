@@ -19,12 +19,7 @@ all_structs = []
 
 
 class Iface(object):
-    def echoTimestamp(self, timestamp):
-        """
-        Parameters:
-         - timestamp
-
-        """
+    def getCurrentTimestamp(self):
         pass
 
 
@@ -35,24 +30,18 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def echoTimestamp(self, timestamp):
-        """
-        Parameters:
-         - timestamp
+    def getCurrentTimestamp(self):
+        self.send_getCurrentTimestamp()
+        return self.recv_getCurrentTimestamp()
 
-        """
-        self.send_echoTimestamp(timestamp)
-        return self.recv_echoTimestamp()
-
-    def send_echoTimestamp(self, timestamp):
-        self._oprot.writeMessageBegin('echoTimestamp', TMessageType.CALL, self._seqid)
-        args = echoTimestamp_args()
-        args.timestamp = timestamp
+    def send_getCurrentTimestamp(self):
+        self._oprot.writeMessageBegin('getCurrentTimestamp', TMessageType.CALL, self._seqid)
+        args = getCurrentTimestamp_args()
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_echoTimestamp(self):
+    def recv_getCurrentTimestamp(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -60,19 +49,19 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = echoTimestamp_result()
+        result = getCurrentTimestamp_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "echoTimestamp failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "getCurrentTimestamp failed: unknown result")
 
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
         self._handler = handler
         self._processMap = {}
-        self._processMap["echoTimestamp"] = Processor.process_echoTimestamp
+        self._processMap["getCurrentTimestamp"] = Processor.process_getCurrentTimestamp
         self._on_message_begin = None
 
     def on_message_begin(self, func):
@@ -95,13 +84,13 @@ class Processor(Iface, TProcessor):
             self._processMap[name](self, seqid, iprot, oprot)
         return True
 
-    def process_echoTimestamp(self, seqid, iprot, oprot):
-        args = echoTimestamp_args()
+    def process_getCurrentTimestamp(self, seqid, iprot, oprot):
+        args = getCurrentTimestamp_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = echoTimestamp_result()
+        result = getCurrentTimestamp_result()
         try:
-            result.success = self._handler.echoTimestamp(args.timestamp)
+            result.success = self._handler.getCurrentTimestamp()
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -113,7 +102,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("echoTimestamp", msg_type, seqid)
+        oprot.writeMessageBegin("getCurrentTimestamp", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -121,16 +110,8 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 
-class echoTimestamp_args(object):
-    """
-    Attributes:
-     - timestamp
+class getCurrentTimestamp_args(object):
 
-    """
-
-
-    def __init__(self, timestamp=None,):
-        self.timestamp = timestamp
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -141,11 +122,6 @@ class echoTimestamp_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.I64:
-                    self.timestamp = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -155,11 +131,7 @@ class echoTimestamp_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('echoTimestamp_args')
-        if self.timestamp is not None:
-            oprot.writeFieldBegin('timestamp', TType.I64, 1)
-            oprot.writeI64(self.timestamp)
-            oprot.writeFieldEnd()
+        oprot.writeStructBegin('getCurrentTimestamp_args')
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -176,14 +148,12 @@ class echoTimestamp_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(echoTimestamp_args)
-echoTimestamp_args.thrift_spec = (
-    None,  # 0
-    (1, TType.I64, 'timestamp', None, None, ),  # 1
+all_structs.append(getCurrentTimestamp_args)
+getCurrentTimestamp_args.thrift_spec = (
 )
 
 
-class echoTimestamp_result(object):
+class getCurrentTimestamp_result(object):
     """
     Attributes:
      - success
@@ -217,7 +187,7 @@ class echoTimestamp_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('echoTimestamp_result')
+        oprot.writeStructBegin('getCurrentTimestamp_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.I64, 0)
             oprot.writeI64(self.success)
@@ -238,8 +208,8 @@ class echoTimestamp_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(echoTimestamp_result)
-echoTimestamp_result.thrift_spec = (
+all_structs.append(getCurrentTimestamp_result)
+getCurrentTimestamp_result.thrift_spec = (
     (0, TType.I64, 'success', None, None, ),  # 0
 )
 fix_spec(all_structs)
