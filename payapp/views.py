@@ -7,6 +7,15 @@ from .models import UserProfile, Transaction, Notification
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+# Thrift Time Service code
+import thriftpy
+from thriftpy.rpc import make_client
+from thriftpy.thrift import TException
+from datetime import datetime
+
+timestamp_thrift = thriftpy.load(
+    'timestamp.thrift', module_name='timestamp_thrift')
+Timestamp = timestamp_thrift.TimestampService
 
 @login_required(login_url='/login/')
 def main_page(request):
@@ -61,22 +70,29 @@ def main_page(request):
                         'conversion_error': 'Failed to convert currency.'}
                     print("Something wrong in amount conversion")
                     return render(request, 'payapp/ui.html', context)
-                # Deduct amount from sender
-                sender_profile.bal -= float("{:.2f}".format(amount))
-                sender_profile.save()
+                try:
+                    client = make_client(Timestamp, '127.0.0.1', 9090)
+                    timestamp = client.getCurrentTimestamp()
+                    print("This is time", timestamp)
+                    # Deduct amount from sender
+                    sender_profile.bal -= float("{:.2f}".format(amount))
+                    sender_profile.save()
 
-                # Add amount to receiver
-                receiver_profile.bal += float("{:.2f}".format(converted_amount))
-                receiver_profile.save()
-                sent_currency = currency1
-                received_currency = currency2
-                # Create transaction record
-                transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
-                                                         amount=amount, sent_currency=sent_currency,
-                                                         received_currency=received_currency)
-                transaction.save()
-                PaymentForm()
-                return redirect('main_page')  # Redirect to a success page
+                    # Add amount to receiver
+                    receiver_profile.bal += float("{:.2f}".format(converted_amount))
+                    receiver_profile.save()
+                    sent_currency = currency1
+                    received_currency = currency2
+                    # Create transaction record
+                    transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
+                                                             amount=amount, sent_currency=sent_currency,
+                                                             received_currency=received_currency, timestamp=timestamp)
+                    transaction.save()
+                    PaymentForm()
+                    return redirect('main_page')  # Redirect to a success page
+                except TException as e:
+                    print("TimeStamp Server not Runnning. Issue-",e)
+                    return redirect('main_page')
             else:
                 print("Pay Form not valid")
                 pay_form = PaymentForm()
