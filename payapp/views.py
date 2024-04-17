@@ -206,6 +206,8 @@ def admin_ui(request):
         transactions_sent = None
         transactions_received = None
         show_transactions_form = ShowTransactionsForm()
+        transactions_sent = []  # Set to empty list
+        transactions_received = []  # Set to empty list
 
         if request.method == 'POST':
             if 'show_transactions' in request.POST:
@@ -222,13 +224,13 @@ def admin_ui(request):
                         user_profile = UserProfile.objects.get(user=user)
                         transactions_sent = list(reversed(Transaction.objects.filter(sender=user_profile)))
                         transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))
-                        # transactions = transactions_sent | transactions_received
                         print("THis is transactions_sent", transactions_sent)
                     except (User.DoesNotExist, UserProfile.DoesNotExist):
                         print("Error in getting user data")
                         transactions = None
                 else:
                     print("Show Transaction form not valid")
+                    print(show_transactions_form.errors)
             else:
                 print("Wrong in form")
         else:

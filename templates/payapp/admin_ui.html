@@ -119,10 +119,11 @@
                     <form action="{% url 'admin_ui' %}" method="post">
                         {% csrf_token %}
                         {{ show_transactions_form | crispy }}
-                        <input type="hidden" name="show_trans_first_name" id="show_trans_first_name">
-                        <input type="hidden" name="show_trans_last_name" id="show_trans_last_name">
-                        <input type="hidden" name="show_trans_user_name" id="show_trans_user_name">
-                        <input type="submit" class="flat-button" id="submit" value="Show Transactions">
+                        <input type="hidden" name="show_trans_first_name" value="{{ user.first_name }}">
+                        <input type="hidden" name="show_trans_last_name" value="{{ user.last_name }}">
+                        <input type="hidden" name="show_trans_user_name" value="{{ user.username }}">
+                        <input type="submit" class="flat-button" id="submit" name="show_transactions"
+                               value="Show Transactions">
                     </form>
                     <br>
                     {% if not user.is_superuser %}
@@ -147,7 +148,7 @@
                 <div id="received-transactions" class='toggle-transactions'>
                     {% if transactions_received %}
 
-                    {% for transaction in received_transactions %}
+                    {% for transaction in transactions_received %}
                     <div class="transfer">
                         <div class="transfer-logo">
                             <img src="{% static 'base/images/people.svg' %}"/>
@@ -185,7 +186,7 @@
                 <div class='toggle-transactions' id="sent-transactions" style="display:none">
                     {% if transactions_sent %}
 
-                    {% for transaction in sent_transactions %}
+                    {% for transaction in transactions_sent %}
                     <div class="transfer">
                         <div class="transfer-logo">
                             <img src="{% static 'base/images/people.svg' %}"/>
