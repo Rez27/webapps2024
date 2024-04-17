@@ -350,9 +350,9 @@ a {
     gap: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    height: 250px; /* Adjust height as needed */
-    max-width: 700px;
+    scrollbar-width: revert;
+    height: 270px; /* Adjust height as needed */
+    max-width: 950px;
     padding: 0 1rem; /* Add padding to prevent items from sticking to the edges */
 }
 
@@ -604,6 +604,7 @@ a {
 
 .transfer-section {
     margin-top: 2.5rem;
+
 }
 
 .transfer-section-header {
@@ -622,6 +623,7 @@ a {
     display: flex;
     flex-direction: column;
     margin-top: 1.5rem;
+
 }
 
 .payment {
@@ -877,6 +879,7 @@ a {
     margin-left: auto;
     display: flex;
     align-items: center;
+
 }
 
 .payment-section-header div > * + * {

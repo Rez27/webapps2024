@@ -1,126 +1,252 @@
 {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
+{% block additional_css %}
+{#
+<link rel="stylesheet" type="text/css" href="{% static 'base/css/style1.css' %}">#}
+{% endblock %}
 {% block content %}
-    <div class="payapp">
-        <header class="pay-header">
-            <div class="app-header-logo">
-                <div class="logo">
+<div class="payapp">
+    <header class="pay-header">
+        <div class="app-header-logo">
+            <div class="logo">
 				<span class="logo-icon">
 					<img src="https://assets.codepen.io/285131/almeria-logo.svg"/>
 				</span>
-                    <h1 class="logo-title">
-                        <h1>Hello Admin</h1>
-                    </h1>
-                </div>
-            </div>
-
-            <div class="pay-nav">
-                <div class="tabs">
-                    <h1 class="logo-title">
-                        <h1>Welcome to RKPAY</h1>
-                    </h1>
-                </div>
-            </div>
-            <div class="app-header-logo">
-                <div class="logo">
-                    <h1 class="logo-title">
-                        <div class="payments">
-                            <div class="payment">
-
-                            </div>
-                        </div>
-                    </h1>
-                </div>
-            </div>
-        </header>
-
-
-        <div class="service-section-header">
-            <div class="search-field">
-                <i class="ph-magnifying-glass"></i>
-                <input type="text" placeholder="Search by Account Name">
-            </div>
-
-            <button class="flat-button" style="background-color: var(--c-olive-500); color: #121212">
-                Search
-            </button>
-        </div>
-
-        {#        Show Transactions Modal#}
-        <div class="modal" id="TransactionModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Money Sent by User</h2>
-                    <button class="flat-button" onclick="closeTransactionModal()" style="background-color: var(--c-olive-500); color: #121212">X</button>
-                </div>
-                <div class="modal-body">
-                    <div class="transfers">
-                        {% for transaction in transactions_sent %}
-                            <div class="transfer">
-                                <div class="transfer-logo">
-                                    <img src="{% static 'base/images/people.svg' %}"/>
-                                </div>
-                                <dl class="transfer-details">
-                                    <div>
-                                        <dt>{{ transaction.sender }}</dt>
-                                    </div>
-                                    <div>
-                                        <dt>{{ transaction.receiver }}</dt>
-                                        <dd>
-                                            {{ transaction.amount }}
-                                        </dd>
-                                    </div>
-                                    <div>
-                                        <dd>Transaction Time</dd>
-                                        <dt>{{ transaction.timestamp }}</dt>
-                                    </div>
-                                </dl>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                <h1 class="logo-title">
+                    <h1>Hello Admin</h1>
+                </h1>
             </div>
         </div>
 
-        <div class="transfers">
-            {% for user, user_profile in user_data %}
-                <div class="transfer">
-                    <div class="transfer-logo">
-                        <img src="{% static 'base/images/people.svg' %}"/>
-                    </div>
-                    <dl class="transfer-details">
-                        <div>
-                            <dt>{{ user.first_name }}</dt>
-                            <dd>{{ user.last_name }} </dd>
-                        </div>
-                        <div>
-                            <dt>{{ user.username }}</dt>
-                            <dd>{{ user_profile.bal }} {% if user_profile.currency == 'GBP' %}
-                                £
-                            {% elif user_profile.currency == 'Euro' %}
-                                €
-                            {% elif user_profile.currency == 'Dollar' %}
-                                $
-                            {% endif %}
-                            </dd>
-                        </div>
-                        <div>
-                            <dd>Date Joined</dd>
-                            <dt>{{ user.date_joined }}</dt>
-                        </div>
-                    </dl>
+        <div class="pay-nav">
+            <div class="tabs">
+                <h1 class="logo-title">
+                    <h1>Welcome to RKPAY</h1>
+                </h1>
+            </div>
+        </div>
+        <div class="app-header-logo">
+            <div class="logo">
+                <h1 class="logo-title">
+                    <div class="payments">
+                        <div class="payment">
 
-                    <button class="flat-button"
-                            style="background-color: var(--c-olive-500); color: #121212"
-                            type="submit"
-                            onclick="openTransactionModal('{{ user.first_name }}', '{{ user.last_name }}')">
-                        Show Transactions
-                    </button>
+                        </div>
+                    </div>
+                </h1>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="service-section-header">
+        <div class="search-field">
+            <i class="ph-magnifying-glass"></i>
+            <input type="text" placeholder="Search by Account Name">
+        </div>
+
+        <button class="flat-button" style="background-color: var(--c-olive-500); color: #121212">
+            Search
+        </button>
+    </div>
+
+    {# Show Transactions Modal#}
+    <div class="modal" id="TransactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Money Sent by User</h2>
+                <button class="flat-button" onclick="closeTransactionModal()"
+                        style="background-color: var(--c-olive-500); color: #121212">X
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="transfers">
+                    {% for transaction in transactions_sent %}
+                    <div class="transfer">
+                        <div class="transfer-logo">
+                            <img src="{% static 'base/images/people.svg' %}"/>
+                        </div>
+                        <dl class="transfer-details">
+                            <div>
+                                <dt>{{ transaction.sender }}</dt>
+                            </div>
+                            <div>
+                                <dt>{{ transaction.receiver }}</dt>
+                                <dd>
+                                    {{ transaction.amount }}
+                                </dd>
+                            </div>
+                            <div>
+                                <dd>Transaction Time</dd>
+                                <dt>{{ transaction.timestamp }}</dt>
+                            </div>
+                        </dl>
+                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
-    <script src="{% static 'base/js/payapp.js' %}"></script>
+    <div class="app-body-main-content">
+        <section class="service-section">
+            <h2>Connections</h2>
+            <div class="mobile-only">
+                <button class="flat-button">
+                    Toggle search
+                </button>
+            </div>
+            <div class="tiles">
+                {% for user in users %}
+                <article class="tile">
+                    <div class="tile-header">
+                        <h3>
+                            <span> {{ user.first_name }} {{ user.last_name }}</span>
+                            <span> <h6>Is Admin - {{user.is_superuser}}</h6></span>
+                            <span> Balance-{{ user.payapp_profile.bal }}
+
+                                            {% if user.payapp_profile.get_currency_display == "GBP" %}
+                                                £
+                                            {% elif user.payapp_profile.get_currency_display == "EUR" %}
+                                                €
+                                            {% elif user.payapp_profile.get_currency_display == "USD" %}
+                                                $
+                                            {% endif %}
+                            </span>
+                        </h3>
+                    </div>
+                    <button class="flat-button"
+                            onclick="('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
+                        Show Transactions
+                    </button>
+                    <br>
+                    {% if not user.is_superuser %}
+                    <button class="flat-button">
+                        Make Admin
+                    </button>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+
+        </section>
+        <section class="transfer-section">
+            <div class="transfer-section-header">
+                <a href='#' id='toggle-received' class='active'><h2>Received Money</h2>
+                </a>
+                <div class="filter-options">
+                    <a href='#' id='toggle-sent'><h2>Paid Money</h2></a>
+                </div>
+            </div>
+            <div class="transfers">
+                <div id="received-transactions" class='toggle-transactions'>
+                    {% for transaction in received_transactions %}
+                    <div class="transfer">
+                        <div class="transfer-logo">
+                            <img src="{% static 'base/images/people.svg' %}"/>
+                        </div>
+                        <dl class="transfer-details">
+                            <div>
+                                <dt>{{ transaction.sender.user.first_name }}</dt>
+                                <dd>{{ transaction.sender.user.last_name }}</dd>
+                            </div>
+                            <div>
+                                <dt>{{ transaction.sent_currency }}</dt>
+                                <dd>Sender's Currency</dd>
+                            </div>
+                            <div>
+                                <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
+                                <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
+                            </div>
+                        </dl>
+                        <div class="transfer-number">
+                            {% if transaction.sent_currency == "GBP" %}
+                            £
+                            {% elif transaction.sent_currency == "EUR" %}
+                            €
+                            {% elif transaction.sent_currency == "USD" %}
+                            $
+                            {% endif %}{{ transaction.amount }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class='toggle-transactions' id="sent-transactions" style="display:none">
+                    {% for transaction in sent_transactions %}
+                    <div class="transfer">
+                        <div class="transfer-logo">
+                            <img src="{% static 'base/images/people.svg' %}"/>
+                        </div>
+                        <dl class="transfer-details">
+                            <div>
+                                <dt>{{ transaction.receiver.user.first_name }}</dt>
+                                <dd>{{ transaction.receiver.user.last_name }}</dd>
+                            </div>
+                            <div>
+                                <dt>{{ transaction.received_currency }}</dt>
+                                <dd>Receiver's Currency</dd>
+                            </div>
+                            <div>
+                                <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
+                                <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
+                            </div>
+                        </dl>
+                        <div class="transfer-number">
+                            {% if transaction.received_currency == "GBP" %}
+                            £
+                            {% elif transaction.received_currency == "EUR" %}
+                            €
+                            {% elif transaction.received_currency == "USD" %}
+                            $
+                            {% endif %}{{ transaction.amount }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <!--        <div class="transfers">-->
+    <!--            {% for user, user_profile in user_data %}-->
+    <!--                <div class="transfer">-->
+    <!--                    <div class="transfer-logo">-->
+    <!--                        <img src="{% static 'base/images/people.svg' %}"/>-->
+    <!--                    </div>-->
+    <!--                    <dl class="transfer-details">-->
+    <!--                        <div>-->
+    <!--                            <dt>{{ user.first_name }}</dt>-->
+    <!--                            <dd>{{ user.last_name }} </dd>-->
+    <!--                        </div>-->
+    <!--                        <div>-->
+    <!--                            <dt>{{ user.username }}</dt>-->
+    <!--                            <dd>{{ user_profile.bal }} {% if user_profile.currency == 'GBP' %}-->
+    <!--                                £-->
+    <!--                            {% elif user_profile.currency == 'Euro' %}-->
+    <!--                                €-->
+    <!--                            {% elif user_profile.currency == 'Dollar' %}-->
+    <!--                                $-->
+    <!--                            {% endif %}-->
+    <!--                            </dd>-->
+    <!--                        </div>-->
+    <!--                        <div>-->
+    <!--                            <dd>Date Joined</dd>-->
+    <!--                            <dt>{{ user.date_joined }}</dt>-->
+    <!--                        </div>-->
+    <!--                    </dl>-->
+
+    <!--                    <button class="flat-button"-->
+    <!--                            style="background-color: var(&#45;&#45;c-olive-500); color: #121212"-->
+    <!--                            type="submit"-->
+    <!--                            onclick="openTransactionModal('{{ user.first_name }}', '{{ user.last_name }}')">-->
+    <!--                        Show Transactions-->
+    <!--                    </button>-->
+    <!--                </div>-->
+    <!--            {% endfor %}-->
+    <!--        </div>-->
+
+</div>
+<script src="{% static 'base/js/payapp.js' %}"></script>
 
 {% endblock %}

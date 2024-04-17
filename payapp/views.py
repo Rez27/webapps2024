@@ -89,9 +89,10 @@ def main_page(request):
                 currency_amount = request_form.cleaned_data['request_currency_type']
                 request_first_name = request.POST['request_first_name']
                 request_last_name = request.POST['request_last_name']
+                receiver_user_name = request.POST['request_user_name']
                 try:
                     Notification.objects.create(
-                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name),
+                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name, username=receiver_user_name),
                         requester=request.user,
                         amount=amount,
                     )
@@ -228,6 +229,7 @@ def admin_ui(request):
             show_transactions_form = ShowTransactionsForm()
 
         context = {
+            'users': users,
             'user_data': user_data,
             'show_transactions_form': show_transactions_form,
             'transactions_sent': transactions_sent,

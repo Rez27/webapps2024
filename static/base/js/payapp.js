@@ -12,11 +12,13 @@ function closePayModal() {
     payModal.style.display = "none";
 }
 
-function openRequestModal(request_first_name, request_last_name, request_currency_type) {
+function openRequestModal(request_first_name, request_last_name, request_currency_type, request_user_name) {
     let requestModal = document.getElementById("requestModal");
     document.getElementById("request_first_name").value = request_first_name;
     document.getElementById("request_last_name").value = request_last_name;
     document.getElementById("request_currency_type").value = request_currency_type;
+    document.getElementById("user_name").value = request_user_name;
+
     requestModal.style.display = "flex";
 }
 
