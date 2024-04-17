@@ -28,6 +28,11 @@ def main_page(request):
     request_form = RequestForm()
     notifications = Notification.objects.filter(receiver=user)
 
+    # To Show latest transactions
+    received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
+    sent_transactions = list(reversed(Transaction.objects.filter(sender=user.payapp_profile)))
+    print("This is received transactions", sent_transactions)
+
     if request.method == 'POST':
         # Add Money Logic
         if 'addMoneyForm' in request.POST:
@@ -72,9 +77,25 @@ def main_page(request):
                     return render(request, 'payapp/ui.html', context)
                 try:
                     client = make_client(Timestamp, '127.0.0.1', 9090)
-                    timestamp = client.getCurrentTimestamp()
+                    timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
                     print("This is time", timestamp)
-                    # Deduct amount from sender
+                    if sender_profile.bal <= 0 or float("{:.2f}".format(amount)) > sender_profile.bal:
+                        print("Not enough user balance")
+                        error_message = "You've got low balance. Please Add Money to your account before carrying out any transactions."
+                        context = {
+                            'user_balance': user_profile.bal,
+                            'user_currency': user_profile.currency,
+                            'addMoneyForm': addMoneyForm,
+                            'pay_form': pay_form,
+                            'request_form': request_form,
+                            'username': username,
+                            'users': users,
+                            'notifications': notifications,
+                            'received_transactions': received_transactions,
+                            'sent_transactions': sent_transactions,
+                            'error_message':error_message
+                        }
+                        return render(request, 'payapp/ui.html', context)
                     sender_profile.bal -= float("{:.2f}".format(amount))
                     sender_profile.save()
 
@@ -157,10 +178,6 @@ def main_page(request):
         addMoneyForm = AddMoneyForm()
         pay_form = PaymentForm()
         request_form = RequestForm()
-
-    # To Show latest transactions
-    received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
-    sent_transactions = list(reversed(Transaction.objects.filter(sender=user.payapp_profile)))
 
     context = {
         'user_balance': user_profile.bal,

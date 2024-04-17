@@ -352,7 +352,7 @@ a {
     scroll-snap-type: x mandatory;
     scrollbar-width: revert;
     height: 300px; /* Adjust height as needed */
-    max-width: 950px;
+    width: 950px;
     padding: 0 1rem; /* Add padding to prevent items from sticking to the edges */
 }
 

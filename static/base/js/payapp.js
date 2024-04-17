@@ -48,6 +48,15 @@ function closeNotificationModal() {
     requestModal.style.display = "none";
 }
 
+function openErrorModal() {
+    let requestModal = document.getElementById("ErrorModal");
+    requestModal.style.display = "flex";
+}
+
+function closeErrorModal() {
+    let requestModal = document.getElementById("ErrorModal");
+    requestModal.style.display = "none";
+}
 function openTransactionModal(transac_first_name, transac_last_name) {
     let TransactionModal = document.getElementById("TransactionModal");
     // document.getElementById("first_name").value = transac_first_name;
