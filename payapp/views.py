@@ -205,28 +205,37 @@ def admin_ui(request):
         user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
         transactions_sent = None
         transactions_received = None
+        show_transactions_form = ShowTransactionsForm()
+
         if request.method == 'POST':
-            show_transactions_form = ShowTransactionsForm(request.POST)
-            if show_transactions_form.is_valid():
-                first_name = show_transactions_form.cleaned_data['first_name']
-                last_name = show_transactions_form.cleaned_data['last_name']
-                print("This is ", first_name, last_name)
-                try:
-                    user = User.objects.get(first_name=first_name,
-                                            last_name=last_name)  # Here try to get the user selected for Show Transaction button
-                    user_profile = UserProfile.objects.get(user=user)
-                    transactions_sent = list(reversed(Transaction.objects.filter(sender=user_profile)))
-                    transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))
-                    # transactions = transactions_sent | transactions_received
-                    print("THis is transactions_sent", transactions_sent)
-                except (User.DoesNotExist, UserProfile.DoesNotExist):
-                    print("Error in getting user data")
-                    transactions = None
+            if 'show_transactions' in request.POST:
+                show_transactions_form = ShowTransactionsForm(request.POST)
+                if show_transactions_form.is_valid():
+                    first_name = show_transactions_form.cleaned_data['show_trans_first_name']
+                    last_name = show_transactions_form.cleaned_data['show_trans_last_name']
+                    username = show_transactions_form.cleaned_data['show_trans_user_name']
+
+                    print("This is ", first_name, last_name)
+                    try:
+                        user = User.objects.get(first_name=first_name,
+                                                last_name=last_name, username=username)  # Here try to get the user selected for Show Transaction button
+                        user_profile = UserProfile.objects.get(user=user)
+                        transactions_sent = list(reversed(Transaction.objects.filter(sender=user_profile)))
+                        transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))
+                        # transactions = transactions_sent | transactions_received
+                        print("THis is transactions_sent", transactions_sent)
+                    except (User.DoesNotExist, UserProfile.DoesNotExist):
+                        print("Error in getting user data")
+                        transactions = None
+                else:
+                    print("Show Transaction form not valid")
             else:
-                print("Show Transaction form not valid")
+                print("Wrong in form")
         else:
             print("Request method not valid")
             show_transactions_form = ShowTransactionsForm()
+            transactions_sent = []  # Set to empty list
+            transactions_received = []  # Set to empty list
 
         context = {
             'users': users,

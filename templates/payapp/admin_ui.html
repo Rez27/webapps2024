@@ -102,6 +102,7 @@
                     <div class="tile-header">
                         <h3>
                             <span> {{ user.first_name }} {{ user.last_name }}</span>
+                            <span><h6>Username - {{user.username}}</h6></span>
                             <span> <h6>Is Admin - {{user.is_superuser}}</h6></span>
                             <span> Balance-{{ user.payapp_profile.bal }}
 
@@ -115,10 +116,14 @@
                             </span>
                         </h3>
                     </div>
-                    <button class="flat-button"
-                            onclick="('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
-                        Show Transactions
-                    </button>
+                    <form action="{% url 'admin_ui' %}" method="post">
+                        {% csrf_token %}
+                        {{ show_transactions_form | crispy }}
+                        <input type="hidden" name="show_trans_first_name" id="show_trans_first_name">
+                        <input type="hidden" name="show_trans_last_name" id="show_trans_last_name">
+                        <input type="hidden" name="show_trans_user_name" id="show_trans_user_name">
+                        <input type="submit" class="flat-button" id="submit" value="Show Transactions">
+                    </form>
                     <br>
                     {% if not user.is_superuser %}
                     <button class="flat-button">
@@ -140,6 +145,8 @@
             </div>
             <div class="transfers">
                 <div id="received-transactions" class='toggle-transactions'>
+                    {% if transactions_received %}
+
                     {% for transaction in received_transactions %}
                     <div class="transfer">
                         <div class="transfer-logo">
@@ -170,9 +177,14 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <p>Please select a user to view transactions.</p>
+                    {% endif %}
                 </div>
 
                 <div class='toggle-transactions' id="sent-transactions" style="display:none">
+                    {% if transactions_sent %}
+
                     {% for transaction in sent_transactions %}
                     <div class="transfer">
                         <div class="transfer-logo">
@@ -203,9 +215,11 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <p>Please select a user to view transactions.</p>
+                    {% endif %}
                 </div>
             </div>
-
         </section>
     </div>
     <!--        <div class="transfers">-->

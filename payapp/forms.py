@@ -38,5 +38,6 @@ class RequestForm(forms.Form):
 
 
 class ShowTransactionsForm(forms.Form):
-    first_name = forms.CharField(widget=forms.HiddenInput())
-    last_name = forms.CharField(widget=forms.HiddenInput())
+    show_trans_first_name = forms.CharField(widget=forms.HiddenInput())
+    show_trans_last_name = forms.CharField(widget=forms.HiddenInput())
+    show_trans_user_name = forms.CharField(widget=forms.HiddenInput())
