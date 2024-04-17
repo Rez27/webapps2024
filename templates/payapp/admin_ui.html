@@ -52,42 +52,42 @@
     </div>
 
     {# Show Transactions Modal#}
-    <div class="modal" id="TransactionModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Money Sent by User</h2>
-                <button class="flat-button" onclick="closeTransactionModal()"
-                        style="background-color: var(--c-olive-500); color: #121212">X
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="transfers">
-                    {% for transaction in transactions_sent %}
-                    <div class="transfer">
-                        <div class="transfer-logo">
-                            <img src="{% static 'base/images/people.svg' %}"/>
-                        </div>
-                        <dl class="transfer-details">
-                            <div>
-                                <dt>{{ transaction.sender }}</dt>
-                            </div>
-                            <div>
-                                <dt>{{ transaction.receiver }}</dt>
-                                <dd>
-                                    {{ transaction.amount }}
-                                </dd>
-                            </div>
-                            <div>
-                                <dd>Transaction Time</dd>
-                                <dt>{{ transaction.timestamp }}</dt>
-                            </div>
-                        </dl>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
+{#    <div class="modal" id="TransactionModal">#}
+{#        <div class="modal-content">#}
+{#            <div class="modal-header">#}
+{#                <h2>Money Sent by User</h2>#}
+{#                <button class="flat-button" onclick="closeTransactionModal()"#}
+{#                        style="background-color: var(--c-olive-500); color: #121212">X#}
+{#                </button>#}
+{#            </div>#}
+{#            <div class="modal-body">#}
+{#                <div class="transfers">#}
+{#                    {% for transaction in transactions_sent %}#}
+{#                    <div class="transfer">#}
+{#                        <div class="transfer-logo">#}
+{#                            <img src="{% static 'base/images/people.svg' %}"/>#}
+{#                        </div>#}
+{#                        <dl class="transfer-details">#}
+{#                            <div>#}
+{#                                <dt>{{ transaction.sender }}</dt>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <dt>{{ transaction.receiver }}</dt>#}
+{#                                <dd>#}
+{#                                    {{ transaction.amount }}#}
+{#                                </dd>#}
+{#                            </div>#}
+{#                            <div>#}
+{#                                <dd>Transaction Time</dd>#}
+{#                                <dt>{{ transaction.timestamp }}</dt>#}
+{#                            </div>#}
+{#                        </dl>#}
+{#                    </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
     <div class="app-body-main-content">
         <section class="service-section">
             <h2>Connections</h2>

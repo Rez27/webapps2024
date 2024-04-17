@@ -53,6 +53,16 @@
                                 </div>
                             </div>
                         </div>
+                        {% if error_message %}
+                            <div class="payments" onclick="openErrorModal()">
+                                <div class="payment">
+                                    <div class="card-open-money-req olive">
+                                         <span style="color: #a94442">Click Here for Issues <span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         {#                        <button class="icon-notification" onclick="openNotificationModal()"><h4>Your open money#}
                         {#                            requests</h4></button>#}
                     </h1>
@@ -193,6 +203,22 @@
                     </div>
                 </div>
             </div>
+            {#Error Modal#}
+            <div class="modal" id="ErrorModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Errors</h2>
+                        <span class="flat-button" onclick="closeErrorModal()"
+                              style="background-color: var(--c-olive-500); color: #121212">X</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-content">
+                            {{ error_message }}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="app-body-main-content">
@@ -204,36 +230,47 @@
                         </button>
                     </div>
                     <div class="tiles">
-                        {% for user in users %}
+                        {% if users %}
+                            {% for user in users %}
+                                <article class="tile">
+                                    <div class="tile-header">
+                                        <h3>
+                                            <span> {{ user.first_name }}</span>
+                                            <span> {{ user.last_name }}</span>
+                                            <span> <h6>Currency type - </h6></span>
+                                            <span> {{ user.payapp_profile.get_currency_display }}
+
+                                                {% if user.payapp_profile.get_currency_display == "GBP" %}
+                                                    £
+                                                {% elif user.payapp_profile.get_currency_display == "EUR" %}
+                                                    €
+                                                {% elif user.payapp_profile.get_currency_display == "USD" %}
+                                                    $
+                                                {% endif %}
+
+                                        </span>
+                                        </h3>
+                                    </div>
+                                    <button class="flat-button"
+                                            onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
+                                        Pay
+                                    </button>
+                                    <button class="flat-button"
+                                            onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
+                                        Request
+                                    </button>
+                                </article>
+                            {% endfor %}
+                        {% else %}
                             <article class="tile">
                                 <div class="tile-header">
                                     <h3>
-                                        <span> {{ user.first_name }}</span>
-                                        <span> {{ user.last_name }}</span>
-                                        <span> <h6>Currency type - </h6></span>
-                                        <span> {{ user.payapp_profile.get_currency_display }}
-
-                                            {% if user.payapp_profile.get_currency_display == "GBP" %}
-                                                £
-                                            {% elif user.payapp_profile.get_currency_display == "EUR" %}
-                                                €
-                                            {% elif user.payapp_profile.get_currency_display == "USD" %}
-                                                $
-                                            {% endif %}
-
-                                        </span>
+                                        <span>Looks like you  here. Wait for some users to join this system.</span>
                                     </h3>
                                 </div>
-                                <button class="flat-button"
-                                        onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
-                                    Pay
-                                </button>
-                                <button class="flat-button"
-                                        onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
-                                    Request
-                                </button>
                             </article>
-                        {% endfor %}
+                        {% endif %}
+
                     </div>
                     <div class="service-section-footer">
                         <p>Money transfer as per fixed base exchange rate, no extra charges.</p>
@@ -264,9 +301,8 @@
                                             <dd>Sender's Currency</dd>
                                         </div>
                                         <div>
-                                            <dt>{{ transaction.timestamp}}</dt>
-<!--                                            <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>-->
-<!--                                            <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>-->
+                                            <dt>{{ transaction.timestamp }}</dt>
+
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
@@ -298,9 +334,8 @@
                                             <dd>Receiver's Currency</dd>
                                         </div>
                                         <div>
-                                            <dt>{{ transaction.timestamp}}</dt>
-<!--                                            <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>-->
-<!--                                            <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>-->
+                                            <dt>{{ transaction.timestamp }}</dt>
+
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
