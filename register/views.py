@@ -9,8 +9,7 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            profile = UserProfile.objects.create(user=user, email=user.email)
+            form.save()
             print("Register view success")
             return redirect('login')
         else:

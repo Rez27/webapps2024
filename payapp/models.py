@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='payapp_profile')
     bal = models.IntegerField(default=0)
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='GBP')
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES)
 
     def __str__(self):
         return self.user.username

@@ -1,16 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, related_name='register_profile')
     email = models.EmailField()
-    currency = models.CharField(max_length=20, choices=[('GBP', 'GBP'), ('Euro', 'EUR'), ('Dollar', 'USD')], default='GBP')
+    currency = models.CharField(max_length=20, choices=[('GBP', 'GBP'), ('Euro', 'EUR'), ('Dollar', 'USD')])
     is_superuser = models.BooleanField(default=False)
-    # bank_account = models.CharField(max_length=8, unique=True)  # New field for the bank account number
+
+    bal = models.IntegerField(default=0)
 
 
+    def __str__(self):
+        return self.user.username
 
-
-def __str__(self):
-    return self.user.username

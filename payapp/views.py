@@ -3,7 +3,8 @@ from requests.exceptions import RequestException
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import AddMoneyForm, PaymentForm, RequestForm, ShowTransactionsForm
-from .models import UserProfile, Transaction, Notification
+from .models import Transaction, Notification
+from register.models import UserProfile
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -17,6 +18,7 @@ timestamp_thrift = thriftpy.load(
     'timestamp.thrift', module_name='timestamp_thrift')
 Timestamp = timestamp_thrift.TimestampService
 
+
 @login_required(login_url='/login/')
 def main_page(request):
     user = request.user  # Logged in User
@@ -29,10 +31,14 @@ def main_page(request):
     notifications = Notification.objects.filter(receiver=user)
 
     # To Show latest transactions
-    received_transactions = list(reversed(Transaction.objects.filter(receiver=user.payapp_profile)))
-    sent_transactions = list(reversed(Transaction.objects.filter(sender=user.payapp_profile)))
-    print("This is received transactions", sent_transactions)
-
+    try:
+        received_transactions = list(reversed(Transaction.objects.filter(receiver=user.register_profile)))
+        sent_transactions = list(reversed(Transaction.objects.filter(sender=user.register_profile)))
+        print("This is received transactions", sent_transactions)
+    except Exception as e:
+        print("Didnt find transactions-", e)
+        received_transactions = []
+        sent_transactions = []
     if request.method == 'POST':
         # Add Money Logic
         if 'addMoneyForm' in request.POST:
@@ -59,12 +65,13 @@ def main_page(request):
                 receiver_last_name = request.POST['last_name']
                 receiver_user_name = request.POST['user_name']
                 try:
-                    receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name, username=receiver_user_name)
-                    receiver_profile = receiver_user.payapp_profile
+                    receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name,
+                                                     username=receiver_user_name)
+                    receiver_profile = receiver_user.register_profile
                 except:
                     print("Did not find receiver in app")
                     return redirect('main_page')
-                sender_profile = request.user.payapp_profile
+                sender_profile = request.user.register_profile
                 # Perform currency conversion
                 currency1 = user_profile.currency  # Get logged in user's (Sender's currency)
                 currency2 = receiver_profile.currency  # Get receiver's currency
@@ -93,7 +100,7 @@ def main_page(request):
                             'notifications': notifications,
                             'received_transactions': received_transactions,
                             'sent_transactions': sent_transactions,
-                            'error_message':error_message
+                            'error_message': error_message
                         }
                         return render(request, 'payapp/ui.html', context)
                     sender_profile.bal -= float("{:.2f}".format(amount))
@@ -112,7 +119,7 @@ def main_page(request):
                     PaymentForm()
                     return redirect('main_page')  # Redirect to a success page
                 except TException as e:
-                    print("TimeStamp Server not Runnning. Issue-",e)
+                    print("TimeStamp Server not Runnning. Issue-", e)
                     return redirect('main_page')
             else:
                 print("Pay Form not valid")
@@ -129,7 +136,8 @@ def main_page(request):
                 receiver_user_name = request.POST['request_user_name']
                 try:
                     Notification.objects.create(
-                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name, username=receiver_user_name),
+                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name,
+                                                  username=receiver_user_name),
                         requester=request.user,
                         amount=amount,
                     )
@@ -137,7 +145,7 @@ def main_page(request):
                     print("Notification not created for money request")
                     return redirect('main_page')
 
-                sender_profile = request.user.payapp_profile
+                sender_profile = request.user.register_profile
                 RequestForm()
                 return redirect('main_page')  # Redirect to a success page
             else:
@@ -151,7 +159,7 @@ def main_page(request):
 
             try:
                 sender_user = User.objects.get(username=requester)
-                sender_profile = sender_user.payapp_profile
+                sender_profile = sender_user.register_profile
             except User.DoesNotExist:
                 print("Sender profile not found in accept Notification")
                 return redirect('main_page')
@@ -196,7 +204,7 @@ def main_page(request):
 
 def get_or_create_user_profile(user):
     try:
-        user_profile = user.payapp_profile
+        user_profile = user.register_profile
         user_profile_exists = True
     except UserProfile.DoesNotExist:
         user_profile = UserProfile.objects.create(user=user)
@@ -253,7 +261,8 @@ def admin_ui(request):
                     print("This is ", first_name, last_name)
                     try:
                         user = User.objects.get(first_name=first_name,
-                                                last_name=last_name, username=username)  # Here try to get the user selected for Show Transaction button
+                                                last_name=last_name,
+                                                username=username)  # Here try to get the user selected for Show Transaction button
                         user_profile = UserProfile.objects.get(user=user)
                         transactions_sent = list(reversed(Transaction.objects.filter(sender=user_profile)))
                         transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))

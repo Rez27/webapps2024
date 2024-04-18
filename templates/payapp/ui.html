@@ -238,13 +238,13 @@
                                             <span> {{ user.first_name }}</span>
                                             <span> {{ user.last_name }}</span>
                                             <span> <h6>Currency type - </h6></span>
-                                            <span> {{ user.payapp_profile.get_currency_display }}
+                                            <span> {{ user.register_profile.get_currency_display }}
 
-                                                {% if user.payapp_profile.get_currency_display == "GBP" %}
+                                                {% if user.register_profile.get_currency_display == "GBP" %}
                                                     £
-                                                {% elif user.payapp_profile.get_currency_display == "EUR" %}
+                                                {% elif user.register_profile.get_currency_display == "EUR" %}
                                                     €
-                                                {% elif user.payapp_profile.get_currency_display == "USD" %}
+                                                {% elif user.register_profile.get_currency_display == "USD" %}
                                                     $
                                                 {% endif %}
 
@@ -252,11 +252,11 @@
                                         </h3>
                                     </div>
                                     <button class="flat-button"
-                                            onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
+                                            onclick="openPayModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.register_profile.currency }}', '{{ user.username }}')">
                                         Pay
                                     </button>
                                     <button class="flat-button"
-                                            onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.payapp_profile.currency }}', '{{ user.username }}')">
+                                            onclick="openRequestModal('{{ user.first_name }}', '{{ user.last_name }}', '{{ user.register_profile.currency }}', '{{ user.username }}')">
                                         Request
                                     </button>
                                 </article>
