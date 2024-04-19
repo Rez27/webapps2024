@@ -72,9 +72,11 @@ def main_page(request):
                     print("Did not find receiver in app")
                     return redirect('main_page')
                 sender_profile = request.user.register_profile
+
                 # Perform currency conversion
                 currency1 = user_profile.currency  # Get logged in user's (Sender's currency)
                 currency2 = receiver_profile.currency  # Get receiver's currency
+                print("This is currency1 currency2", currency1, currency2)
                 converted_amount = convert_currency(currency1, currency2, amount)
                 if converted_amount is None:
                     # Handle currency conversion error
