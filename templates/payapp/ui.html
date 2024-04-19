@@ -312,7 +312,7 @@
                                             €
                                         {% elif transaction.sent_currency == "USD" %}
                                             $
-                                        {% endif %}{{ transaction.amount }}
+                                        {% endif %}{{ transaction.sent_amount }}
                                     </div>
                                 </div>
                             {% endfor %}
@@ -345,7 +345,7 @@
                                             €
                                         {% elif transaction.received_currency == "USD" %}
                                             $
-                                        {% endif %}{{ transaction.amount }}
+                                        {% endif %}{{ transaction.sent_amount }}
                                     </div>
                                 </div>
                             {% endfor %}

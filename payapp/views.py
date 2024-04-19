@@ -68,6 +68,7 @@ def main_page(request):
                     receiver_user = User.objects.get(first_name=receiver_first_name, last_name=receiver_last_name,
                                                      username=receiver_user_name)
                     receiver_profile = receiver_user.register_profile
+                    print("This is receiver_user", receiver_profile)
                 except:
                     print("Did not find receiver in app")
                     return redirect('main_page')
@@ -76,7 +77,6 @@ def main_page(request):
                 # Perform currency conversion
                 currency1 = user_profile.currency  # Get logged in user's (Sender's currency)
                 currency2 = receiver_profile.currency  # Get receiver's currency
-                print("This is currency1 currency2", currency1, currency2)
                 converted_amount = convert_currency(currency1, currency2, amount)
                 if converted_amount is None:
                     # Handle currency conversion error
@@ -114,9 +114,11 @@ def main_page(request):
                     sent_currency = currency1
                     received_currency = currency2
                     # Create transaction record
+                    print("This is transactions data", sender_profile, receiver_profile, amount, sent_currency, received_currency, timestamp)
                     transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
-                                                             amount=amount, sent_currency=sent_currency,
+                                                             sent_amount=amount, sent_currency=sent_currency,
                                                              received_currency=received_currency, timestamp=timestamp)
+                    print("This is transaction", transaction)
                     transaction.save()
                     PaymentForm()
                     return redirect('main_page')  # Redirect to a success page
