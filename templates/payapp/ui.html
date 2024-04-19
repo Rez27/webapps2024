@@ -297,22 +297,33 @@
                                             <dd>{{ transaction.sender.user.last_name }}</dd>
                                         </div>
                                         <div>
-                                            <dt>{{ transaction.sent_currency }}</dt>
-                                            <dd>Sender's Currency</dd>
+                                            <dt>{% if transaction.receiver_currency == "GBP" %}
+                                                £
+                                            {% elif transaction.receiver_currency == "EUR" %}
+                                                €
+                                            {% elif transaction.receiver_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ transaction.sent_amount }}</dt>
+                                            <dd>Amount sent by sender</dd>
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp }}</dt>
-
+                                            <dd>Transaction Timestamp</dd>
+                                        </div>
+                                        <div>
+                                            <dt>{% if transaction.received_currency == "GBP" %}
+                                                £
+                                            {% elif transaction.received_currency == "EUR" %}
+                                                €
+                                            {% elif transaction.received_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ transaction.received_amount }}</dt>
+                                            <dd>Amount received by your</dd>
                                         </div>
                                     </dl>
                                     <div class="transfer-number">
-                                        {% if transaction.sent_currency == "GBP" %}
-                                            £
-                                        {% elif transaction.sent_currency == "EUR" %}
-                                            €
-                                        {% elif transaction.sent_currency == "USD" %}
-                                            $
-                                        {% endif %}{{ transaction.sent_amount }}
+
+
                                     </div>
                                 </div>
                             {% endfor %}
@@ -335,17 +346,20 @@
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp }}</dt>
+                                            <dd>Transaction Timestamp</dd>
 
                                         </div>
                                     </dl>
-                                    <div class="transfer-number">
-                                        {% if transaction.received_currency == "GBP" %}
+                                    <div>
+                                        <dt>{% if transaction.received_currency == "GBP" %}
                                             £
                                         {% elif transaction.received_currency == "EUR" %}
                                             €
                                         {% elif transaction.received_currency == "USD" %}
                                             $
                                         {% endif %}{{ transaction.sent_amount }}
+                                        </dt>
+                                        <dd>Amount Paid by sender</dd>
                                     </div>
                                 </div>
                             {% endfor %}

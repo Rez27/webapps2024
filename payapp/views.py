@@ -6,6 +6,7 @@ from .forms import AddMoneyForm, PaymentForm, RequestForm, ShowTransactionsForm
 from .models import Transaction, Notification
 from register.models import UserProfile
 from django.contrib.auth.models import User
+from decimal import Decimal
 from django.urls import reverse
 
 # Thrift Time Service code
@@ -105,11 +106,12 @@ def main_page(request):
                             'error_message': error_message
                         }
                         return render(request, 'payapp/ui.html', context)
-                    sender_profile.bal -= float("{:.2f}".format(amount))
+                    print("THis is sender_profile.bal", converted_amount, type(float("{:.2f}".format(converted_amount))))
+                    sender_profile.bal -= amount
                     sender_profile.save()
 
                     # Add amount to receiver
-                    receiver_profile.bal += float("{:.2f}".format(converted_amount))
+                    receiver_profile.bal += Decimal("{:.2f}".format(converted_amount))
                     receiver_profile.save()
                     sent_currency = currency1
                     received_currency = currency2
