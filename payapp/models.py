@@ -32,7 +32,8 @@ def save_user_profile(sender, instance, **kwargs):
 class Transaction(models.Model):
     sender = models.ForeignKey(UserProfile, related_name='sent_transactions', on_delete=models.CASCADE)
     receiver = models.ForeignKey(UserProfile, related_name='received_transactions', on_delete=models.CASCADE)
-    sent_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    sent_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    received_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     timestamp = models.DateTimeField(auto_now_add=False)
     sent_currency = models.CharField(max_length=3, default='')
     received_currency = models.CharField(max_length=3, default='')

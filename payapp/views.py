@@ -116,7 +116,7 @@ def main_page(request):
                     # Create transaction record
                     print("This is transactions data", sender_profile, receiver_profile, amount, sent_currency, received_currency, timestamp)
                     transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
-                                                             sent_amount=amount, sent_currency=sent_currency,
+                                                             sent_amount=float("{:.2f}".format(amount)), received_amount=float("{:.2f}".format(converted_amount)), sent_currency=sent_currency,
                                                              received_currency=received_currency, timestamp=timestamp)
                     print("This is transaction", transaction)
                     transaction.save()
