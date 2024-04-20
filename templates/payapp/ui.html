@@ -56,8 +56,9 @@
                         {% if error_message %}
                             <div class="payments" onclick="openErrorModal()">
                                 <div class="payment">
-                                    <div class="card-open-money-req olive">
-                                         <span style="color: #a94442">Click Here for Issues <span>
+                                    <div class="card-open-money-req olive" style="background-color: #a94442">
+                                         <span>Some Error occured <span>
+                                             <span> <h6>Click to view</h6></span>
                                     </div>
                                 </div>
                             </div>
@@ -286,6 +287,24 @@
                     </div>
                     <div class="transfers">
                         <div id="received-transactions" class='toggle-transactions'>
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt></dt>
+                                    <dd>Sender's Name</dd>
+                                </div>
+                                <div>
+                                    <dt></dt>
+                                    <dd>Amount sent by sender</dd>
+                                </div>
+                                <div>
+                                    <dt></dt>
+                                    <dd>Transaction Timestamp</dd>
+                                </div>
+                                <div>
+                                    <dt></dt>
+                                    <dd>Credited in your account</dd>
+                                </div>
+                            </dl>
                             {% for transaction in received_transactions %}
                                 <div class="transfer">
                                     <div class="transfer-logo">
@@ -296,19 +315,18 @@
                                             <dt>{{ transaction.sender.user.first_name }}</dt>
                                             <dd>{{ transaction.sender.user.last_name }}</dd>
                                         </div>
+
                                         <div>
-                                            <dt>{% if transaction.receiver_currency == "GBP" %}
+                                            <dt>{% if transaction.sent_currency == "GBP" %}
                                                 £
-                                            {% elif transaction.receiver_currency == "EUR" %}
+                                            {% elif transaction.sent_currency == "EUR" %}
                                                 €
-                                            {% elif transaction.receiver_currency == "USD" %}
+                                            {% elif transaction.sent_currency == "USD" %}
                                                 $
                                             {% endif %}{{ transaction.sent_amount }}</dt>
-                                            <dd>Amount sent by sender</dd>
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp }}</dt>
-                                            <dd>Transaction Timestamp</dd>
                                         </div>
                                         <div>
                                             <dt>{% if transaction.received_currency == "GBP" %}
@@ -318,18 +336,31 @@
                                             {% elif transaction.received_currency == "USD" %}
                                                 $
                                             {% endif %}{{ transaction.received_amount }}</dt>
-                                            <dd>Amount received by your</dd>
                                         </div>
                                     </dl>
-                                    <div class="transfer-number">
-
-
-                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
 
                         <div class='toggle-transactions' id="sent-transactions" style="display:none">
+                            <dl class="transfer-details">
+                                <div>
+                                    <dt></dt>
+                                    <dd>Receiver's Name</dd>
+                                </div>
+                                <div>
+                                    <dt></dt>
+                                    <dd>Credited to receiver's account</dd>
+                                    <dd></dd>
+                                </div>
+                                <div>
+                                    <dd>Transaction Timestamp</dd>
+                                </div>
+                                <div>
+                                    <dt></dt>
+                                    <dd>Deducted from your account</dd>
+                                </div>
+                            </dl>
                             {% for transaction in sent_transactions %}
                                 <div class="transfer">
                                     <div class="transfer-logo">
@@ -337,35 +368,38 @@
                                     </div>
                                     <dl class="transfer-details">
                                         <div>
+
                                             <dt>{{ transaction.receiver.user.first_name }}</dt>
                                             <dd>{{ transaction.receiver.user.last_name }}</dd>
                                         </div>
                                         <div>
-                                            <dt>{{ transaction.received_currency }}</dt>
-                                            <dd>Receiver's Currency</dd>
+                                            <dt>{% if transaction.received_currency == "GBP" %}
+                                                £
+                                            {% elif transaction.received_currency == "EUR" %}
+                                                €
+                                            {% elif transaction.received_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ transaction.received_amount }}</dt>
                                         </div>
                                         <div>
                                             <dt>{{ transaction.timestamp }}</dt>
-                                            <dd>Transaction Timestamp</dd>
-
                                         </div>
-                                    </dl>
+
                                     <div>
-                                        <dt>{% if transaction.received_currency == "GBP" %}
+                                        <dt>{% if transaction.sent_currency == "GBP" %}
                                             £
-                                        {% elif transaction.received_currency == "EUR" %}
+                                        {% elif transaction.sent_currency == "EUR" %}
                                             €
-                                        {% elif transaction.received_currency == "USD" %}
+                                        {% elif transaction.sent_currency == "USD" %}
                                             $
                                         {% endif %}{{ transaction.sent_amount }}
                                         </dt>
-                                        <dd>Amount Paid by sender</dd>
                                     </div>
+                                    </dl>
                                 </div>
                             {% endfor %}
                         </div>
                     </div>
-
                 </section>
             </div>
 

@@ -95,9 +95,6 @@ def main_page(request):
                         context = {
                             'user_balance': user_profile.bal,
                             'user_currency': user_profile.currency,
-                            'addMoneyForm': addMoneyForm,
-                            'pay_form': pay_form,
-                            'request_form': request_form,
                             'username': username,
                             'users': users,
                             'notifications': notifications,
@@ -105,6 +102,9 @@ def main_page(request):
                             'sent_transactions': sent_transactions,
                             'error_message': error_message
                         }
+                        pay_form = PaymentForm()
+                        addMoneyForm = AddMoneyForm()
+                        request_form = RequestForm()
                         return render(request, 'payapp/ui.html', context)
                     print("THis is sender_profile.bal", converted_amount, type(float("{:.2f}".format(converted_amount))))
                     sender_profile.bal -= amount
@@ -125,8 +125,22 @@ def main_page(request):
                     PaymentForm()
                     return redirect('main_page')  # Redirect to a success page
                 except TException as e:
+                    error_message = "Internal Server Error. Your Previous transfer was not carried out"
+                    context = {
+                        'user_balance': user_profile.bal,
+                        'user_currency': user_profile.currency,
+                        'username': username,
+                        'users': users,
+                        'notifications': notifications,
+                        'received_transactions': received_transactions,
+                        'sent_transactions': sent_transactions,
+                        'error_message': error_message
+                    }
                     print("TimeStamp Server not Runnning. Issue-", e)
-                    return redirect('main_page')
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
+                    return render(request, 'payapp/ui.html', context)
             else:
                 print("Pay Form not valid")
                 pay_form = PaymentForm()
