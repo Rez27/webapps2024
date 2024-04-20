@@ -33,17 +33,18 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].required = True
         self.fields['currency'].required = True
 
-def save(self, commit=True):
-    user = super(UserRegistrationForm, self).save(commit=False)
-    user.email = self.cleaned_data['email']
-    user.first_name = self.cleaned_data['first_name']
-    user.last_name = self.cleaned_data['last_name']
-    if commit:
-        user.save()
-    user_profile = UserProfile.objects.create(user=user, email=user.email)
-    user_profile.currency = self.cleaned_data['currency']
-    user_profile.save()
-    return user
+
+    def save(self, commit=True):
+        user = super(UserRegistrationForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        if commit:
+            user.save()
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
+        user_profile.currency = self.cleaned_data['currency']
+        user_profile.save()
+        return user
 
 
 # def generate_bank_account_number():
