@@ -46,7 +46,7 @@
                             <div class="payment">
                                 <div class="card-open-money-req olive">
                                     {% if notifications %}
-                                        <span style="color: #121212">Your Open Money requests</span>
+                                        <span style="color: #121212">Pending Money Requests</span>
                                     {% else %}
                                         <span style="color: #121212">No Money requests</span>
                                     {% endif %}
@@ -119,6 +119,7 @@
                             <input type="hidden" name="request_first_name" id="request_first_name">
                             <input type="hidden" name="request_currency_type" id="request_currency_type">
                             <input type="hidden" name="request_last_name" id="request_last_name">
+                            <input type="hidden" name="request_user_name" id="request_user_name">
                             <input type="submit" class="flat-button" id="submit" value="Request">
                         </form>
                     </div>
@@ -385,16 +386,16 @@
                                             <dt>{{ transaction.timestamp }}</dt>
                                         </div>
 
-                                    <div>
-                                        <dt>{% if transaction.sent_currency == "GBP" %}
-                                            £
-                                        {% elif transaction.sent_currency == "EUR" %}
-                                            €
-                                        {% elif transaction.sent_currency == "USD" %}
-                                            $
-                                        {% endif %}{{ transaction.sent_amount }}
-                                        </dt>
-                                    </div>
+                                        <div>
+                                            <dt>{% if transaction.sent_currency == "GBP" %}
+                                                £
+                                            {% elif transaction.sent_currency == "EUR" %}
+                                                €
+                                            {% elif transaction.sent_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ transaction.sent_amount }}
+                                            </dt>
+                                        </div>
                                     </dl>
                                 </div>
                             {% endfor %}
