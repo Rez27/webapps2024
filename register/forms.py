@@ -33,24 +33,17 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].required = True
         self.fields['currency'].required = True
 
-    def save(self, commit=True):
-        user = super(UserRegistrationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        if commit:
-            user.save()
-        # if commit:
-        #     account = Account(user=user, currency=self.cleaned_data['currency'])
-        #     if account.currency != "gbp":
-        #         account.balance = convert_currency("GBP", account.currency, 1000)
-        # Generate 8-digit bank account number
-        user_profile = UserProfile.objects.create(user=user, email=user.email)
-        user_profile.currency = self.cleaned_data['currency']
-        # user_profile.bank_account_number = generate_bank_account_number()
-        user_profile.save()
-
-        return user
+def save(self, commit=True):
+    user = super(UserRegistrationForm, self).save(commit=False)
+    user.email = self.cleaned_data['email']
+    user.first_name = self.cleaned_data['first_name']
+    user.last_name = self.cleaned_data['last_name']
+    if commit:
+        user.save()
+    user_profile = UserProfile.objects.create(user=user, email=user.email)
+    user_profile.currency = self.cleaned_data['currency']
+    user_profile.save()
+    return user
 
 
 # def generate_bank_account_number():

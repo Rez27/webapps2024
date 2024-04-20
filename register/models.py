@@ -13,6 +13,6 @@ class UserProfile(models.Model):
     bal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
-    def __str__(self):
-        return self.user.username
+def __str__(self):
+    return self.user.username
 
