@@ -221,45 +221,42 @@ def main_page(request):
             requested_currency = request.POST['requested_currency']
             try:
                 sender_user = User.objects.get(username=requester)
-                sender_profile = sender_user.register_profile
+                requester_profile = sender_user.register_profile
             except User.DoesNotExist:
                 print("Sender profile not found in accept Notification")
                 return redirect('main_page')
             try:
                 client = make_client(Timestamp, '127.0.0.1', 9090)
                 timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
-                print("This is time", timestamp)
-                currency1 = sender_profile.currency  # Currency of money sender
-                currency2 = user_profile.currency  # Currency of money receiver
+                # print("This is time", timestamp)
+                currency1 = requester_profile.currency  # Currency of money requester - He should receive money
+                currency2 = user_profile.currency  # Currency of money sender(User logged in) His money should be deducted
                 converted_amount = convert_currency(currency1, currency2,
                                                     requested_amount)  # Money that will be deducted from money sender's account balance as currency conversion is carried out before
 
-                print("These are currency1 and currency2", currency1, currency2)
+                print("This is",requester_profile.user,"'s", currency1, "and this is", user_profile.user,"'s", currency2)
                 print("This is the ammount that will be deducted from ironman's account after conversion",
                       converted_amount)
                 # Deduct money from sender's account
-                #sender_profile.bal -= converted_amount #Deduct converted money instead of amount asked due to currency conversion
-
+                user_profile.bal -= Decimal("{:.2f}".format(converted_amount)) #Deduct converted money instead of amount asked due to currency conversion
                 #Add Money to receiver
-
-
-                # sender_profile.bal = float(sender_profile.bal)
-                # requested_amount = float(requested_amount)
-                #
-                # sender_profile.bal += requested_amount
-                # sender_profile.save()
-                #
-                # user_profile.bal -= requested_amount
-                # user_profile.save()
-                #
-                # notification_id = request.POST['notification_id']
-                # notification = get_object_or_404(Notification, pk=notification_id)
-                # # Mark the notification as accepted
-                # notification.is_accepted = True
-                # notification.save()
-                # Currently not deleting transactions
-                # notification.delete()
-
+                requester_profile.bal += Decimal("{:.2f}".format(float(requested_amount)))
+                print("Final Values are",user_profile.bal, requester_profile.bal)
+                notification_id = request.POST['notification_id']
+                notification = get_object_or_404(Notification, pk=notification_id)
+                # Mark the notification as accepted
+                notification.is_accepted = True
+                transaction = Transaction.objects.create(sender=user_profile, receiver=requester_profile,
+                                                          sent_amount=Decimal("{:.2f}".format(converted_amount)),
+                                                          received_amount=Decimal("{:.2f}".format(float(requested_amount))),
+                                                          sent_currency=currency2,
+                                                          received_currency=currency1, timestamp=timestamp)
+                transaction.save()
+                notification.save()
+                #Commit the models after every task is done.
+                requester_profile.save()
+                user_profile.save()
+                # notification.delete() # Currently do not delete transactions
                 return redirect('main_page')
             except TException as e:
                 error_message = "Internal Server Error. Previous transfer was not carried out"
