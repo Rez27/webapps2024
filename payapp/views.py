@@ -108,12 +108,11 @@ def main_page(request):
                         return render(request, 'payapp/ui.html', context)
                     print("THis is sender_profile.bal", converted_amount,
                           type(float("{:.2f}".format(converted_amount))))
+                    # Deduct money from sender's account
                     sender_profile.bal -= amount
-                    sender_profile.save()
-
                     # Add amount to receiver
                     receiver_profile.bal += Decimal("{:.2f}".format(converted_amount))
-                    receiver_profile.save()
+
                     sent_currency = currency1
                     received_currency = currency2
                     # Create transaction record
@@ -124,6 +123,9 @@ def main_page(request):
                                                              received_amount=float("{:.2f}".format(converted_amount)),
                                                              sent_currency=sent_currency,
                                                              received_currency=received_currency, timestamp=timestamp)
+                    #Commit the models after every task is done.
+                    sender_profile.save()
+                    receiver_profile.save()
                     print("This is transaction", transaction)
                     transaction.save()
                     PaymentForm()
@@ -168,7 +170,7 @@ def main_page(request):
                             requester=request.user,
                             amount=amount,
                             requested_currency=currency_amount,
-                            timestamp = timestamp,
+                            timestamp=timestamp,
                         )
                     except:
                         print("Notification not created for money request")
@@ -216,30 +218,66 @@ def main_page(request):
         elif 'accept_notification' in request.POST:
             requester = request.POST['requester_username']
             requested_amount = request.POST['requested_amount']
+            requested_currency = request.POST['requested_currency']
             try:
                 sender_user = User.objects.get(username=requester)
                 sender_profile = sender_user.register_profile
             except User.DoesNotExist:
                 print("Sender profile not found in accept Notification")
                 return redirect('main_page')
-            sender_profile.bal = float(sender_profile.bal)
-            requested_amount = float(requested_amount)
+            try:
+                client = make_client(Timestamp, '127.0.0.1', 9090)
+                timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
+                print("This is time", timestamp)
+                currency1 = sender_profile.currency  # Currency of money sender
+                currency2 = user_profile.currency  # Currency of money receiver
+                converted_amount = convert_currency(currency1, currency2,
+                                                    requested_amount)  # Money that will be deducted from money sender's account balance as currency conversion is carried out before
 
-            sender_profile.bal += requested_amount
-            sender_profile.save()
+                print("These are currency1 and currency2", currency1, currency2)
+                print("This is the ammount that will be deducted from ironman's account after conversion",
+                      converted_amount)
+                # Deduct money from sender's account
+                #sender_profile.bal -= converted_amount #Deduct converted money instead of amount asked due to currency conversion
 
-            user_profile.bal -= requested_amount
-            user_profile.save()
+                #Add Money to receiver
 
-            notification_id = request.POST['notification_id']
-            notification = get_object_or_404(Notification, pk=notification_id)
-            # Mark the notification as accepted
-            notification.is_accepted = True
-            notification.save()
-            # Delete the notification after all transactions are successful
-            notification.delete()
 
-            return redirect('main_page')
+                # sender_profile.bal = float(sender_profile.bal)
+                # requested_amount = float(requested_amount)
+                #
+                # sender_profile.bal += requested_amount
+                # sender_profile.save()
+                #
+                # user_profile.bal -= requested_amount
+                # user_profile.save()
+                #
+                # notification_id = request.POST['notification_id']
+                # notification = get_object_or_404(Notification, pk=notification_id)
+                # # Mark the notification as accepted
+                # notification.is_accepted = True
+                # notification.save()
+                # Currently not deleting transactions
+                # notification.delete()
+
+                return redirect('main_page')
+            except TException as e:
+                error_message = "Internal Server Error. Previous transfer was not carried out"
+                context = {
+                    'user_balance': user_profile.bal,
+                    'user_currency': user_profile.currency,
+                    'username': username,
+                    'users': users,
+                    'notifications': notifications,
+                    'received_transactions': received_transactions,
+                    'sent_transactions': sent_transactions,
+                    'error_message': error_message
+                }
+                print("TimeStamp Server not Runnning. Issue-", e)
+                pay_form = PaymentForm()
+                addMoneyForm = AddMoneyForm()
+                request_form = RequestForm()
+                return render(request, 'payapp/ui.html', context)
     else:
         print("Something wrong with request type")
         addMoneyForm = AddMoneyForm()
