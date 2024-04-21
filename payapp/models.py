@@ -46,7 +46,8 @@ class Notification(models.Model):
     receiver = models.ForeignKey(User, related_name='received_notifications', on_delete=models.CASCADE)
     requester = models.ForeignKey(User, related_name='sent_notifications', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    requested_currency = models.CharField(max_length=3, default='')
+    timestamp = models.DateTimeField(auto_now_add=False)
     is_accepted = models.BooleanField(default=False)
 
     def __str__(self):

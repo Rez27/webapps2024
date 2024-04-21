@@ -160,7 +160,6 @@
                     <div class="modal-body">
                         <div class="modal-content">
                             <div class="table-container">
-
                                 <table class="notification-table">
                                     <tbody>
                                     <th>
@@ -170,12 +169,22 @@
                                         Amount
                                     </th>
                                     <th>
+                                        Requested On
+                                    </th>
+                                    <th>
                                         Accept/Deny
                                     </th>
                                     {% for notification in notifications %}
                                         <tr>
                                             <td>{{ notification.requester }}</td>
-                                            <td>{{ notification.amount }}</td>
+                                            <td>{% if notification.requested_currency == "GBP" %}
+                                                £
+                                            {% elif notification.requested_currency == "EUR" %}
+                                                €
+                                            {% elif notification.requested_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ notification.amount }}</td>
+                                            <td></td>
                                             <td>
                                                 <form method="post" action="{% url 'main_page' %}">
                                                     {% csrf_token %}

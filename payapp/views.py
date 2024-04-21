@@ -106,7 +106,8 @@ def main_page(request):
                         addMoneyForm = AddMoneyForm()
                         request_form = RequestForm()
                         return render(request, 'payapp/ui.html', context)
-                    print("THis is sender_profile.bal", converted_amount, type(float("{:.2f}".format(converted_amount))))
+                    print("THis is sender_profile.bal", converted_amount,
+                          type(float("{:.2f}".format(converted_amount))))
                     sender_profile.bal -= amount
                     sender_profile.save()
 
@@ -116,9 +117,12 @@ def main_page(request):
                     sent_currency = currency1
                     received_currency = currency2
                     # Create transaction record
-                    print("This is transactions data", sender_profile, receiver_profile, amount, sent_currency, received_currency, timestamp)
+                    print("This is transactions data", sender_profile, receiver_profile, amount, sent_currency,
+                          received_currency, timestamp)
                     transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
-                                                             sent_amount=float("{:.2f}".format(amount)), received_amount=float("{:.2f}".format(converted_amount)), sent_currency=sent_currency,
+                                                             sent_amount=float("{:.2f}".format(amount)),
+                                                             received_amount=float("{:.2f}".format(converted_amount)),
+                                                             sent_currency=sent_currency,
                                                              received_currency=received_currency, timestamp=timestamp)
                     print("This is transaction", transaction)
                     transaction.save()
@@ -155,19 +159,55 @@ def main_page(request):
                 request_last_name = request.POST['request_last_name']
                 receiver_user_name = request.POST['request_user_name']
                 try:
-                    Notification.objects.create(
-                        receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name,
-                                                  username=receiver_user_name),
-                        requester=request.user,
-                        amount=amount,
-                    )
-                except:
-                    print("Notification not created for money request")
-                    return redirect('main_page')
+                    client = make_client(Timestamp, '127.0.0.1', 9090)
+                    timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
+                    try:
+                        Notification.objects.create(
+                            receiver=User.objects.get(first_name=request_first_name, last_name=request_last_name,
+                                                      username=receiver_user_name),
+                            requester=request.user,
+                            amount=amount,
+                            requested_currency=currency_amount,
+                            timestamp = timestamp,
+                        )
+                    except:
+                        print("Notification not created for money request")
+                        error_message = "Internal Server Error. Request Notification was not sent"
+                        context = {
+                            'user_balance': user_profile.bal,
+                            'user_currency': user_profile.currency,
+                            'username': username,
+                            'users': users,
+                            'notifications': notifications,
+                            'received_transactions': received_transactions,
+                            'sent_transactions': sent_transactions,
+                            'error_message': error_message
+                        }
+                        pay_form = PaymentForm()
+                        addMoneyForm = AddMoneyForm()
+                        request_form = RequestForm()
+                        return render(request, 'payapp/ui.html', context)
+                    sender_profile = request.user.register_profile
+                    RequestForm()
+                    return redirect('main_page')  # Redirect to a success page
+                except TException as e:
+                    error_message = "Internal Server Error. Request Notification was not sent"
+                    context = {
+                        'user_balance': user_profile.bal,
+                        'user_currency': user_profile.currency,
+                        'username': username,
+                        'users': users,
+                        'notifications': notifications,
+                        'received_transactions': received_transactions,
+                        'sent_transactions': sent_transactions,
+                        'error_message': error_message
+                    }
+                    print("TimeStamp Server not Runnning. Issue-", e)
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
+                    return render(request, 'payapp/ui.html', context)
 
-                sender_profile = request.user.register_profile
-                RequestForm()
-                return redirect('main_page')  # Redirect to a success page
             else:
                 print("Request form not valid")
                 request_form = RequestForm()
@@ -176,7 +216,6 @@ def main_page(request):
         elif 'accept_notification' in request.POST:
             requester = request.POST['requester_username']
             requested_amount = request.POST['requested_amount']
-
             try:
                 sender_user = User.objects.get(username=requester)
                 sender_profile = sender_user.register_profile
