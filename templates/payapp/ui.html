@@ -158,7 +158,65 @@
                               style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-content">
+                        <div class = "modal-content toggle-notification" style="display:none">
+                            <section class="transfer-section">
+
+                                <div class="transfer-section-header">
+                                    <a href='#' id='toggle-noti-active' class='active'><h2>Active Requests</h2>
+                                    </a>
+                                    <div class="filter-options">
+                                        <a href='#' id='toggle-noti-history'><h2>Previous Requests</h2></a>
+                                    </div>
+                                    <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
+                                </div>
+
+                                <dl class="transfer-details">
+                                    <div>
+                                        <dt></dt>
+                                        <dd>Requester's Name</dd>
+                                    </div>
+                                    <div>
+                                        <dt></dt>
+                                        <dd>Amount requested</dd>
+                                    </div>
+                                    <div>
+                                        <dt></dt>
+                                        <dd>Requested at</dd>
+                                    </div>
+                                    <div>
+                                        <dt></dt>
+                                        <dd>Accept/Reject</dd>
+                                    </div>
+                                </dl>
+
+                                {% for notification in notifications %}
+                                    <div class="transfer">
+                                    <div class="transfer-logo">
+                                        <img src="{% static 'base/images/people.svg' %}"/>
+                                    </div>
+                                    <dl class="transfer-details">
+                                        <div>
+                                            <dt></dt>
+                                            <dd>{{ notification.requester }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt>{% if notification.requested_currency == "GBP" %}
+                                                £
+                                            {% elif notification.requested_currency == "EUR" %}
+                                                €
+                                            {% elif notification.requested_currency == "USD" %}
+                                                $
+                                            {% endif %}{{ notification.amount }}</dt>
+                                        </div>
+                                        <div>
+                                        
+                                        </div>
+                                    </dl>
+                                    </div>
+                                {% endfor %}
+                            </section>
+                        </div>
+                        <div class="modal-content toggle-notification">
                             <div class="table-container">
                                 <table class="notification-table">
                                     <tbody>

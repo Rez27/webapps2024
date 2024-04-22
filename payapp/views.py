@@ -372,8 +372,6 @@ def admin_ui(request):
         transactions_received = []  # Set to empty list
         first_name = ""
         last_name= ""
-
-
         if request.method == 'POST':
             if 'show_transactions' in request.POST:
                 show_transactions_form = ShowTransactionsForm(request.POST)
