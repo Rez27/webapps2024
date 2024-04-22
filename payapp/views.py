@@ -370,6 +370,9 @@ def admin_ui(request):
         show_transactions_form = ShowTransactionsForm()
         transactions_sent = []  # Set to empty list
         transactions_received = []  # Set to empty list
+        first_name = ""
+        last_name= ""
+
 
         if request.method == 'POST':
             if 'show_transactions' in request.POST:
@@ -408,6 +411,8 @@ def admin_ui(request):
             'show_transactions_form': show_transactions_form,
             'transactions_sent': transactions_sent,
             'transactions_received': transactions_received,
+            'first_name': first_name,
+            'last_name': last_name
         }
         return render(request, 'payapp/admin_ui.html', context)
     else:

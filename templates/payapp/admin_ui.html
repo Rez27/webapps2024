@@ -143,79 +143,126 @@
                 <div class="filter-options">
                     <a href='#' id='toggle-sent'><h2>Paid Money</h2></a>
                 </div>
+                <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
             </div>
             <div class="transfers">
                 <div id="received-transactions" class='toggle-transactions'>
+                    <dl class="transfer-details">
+                        <div>
+                            <dt></dt>
+                            <dd>Sender's Name</dd>
+                        </div>
+                        <div>
+                            <dt></dt>
+                            <dd>Amount sent by sender</dd>
+                        </div>
+                        <div>
+                            <dt></dt>
+                            <dd>Transaction Timestamp</dd>
+                        </div>
+                        <div>
+                            <dt></dt>
+                            <dd>Credited in your account</dd>
+                        </div>
+                    </dl>
                     {% if transactions_received %}
+                        {% for transaction in transactions_received %}
+                            <div class="transfer">
+                                <div class="transfer-logo">
+                                    <img src="{% static 'base/images/people.svg' %}"/>
+                                </div>
+                                <dl class="transfer-details">
+                                    <div>
+                                        <dt>{{ transaction.sender.user.first_name }}</dt>
+                                        <dd>{{ transaction.sender.user.last_name }}</dd>
+                                    </div>
 
-                    {% for transaction in transactions_received %}
-                    <div class="transfer">
-                        <div class="transfer-logo">
-                            <img src="{% static 'base/images/people.svg' %}"/>
-                        </div>
-                        <dl class="transfer-details">
-                            <div>
-                                <dt>{{ transaction.sender.user.first_name }}</dt>
-                                <dd>{{ transaction.sender.user.last_name }}</dd>
+                                    <div>
+                                        <dt>{% if transaction.sent_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.sent_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.sent_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.sent_amount }}</dt>
+                                    </div>
+                                    <div>
+                                        <dt>{{ transaction.timestamp }}</dt>
+                                    </div>
+                                    <div>
+                                        <dt>{% if transaction.received_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.received_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.received_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.received_amount }}</dt>
+                                    </div>
+                                </dl>
                             </div>
-                            <div>
-                                <dt>{{ transaction.sent_currency }}</dt>
-                                <dd>Sender's Currency</dd>
-                            </div>
-                            <div>
-                                <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
-                                <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
-                            </div>
-                        </dl>
-                        <div class="transfer-number">
-                            {% if transaction.sent_currency == "GBP" %}
-                            £
-                            {% elif transaction.sent_currency == "EUR" %}
-                            €
-                            {% elif transaction.sent_currency == "USD" %}
-                            $
-                            {% endif %}{{ transaction.amount }}
-                        </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
                     {% else %}
                     <p>Please select a user to view transactions.</p>
                     {% endif %}
                 </div>
 
                 <div class='toggle-transactions' id="sent-transactions" style="display:none">
+                    <dl class="transfer-details">
+                        <div>
+                            <dt></dt>
+                            <dd>Receiver's Name</dd>
+                        </div>
+                        <div>
+                            <dt></dt>
+                            <dd>Credited to receiver's account</dd>
+                            <dd></dd>
+                        </div>
+                        <div>
+                            <dd>Transaction Timestamp</dd>
+                        </div>
+                        <div>
+                            <dt></dt>
+                            <dd>Deducted from your account</dd>
+                        </div>
+                    </dl>
                     {% if transactions_sent %}
+                        {% for transaction in transactions_sent %}
+                            <div class="transfer">
+                                <div class="transfer-logo">
+                                    <img src="{% static 'base/images/people.svg' %}"/>
+                                </div>
+                                <dl class="transfer-details">
+                                    <div>
 
-                    {% for transaction in transactions_sent %}
-                    <div class="transfer">
-                        <div class="transfer-logo">
-                            <img src="{% static 'base/images/people.svg' %}"/>
-                        </div>
-                        <dl class="transfer-details">
-                            <div>
-                                <dt>{{ transaction.receiver.user.first_name }}</dt>
-                                <dd>{{ transaction.receiver.user.last_name }}</dd>
+                                        <dt>{{ transaction.receiver.user.first_name }}</dt>
+                                        <dd>{{ transaction.receiver.user.last_name }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>{% if transaction.received_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.received_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.received_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.received_amount }}</dt>
+                                    </div>
+                                    <div>
+                                        <dt>{{ transaction.timestamp }}</dt>
+                                    </div>
+
+                                    <div>
+                                        <dt>{% if transaction.sent_currency == "GBP" %}
+                                            £
+                                        {% elif transaction.sent_currency == "EUR" %}
+                                            €
+                                        {% elif transaction.sent_currency == "USD" %}
+                                            $
+                                        {% endif %}{{ transaction.sent_amount }}
+                                        </dt>
+                                    </div>
+                                </dl>
                             </div>
-                            <div>
-                                <dt>{{ transaction.received_currency }}</dt>
-                                <dd>Receiver's Currency</dd>
-                            </div>
-                            <div>
-                                <dt>{{ transaction.timestamp|date:"H:i:s" }}</dt>
-                                <dd>Date {{ transaction.timestamp|date:"Y-m-d" }}</dd>
-                            </div>
-                        </dl>
-                        <div class="transfer-number">
-                            {% if transaction.received_currency == "GBP" %}
-                            £
-                            {% elif transaction.received_currency == "EUR" %}
-                            €
-                            {% elif transaction.received_currency == "USD" %}
-                            $
-                            {% endif %}{{ transaction.amount }}
-                        </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
                     {% else %}
                     <p>Please select a user to view transactions.</p>
                     {% endif %}
