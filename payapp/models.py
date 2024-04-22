@@ -2,6 +2,8 @@ from django.db import models
 from register.models import User, UserProfile
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.utils import timezone
+
 
 
 # class UserProfile(models.Model):
@@ -47,7 +49,9 @@ class Notification(models.Model):
     requester = models.ForeignKey(User, related_name='sent_notifications', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     requested_currency = models.CharField(max_length=3, default='')
-    timestamp = models.DateTimeField(auto_now_add=False)
+    timestamp = models.DateTimeField(auto_now_add=False, default=timezone.now)
+    accepted_at = models.DateTimeField(auto_now_add=False, default=timezone.now)
+    rejected_at = models.DateTimeField(auto_now_add=False, default=timezone.now)
     is_accepted = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
 

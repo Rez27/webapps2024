@@ -45,7 +45,7 @@
                         <div class="payments" onclick="openNotificationModal()">
                             <div class="payment">
                                 <div class="card-open-money-req olive">
-                                    {% if notifications %}
+                                    {% if pending_notifications %}
                                         <span style="color: #121212">Pending Money Requests</span>
                                     {% else %}
                                         <span style="color: #121212">No Money requests</span>
@@ -57,7 +57,7 @@
                             <div class="payments" onclick="openErrorModal()">
                                 <div class="payment">
                                     <div class="card-open-money-req olive" style="background-color: #a94442">
-                                         <span>Some Error occured <span>
+                                         <span>Error<span>
                                              <span> <h6>Click to view</h6></span>
                                     </div>
                                 </div>
@@ -142,7 +142,6 @@
                                 <input type="submit" id="submit" value="Add Money" class="flat-button">
                                 <p id="paymentError" style="color: red; display: none;">Amount must be between 1 and
                                     1000</p>
-
                             </form>
                         </div>
                     </div>
@@ -153,124 +152,137 @@
             <div class="modal" id="NotificationModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Pending Requests</h2>
+                        <div class="transfer-section-header">
+                            <a href='#' id='noti-active' class='active'><h2>Active Requests</h2>
+                            </a>
+                            <div class="filter-options">
+                                <a href='#' id='noti-history'><h2>Previous Requests</h2></a>
+                            </div>
+                        </div>
                         <span class="flat-button" onclick="closeNotificationModal()"
                               style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
-                        <div class = "modal-content toggle-notification" style="display:none">
-                            <section class="transfer-section">
-
-                                <div class="transfer-section-header">
-                                    <a href='#' id='toggle-noti-active' class='active'><h2>Active Requests</h2>
-                                    </a>
-                                    <div class="filter-options">
-                                        <a href='#' id='toggle-noti-history'><h2>Previous Requests</h2></a>
-                                    </div>
-                                    <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
-                                </div>
-
-                                <dl class="transfer-details">
-                                    <div>
-                                        <dt></dt>
-                                        <dd>Requester's Name</dd>
-                                    </div>
-                                    <div>
-                                        <dt></dt>
-                                        <dd>Amount requested</dd>
-                                    </div>
-                                    <div>
-                                        <dt></dt>
-                                        <dd>Requested at</dd>
-                                    </div>
-                                    <div>
-                                        <dt></dt>
-                                        <dd>Accept/Reject</dd>
-                                    </div>
-                                </dl>
-
-                                {% for notification in notifications %}
-                                    <div class="transfer">
-                                    <div class="transfer-logo">
-                                        <img src="{% static 'base/images/people.svg' %}"/>
-                                    </div>
+                        <section class="transfer-section">
+                            <div class="transfers">
+                                <div id="active-noti-window" class="toggle-transactions">
                                     <dl class="transfer-details">
                                         <div>
                                             <dt></dt>
-                                            <dd>{{ notification.requester }}</dd>
+                                            <dd>Requester's Name</dd>
                                         </div>
                                         <div>
-                                            <dt>{% if notification.requested_currency == "GBP" %}
-                                                £
-                                            {% elif notification.requested_currency == "EUR" %}
-                                                €
-                                            {% elif notification.requested_currency == "USD" %}
-                                                $
-                                            {% endif %}{{ notification.amount }}</dt>
+                                            <dt></dt>
+                                            <dd>Amount requested</dd>
                                         </div>
                                         <div>
-                                        
+                                            <dt></dt>
+                                            <dd>Requested at</dd>
+                                        </div>
+                                        <div>
+                                            <dt></dt>
+                                            <dd>Accept/Reject</dd>
                                         </div>
                                     </dl>
-                                    </div>
-                                {% endfor %}
-                            </section>
-                        </div>
-                        <div class="modal-content toggle-notification">
-                            <div class="table-container">
-                                <table class="notification-table">
-                                    <tbody>
-                                    <th>
-                                        Requester
-                                    </th>
-                                    <th>
-                                        Amount
-                                    </th>
-                                    <th>
-                                        Requested On
-                                    </th>
-                                    <th>
-                                        Accept/Deny
-                                    </th>
-                                    {% for notification in notifications %}
-                                        <tr>
-                                            <td>{{ notification.requester }}</td>
-                                            <td>{% if notification.requested_currency == "GBP" %}
-                                                £
-                                            {% elif notification.requested_currency == "EUR" %}
-                                                €
-                                            {% elif notification.requested_currency == "USD" %}
-                                                $
-                                            {% endif %}{{ notification.amount }}</td>
-                                            <td></td>
-                                            <td>
-                                                <form method="post" action="{% url 'main_page' %}">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" name="requester_username"
-                                                           value="{{ notification.requester }}">
-                                                    <input type="hidden" name="notification_id"
-                                                           value="{{ notification.id }}">
-                                                    <input type="hidden" name="requested_amount"
-                                                           value="{{ notification.amount }}">
-                                                    <input type="hidden" name="requested_currency"
-                                                           value="{{ notification.requested_currency }}">
-                                                    <input type="submit" class="flat-button-accept" id="accept_submit"
-                                                           name="accept_notification"
-                                                           value="Accept">
-                                                    <input type="submit" class="flat-button-reject" id="reject_submit"
-                                                           name="reject_notification"
-                                                           value="Reject">
-                                                </form>
-                                            </td>
-                                        </tr>
+                                    {% for notification in pending_notifications %}
+                                        <div class="transfer">
+                                            <div class="transfer-logo">
+                                                <img src="{% static 'base/images/people.svg' %}"/>
+                                            </div>
+                                            <dl class="transfer-details">
+                                                <div>
+                                                    <dt></dt>
+                                                    <dd>{{ notification.requester }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>{% if notification.requested_currency == "GBP" %}
+                                                        £
+                                                    {% elif notification.requested_currency == "EUR" %}
+                                                        €
+                                                    {% elif notification.requested_currency == "USD" %}
+                                                        $
+                                                    {% endif %}{{ notification.amount }}</dt>
+                                                </div>
+                                                <div>
+                                                    <dd>
+                                                        <form method="post" action="{% url 'main_page' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="requester_username"
+                                                                   value="{{ notification.requester }}">
+                                                            <input type="hidden" name="notification_id"
+                                                                   value="{{ notification.id }}">
+                                                            <input type="hidden" name="requested_amount"
+                                                                   value="{{ notification.amount }}">
+                                                            <input type="hidden" name="requested_currency"
+                                                                   value="{{ notification.requested_currency }}">
+                                                            <input type="submit" class="flat-button-accept"
+                                                                   id="accept_submit"
+                                                                   name="accept_notification"
+                                                                   value="Accept">
+                                                            <input type="submit" class="flat-button-reject"
+                                                                   id="reject_submit"
+                                                                   name="reject_notification"
+                                                                   value="Reject">
+                                                        </form>
+                                                    </dd>
+                                                </div>
+                                            </dl>
+                                        </div>
                                     {% endfor %}
-                                    </tbody>
-                                </table>
+                                </div>
+
+                                <div class=" toggle-transactions" id="history-noti-window" style="display:none">
+                                    <dl class="transfer-details">
+                                        <div>
+                                            <dt></dt>
+                                            <dd>Requester's Name</dd>
+                                        </div>
+                                        <div>
+                                            <dt></dt>
+                                            <dd>Amount requested</dd>
+                                        </div>
+                                        <div>
+                                            <dt></dt>
+                                            <dd>Rejected at</dd>
+                                        </div>
+                                        <div>
+                                            <dt></dt>
+                                            <dd>Accept/Reject</dd>
+                                        </div>
+                                    </dl>
+                                    {% for notification in rejected_notifications %}
+                                        <div class="transfer">
+                                            <div class="transfer-logo">
+                                                <img src="{% static 'base/images/people.svg' %}"/>
+                                            </div>
+                                            <dl class="transfer-details">
+                                                <div>
+                                                    <dt></dt>
+                                                    <dd>{{ notification.receiver }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt>{% if notification.requested_currency == "GBP" %}
+                                                        £
+                                                    {% elif notification.requested_currency == "EUR" %}
+                                                        €
+                                                    {% elif notification.requested_currency == "USD" %}
+                                                        $
+                                                    {% endif %}{{ notification.amount }}</dt>
+                                                </div>
+                                                <div>
+                                                    <dd>
+                                                        {{ notification.rejected_at }}
+                                                    </dd>
+                                                </div>
+                                            </dl>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="flat-button" onclick="closeNotificationModal()">Close</button>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button class="flat-button" onclick="closeNotificationModal()">Close</button>
-                            </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
@@ -335,7 +347,8 @@
                             <article class="tile">
                                 <div class="tile-header">
                                     <h3>
-                                        <span>Looks like you  here. Wait for some users to join this system.</span>
+                                        <span>Looks like you are the only one here.</span>
+                                        <span>Wait for some users to join this system.</span>
                                     </h3>
                                 </div>
                             </article>

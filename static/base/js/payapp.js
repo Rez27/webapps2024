@@ -94,3 +94,26 @@ toggleSent.addEventListener('click', function (event) {
 });
 
 
+//Notification's Toggle
+const notiactive = document.getElementById('noti-active');
+const notihistory = document.getElementById('noti-history');
+const activenotiwindow = document.getElementById('active-noti-window');
+const historynotiwindow = document.getElementById('history-noti-window');
+// Add click event listeners to the anchor tags
+notiactive.addEventListener('click', function (event) {
+    event.preventDefault();
+    activenotiwindow.style.display = 'block';
+    historynotiwindow.style.display = 'none';
+    // Update active class
+    notiactive.classList.add('active');
+    notihistory.classList.remove('active');
+});
+
+notihistory.addEventListener('click', function (event) {
+    event.preventDefault();
+    historynotiwindow.style.display = 'block';
+    activenotiwindow.style.display = 'none';
+    // Update active class
+    notihistory.classList.add('active');
+    notiactive.classList.remove('active');
+});

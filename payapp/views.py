@@ -30,6 +30,7 @@ def main_page(request):
     pay_form = PaymentForm()
     request_form = RequestForm()
     pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False)
+    rejected_notifications = Notification.objects.filter(requester=user, is_rejected=True )
 
     # To Show latest transactions
     try:
@@ -101,6 +102,7 @@ def main_page(request):
                             'username': username,
                             'users': users,
                             'pending_notifications': pending_notifications,
+                            'rejected_notifications': rejected_notifications,
                             'received_transactions': received_transactions,
                             'sent_transactions': sent_transactions,
                             'pay_form': pay_form,
@@ -144,6 +146,7 @@ def main_page(request):
                         'username': username,
                         'users': users,
                         'pending_notifications': pending_notifications,
+                        'rejected_notifications':rejected_notifications,
                         'received_transactions': received_transactions,
                         'sent_transactions': sent_transactions,
                         'pay_form': pay_form,
@@ -190,6 +193,7 @@ def main_page(request):
                             'username': username,
                             'users': users,
                             'pending_notifications': pending_notifications,
+                            'rejected_notifications': rejected_notifications,
                             'received_transactions': received_transactions,
                             'sent_transactions': sent_transactions,
                             'pay_form': pay_form,
@@ -212,6 +216,7 @@ def main_page(request):
                         'username': username,
                         'users': users,
                         'pending_notifications': pending_notifications,
+                        'rejected_notifications': rejected_notifications,
                         'received_transactions': received_transactions,
                         'sent_transactions': sent_transactions,
                         'pay_form': pay_form,
@@ -281,6 +286,7 @@ def main_page(request):
                     'username': username,
                     'users': users,
                     'pending_notifications': pending_notifications,
+                    'rejected_notifications': rejected_notifications,
                     'received_transactions': received_transactions,
                     'sent_transactions': sent_transactions,
                     'pay_form': pay_form,
@@ -317,6 +323,7 @@ def main_page(request):
         'username': username,
         'users': users,
         'pending_notifications': pending_notifications,
+        'rejected_notifications': rejected_notifications,
         'received_transactions': received_transactions,
         'sent_transactions': sent_transactions
     }
