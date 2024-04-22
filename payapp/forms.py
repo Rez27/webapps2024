@@ -25,6 +25,14 @@ class PaymentForm(forms.Form):
     currency_type = forms.CharField(widget=forms.HiddenInput())
     pay_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
 
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount <= 0:
+            raise forms.ValidationError("Amount must be greater than 0.")
+        if amount >= 1000:
+            raise forms.ValidationError("Amount must be lower than 1000.")
+        return amount
+
 
 class RequestForm(forms.Form):
     requested_amount = forms.DecimalField(label='Request Amount', required=True,
@@ -35,6 +43,14 @@ class RequestForm(forms.Form):
     request_last_name = forms.CharField(widget=forms.HiddenInput())
     request_currency_type = forms.CharField(widget=forms.HiddenInput())
     request_form = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+    def clean_amount(self):
+        requested_amount = self.cleaned_data['requested_amount']
+        if requested_amount <= 0:
+            raise forms.ValidationError("Amount must be greater than 0.")
+        if requested_amount >= 1000:
+            raise forms.ValidationError("Amount must be lower than 1000.")
+        return requested_amount
 
 
 class ShowTransactionsForm(forms.Form):

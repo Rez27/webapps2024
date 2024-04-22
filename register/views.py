@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm
 from .models import UserProfile
 from payapp.views import admin_ui
+from payapp.models import UserProfile
 
 
 def register(request):
@@ -31,7 +32,7 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                if is_superuser and user.userprofile.is_superuser:
+                if is_superuser and user.register_profile.is_superuser:
                     # Redirect the superuser to the admin UI page
                     return redirect('admin_ui')
                 else:

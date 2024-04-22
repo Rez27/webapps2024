@@ -29,7 +29,7 @@ def main_page(request):
     addMoneyForm = AddMoneyForm()
     pay_form = PaymentForm()
     request_form = RequestForm()
-    notifications = Notification.objects.filter(receiver=user)
+    pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False)
 
     # To Show latest transactions
     try:
@@ -92,19 +92,22 @@ def main_page(request):
                     if sender_profile.bal <= 0 or float("{:.2f}".format(amount)) > sender_profile.bal:
                         print("Not enough user balance")
                         error_message = "You've got low balance. Please Add Money to your account before carrying out any transactions."
+                        pay_form = PaymentForm()
+                        addMoneyForm = AddMoneyForm()
+                        request_form = RequestForm()
                         context = {
                             'user_balance': user_profile.bal,
                             'user_currency': user_profile.currency,
                             'username': username,
                             'users': users,
-                            'notifications': notifications,
+                            'pending_notifications': pending_notifications,
                             'received_transactions': received_transactions,
                             'sent_transactions': sent_transactions,
+                            'pay_form': pay_form,
+                            'addMoneyForm': addMoneyForm,
+                            'request_form': request_form,
                             'error_message': error_message
                         }
-                        pay_form = PaymentForm()
-                        addMoneyForm = AddMoneyForm()
-                        request_form = RequestForm()
                         return render(request, 'payapp/ui.html', context)
                     print("THis is sender_profile.bal", converted_amount,
                           type(float("{:.2f}".format(converted_amount))))
@@ -132,20 +135,23 @@ def main_page(request):
                     return redirect('main_page')  # Redirect to a success page
                 except TException as e:
                     error_message = "Internal Server Error. Your Previous transfer was not carried out"
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
                     context = {
                         'user_balance': user_profile.bal,
                         'user_currency': user_profile.currency,
                         'username': username,
                         'users': users,
-                        'notifications': notifications,
+                        'pending_notifications': pending_notifications,
                         'received_transactions': received_transactions,
                         'sent_transactions': sent_transactions,
+                        'pay_form': pay_form,
+                        'addMoneyForm': addMoneyForm,
+                        'request_form':request_form,
                         'error_message': error_message
                     }
                     print("TimeStamp Server not Runnning. Issue-", e)
-                    pay_form = PaymentForm()
-                    addMoneyForm = AddMoneyForm()
-                    request_form = RequestForm()
                     return render(request, 'payapp/ui.html', context)
             else:
                 print("Pay Form not valid")
@@ -175,39 +181,45 @@ def main_page(request):
                     except:
                         print("Notification not created for money request")
                         error_message = "Internal Server Error. Request Notification was not sent"
+                        pay_form = PaymentForm()
+                        addMoneyForm = AddMoneyForm()
+                        request_form = RequestForm()
                         context = {
                             'user_balance': user_profile.bal,
                             'user_currency': user_profile.currency,
                             'username': username,
                             'users': users,
-                            'notifications': notifications,
+                            'pending_notifications': pending_notifications,
                             'received_transactions': received_transactions,
                             'sent_transactions': sent_transactions,
+                            'pay_form': pay_form,
+                            'addMoneyForm': addMoneyForm,
+                            'request_form':request_form,
                             'error_message': error_message
                         }
-                        pay_form = PaymentForm()
-                        addMoneyForm = AddMoneyForm()
-                        request_form = RequestForm()
                         return render(request, 'payapp/ui.html', context)
                     sender_profile = request.user.register_profile
                     RequestForm()
                     return redirect('main_page')  # Redirect to a success page
                 except TException as e:
                     error_message = "Internal Server Error. Request Notification was not sent"
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
                     context = {
                         'user_balance': user_profile.bal,
                         'user_currency': user_profile.currency,
                         'username': username,
                         'users': users,
-                        'notifications': notifications,
+                        'pending_notifications': pending_notifications,
                         'received_transactions': received_transactions,
                         'sent_transactions': sent_transactions,
+                        'pay_form': pay_form,
+                        'addMoneyForm': addMoneyForm,
+                        'request_form':request_form,
                         'error_message': error_message
                     }
                     print("TimeStamp Server not Runnning. Issue-", e)
-                    pay_form = PaymentForm()
-                    addMoneyForm = AddMoneyForm()
-                    request_form = RequestForm()
                     return render(request, 'payapp/ui.html', context)
 
             else:
@@ -260,21 +272,36 @@ def main_page(request):
                 return redirect('main_page')
             except TException as e:
                 error_message = "Internal Server Error. Previous transfer was not carried out"
+                pay_form = PaymentForm()
+                addMoneyForm = AddMoneyForm()
+                request_form = RequestForm()
                 context = {
                     'user_balance': user_profile.bal,
                     'user_currency': user_profile.currency,
                     'username': username,
                     'users': users,
-                    'notifications': notifications,
+                    'pending_notifications': pending_notifications,
                     'received_transactions': received_transactions,
                     'sent_transactions': sent_transactions,
+                    'pay_form': pay_form,
+                    'addMoneyForm': addMoneyForm,
+                    'request_form':request_form,
                     'error_message': error_message
                 }
                 print("TimeStamp Server not Runnning. Issue-", e)
-                pay_form = PaymentForm()
-                addMoneyForm = AddMoneyForm()
-                request_form = RequestForm()
                 return render(request, 'payapp/ui.html', context)
+        elif 'reject_notification' in request.POST:
+            requester = request.POST['requester_username']
+            try:
+                sender_user = User.objects.get(username=requester)
+            except User.DoesNotExist:
+                print("Profile not found in reject notification")
+                return redirect('main_page')
+            notification_id = request.POST['notification_id']
+            notification = get_object_or_404(Notification, pk=notification_id)
+            notification.is_rejected = True
+            notification.save()
+            return redirect('main_page')
     else:
         print("Something wrong with request type")
         addMoneyForm = AddMoneyForm()
@@ -289,7 +316,7 @@ def main_page(request):
         'request_form': request_form,
         'username': username,
         'users': users,
-        'notifications': notifications,
+        'pending_notifications': pending_notifications,
         'received_transactions': received_transactions,
         'sent_transactions': sent_transactions
     }
@@ -335,7 +362,7 @@ def convert_currency(currency1, currency2, amount):
 
 @login_required(login_url='/login/')
 def admin_ui(request):
-    if request.user.userprofile.is_superuser:
+    if request.user.register_profile.is_superuser:
         users = User.objects.all()
         user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
         transactions_sent = None

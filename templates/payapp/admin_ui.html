@@ -104,13 +104,13 @@
                             <span> {{ user.first_name }} {{ user.last_name }}</span>
                             <span><h6>Username - {{user.username}}</h6></span>
                             <span> <h6>Is Admin - {{user.is_superuser}}</h6></span>
-                            <span> Balance-{{ user.payapp_profile.bal }}
+                            <span> Balance-{{ user.register_profile.bal }}
 
-                                            {% if user.payapp_profile.get_currency_display == "GBP" %}
+                                            {% if user.register_profile.get_currency_display == "GBP" %}
                                                 £
-                                            {% elif user.payapp_profile.get_currency_display == "EUR" %}
+                                            {% elif user.register_profile.get_currency_display == "EUR" %}
                                                 €
-                                            {% elif user.payapp_profile.get_currency_display == "USD" %}
+                                            {% elif user.register_profile.get_currency_display == "USD" %}
                                                 $
                                             {% endif %}
                             </span>

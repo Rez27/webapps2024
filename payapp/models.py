@@ -49,6 +49,7 @@ class Notification(models.Model):
     requested_currency = models.CharField(max_length=3, default='')
     timestamp = models.DateTimeField(auto_now_add=False)
     is_accepted = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.requester.username} -> {self.receiver.username}: {self.amount} ({'Accepted' if self.is_accepted else 'Pending'})"
