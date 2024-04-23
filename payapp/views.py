@@ -29,8 +29,8 @@ def main_page(request):
     addMoneyForm = AddMoneyForm()
     pay_form = PaymentForm()
     request_form = RequestForm()
-    pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False, is_rejected=False)
-    rejected_notifications = Notification.objects.filter(requester=user, is_rejected=True)
+    pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False, is_rejected=False) #Get a list of all pending requests for logged in user from the receiver
+    rejected_notifications = Notification.objects.filter(requester=user, is_rejected=True) #Get a list of all rejected notifications for logged in user from whom he requested money from
 
     # To Show latest transactions
     try:
