@@ -254,6 +254,28 @@ def main_page(request):
                 print("This is",requester_profile.user,"'s", currency1, "and this is", user_profile.user,"'s", currency2)
                 print("This is the ammount that will be deducted from ironman's account after conversion",
                       converted_amount)
+                if Decimal("{:.2f}".format(converted_amount)) > user_profile.bal:
+                    error_message = "You Dont have enough Money to accept this transaction"
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
+                    context = {
+                        'user_balance': user_profile.bal,
+                        'user_currency': user_profile.currency,
+                        'username': username,
+                        'users': users,
+                        'pending_notifications': pending_notifications,
+                        'rejected_notifications': rejected_notifications,
+                        'received_transactions': received_transactions,
+                        'sent_transactions': sent_transactions,
+                        'pay_form': pay_form,
+                        'addMoneyForm': addMoneyForm,
+                        'request_form':request_form,
+                        'error_message': error_message
+                    }
+                    print("Not enough balance to accept money request")
+                    return render(request, 'payapp/ui.html', context)
+
                 # Deduct money from sender's account
                 user_profile.bal -= Decimal("{:.2f}".format(converted_amount)) #Deduct converted money instead of amount asked due to currency conversion
                 #Add Money to receiver
