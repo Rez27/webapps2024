@@ -29,8 +29,8 @@ def main_page(request):
     addMoneyForm = AddMoneyForm()
     pay_form = PaymentForm()
     request_form = RequestForm()
-    pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False)
-    rejected_notifications = Notification.objects.filter(requester=user, is_rejected=True )
+    pending_notifications = Notification.objects.filter(receiver=user, is_accepted=False, is_rejected=False)
+    rejected_notifications = Notification.objects.filter(requester=user, is_rejected=True)
 
     # To Show latest transactions
     try:
@@ -263,6 +263,7 @@ def main_page(request):
                 notification = get_object_or_404(Notification, pk=notification_id)
                 # Mark the notification as accepted
                 notification.is_accepted = True
+                notification.accepted_at = timestamp
                 transaction = Transaction.objects.create(sender=user_profile, receiver=requester_profile,
                                                           sent_amount=Decimal("{:.2f}".format(converted_amount)),
                                                           received_amount=Decimal("{:.2f}".format(float(requested_amount))),
@@ -296,6 +297,7 @@ def main_page(request):
                 }
                 print("TimeStamp Server not Runnning. Issue-", e)
                 return render(request, 'payapp/ui.html', context)
+
         elif 'reject_notification' in request.POST:
             requester = request.POST['requester_username']
             try:
@@ -303,11 +305,36 @@ def main_page(request):
             except User.DoesNotExist:
                 print("Profile not found in reject notification")
                 return redirect('main_page')
-            notification_id = request.POST['notification_id']
-            notification = get_object_or_404(Notification, pk=notification_id)
-            notification.is_rejected = True
-            notification.save()
-            return redirect('main_page')
+            try:
+                client = make_client(Timestamp, '127.0.0.1', 9090)
+                timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
+                notification_id = request.POST['notification_id']
+                notification = get_object_or_404(Notification, pk=notification_id)
+                notification.is_rejected = True
+                notification.rejected_at = timestamp
+                notification.save()
+                return redirect('main_page')
+            except TException as e:
+                error_message = "Internal Server Error. Previous transfer was not carried out"
+                pay_form = PaymentForm()
+                addMoneyForm = AddMoneyForm()
+                request_form = RequestForm()
+                context = {
+                    'user_balance': user_profile.bal,
+                    'user_currency': user_profile.currency,
+                    'username': username,
+                    'users': users,
+                    'pending_notifications': pending_notifications,
+                    'rejected_notifications': rejected_notifications,
+                    'received_transactions': received_transactions,
+                    'sent_transactions': sent_transactions,
+                    'pay_form': pay_form,
+                    'addMoneyForm': addMoneyForm,
+                    'request_form':request_form,
+                    'error_message': error_message
+                }
+                print("TimeStamp Server not Runnning. Issue-", e)
+                return render(request, 'payapp/ui.html', context)
     else:
         print("Something wrong with request type")
         addMoneyForm = AddMoneyForm()

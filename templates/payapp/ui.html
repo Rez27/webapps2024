@@ -46,9 +46,9 @@
                             <div class="payment">
                                 <div class="card-open-money-req olive">
                                     {% if pending_notifications %}
-                                        <span style="color: #121212">Pending Money Requests</span>
+                                        <span style="color: #121212"> {{ pending_notifications.count }} money request pending</span>
                                     {% else %}
-                                        <span style="color: #121212">No Money requests</span>
+                                        <span style="color: #121212">Your money requests</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -153,10 +153,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="transfer-section-header">
-                            <a href='#' id='noti-active' class='active'><h2>Active Requests</h2>
+                            <a href='#' id='noti-active' class='active'><h2>Pending Requests</h2>
                             </a>
                             <div class="filter-options">
-                                <a href='#' id='noti-history'><h2>Previous Requests</h2></a>
+                                <a href='#' id='noti-history'><h2>Rejected Requests</h2></a>
                             </div>
                         </div>
                         <span class="flat-button" onclick="closeNotificationModal()"
