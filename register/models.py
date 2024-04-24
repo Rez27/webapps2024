@@ -9,7 +9,6 @@ class UserProfile(models.Model):
     email = models.EmailField()
     currency = models.CharField(max_length=20, choices=[('GBP', 'GBP'), ('Euro', 'EUR'), ('Dollar', 'USD')])
     is_superuser = models.BooleanField(default=False)
-
     bal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
