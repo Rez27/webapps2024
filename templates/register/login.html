@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+    <body class="body-login">
+    <div class="container-login">
+        <section id="formHolder">
+
+            <div class="row">
+
+                <!-- Brand Box -->
+                <div class="col-sm-6 brand">
+{#                    <a href="#" class="logo">MR <span>.</span></a>#}
+
+                    <div class="heading">
+                        <h2>FINNOVA</h2>
+                        <p>Your Right Choice</p>
+                    </div>
+
+                    <div class="success-msg">
+                        <p>Great! You are one of our members now</p>
+                        <a href="#" class="profile">Your Profile</a>
+                    </div>
+                </div>
+
+                <!-- Form Box -->
+                <div class="col-sm-6 form">
+                    <!-- Login Form -->
+                    <div class="login form-piece">
+                        <form class="login-form" action="{% url 'login' %}" method="post">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            <br>
+                            <div class="CTA">
+                                <input type="submit" id="login" value="Login">
+                                <a href="{% url 'register' %}">I'm New</a>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Login Form -->
+                </div>
+            </div>
+        </section>
+    </div>
+    </body>
+{#    <script src="{% static 'base/js/login.js' %}"></script>#}
+
+{% endblock %}
+
