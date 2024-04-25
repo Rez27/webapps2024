@@ -1,9 +1,9 @@
-import thriftpy
-from thriftpy.rpc import make_server
+import thriftpy2
+from thriftpy2.rpc import make_server
 import time
 
 # Load the Timestamp thrift definition
-timestamp_thrift = thriftpy.load("timestamp.thrift", module_name="timestamp_thrift")
+timestamp_thrift = thriftpy2.load("timestamp.thrift", module_name="timestamp_thrift")
 Timestamp = timestamp_thrift.TimestampService
 
 

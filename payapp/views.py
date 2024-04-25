@@ -10,12 +10,12 @@ from decimal import Decimal
 from django.urls import reverse
 
 # Thrift Time Service code
-import thriftpy
-from thriftpy.rpc import make_client
-from thriftpy.thrift import TException
+import thriftpy2
+from thriftpy2.rpc import make_client
+from thriftpy2.thrift import TException
 from datetime import datetime
 
-timestamp_thrift = thriftpy.load(
+timestamp_thrift = thriftpy2.load(
     'timestamp.thrift', module_name='timestamp_thrift')
 Timestamp = timestamp_thrift.TimestampService
 
