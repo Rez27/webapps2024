@@ -49,13 +49,12 @@ def main_page(request):
                 amount = addMoneyForm.cleaned_data['amount']
                 if user_profile_exists:
                     user_profile.bal += amount
+                    user_profile.save()
                 else:
                     print("Money Not added")
-                    user_profile.bal = amount
-                user_profile.save()
                 return redirect('main_page')
             else:
-                print("Add money not valid")
+                print("Add money form not valid")
                 addMoneyForm = AddMoneyForm()
 
         # Pay Money To selected user logic
@@ -81,7 +80,7 @@ def main_page(request):
                 currency2 = receiver_profile.currency  # Get receiver's currency
                 converted_amount = convert_currency(currency1, currency2, amount)
                 if converted_amount is None:
-                    # Handle currency conversion error
+                    # Currency conversion error
                     context = {
                         'conversion_error': 'Failed to convert currency.'}
                     print("Something wrong in amount conversion")
