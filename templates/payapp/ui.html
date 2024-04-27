@@ -82,13 +82,14 @@
             <div class="modal" id="payModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Pay Modal</h2>
+                        <h2>Pay Money to selected user</h2>
                         <button class="flat-button" onclick="closePayModal()"
                                 style="background-color: var(--c-olive-500); color: #121212">X
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Note: Your amount will be exchanged based on fixed forex rate </p>
+                        <p>E.g. If you enter $10 to pay, only £7.30 will be credited to the selected user's account considering currency conversion</p>
+
                         <form method="post" action="{% url 'main_page' %}" class="form">
                             {% csrf_token %}
                             {{ pay_form | crispy }}
@@ -98,6 +99,8 @@
                             <input type="hidden" name="user_name" id="user_name">
                             <input type="submit" class="flat-button" id="submit" value="Pay">
                         </form>
+                        <p>Note: Your amount will be exchanged based on fixed forex rate </p>
+
                     </div>
                 </div>
             </div>
@@ -106,13 +109,13 @@
             <div class="modal" id="requestModal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Request Modal</h2>
+                        <h2>Request money from selected user</h2>
                         <button class="flat-button" onclick="closeRequestModal()"
                                 style="background-color: var(--c-olive-500); color: #121212">X
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Request Modal Content</p>
+                        <p>Note: Your amount will be exchanged based on fixed forex rate</p>
                         <form method="post" action="{% url 'main_page' %}">
                             {% csrf_token %}
                             {{ request_form | crispy }}
@@ -130,12 +133,13 @@
             <div class="modal" id="AddMoney">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Add Money</h2>
+                        <h2>Add Money to your Balance</h2>
                         <span class="flat-button" onclick="closeAddMoney()"
                               style="background-color: var(--c-olive-500); color: #121212">X</span>
                     </div>
                     <div class="modal-body">
                         <div class="modal-content">
+                            <span>Add balance anywhere between 1 to 999</span>
                             <form method="post" action="{% url 'main_page' %}">
                                 {% csrf_token %}
                                 {{ addMoneyForm | crispy }}
@@ -301,7 +305,7 @@
 
             <div class="app-body-main-content">
                 <section class="service-section">
-                    <h2>Connections</h2>
+                    <h2>Your Connections</h2>
                     <div class="mobile-only">
                         <button class="flat-button">
                             Toggle search
