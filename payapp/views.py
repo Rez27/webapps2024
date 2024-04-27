@@ -10,12 +10,12 @@ from decimal import Decimal
 from django.urls import reverse
 
 # Thrift Time Service code
-import thriftpy
-from thriftpy.rpc import make_client
-from thriftpy.thrift import TException
+import thriftpy2
+from thriftpy2.rpc import make_client
+from thriftpy2.thrift import TException
 from datetime import datetime
 
-timestamp_thrift = thriftpy.load(
+timestamp_thrift = thriftpy2.load(
     'timestamp.thrift', module_name='timestamp_thrift')
 Timestamp = timestamp_thrift.TimestampService
 
@@ -49,13 +49,12 @@ def main_page(request):
                 amount = addMoneyForm.cleaned_data['amount']
                 if user_profile_exists:
                     user_profile.bal += amount
+                    user_profile.save()
                 else:
                     print("Money Not added")
-                    user_profile.bal = amount
-                user_profile.save()
                 return redirect('main_page')
             else:
-                print("Add money not valid")
+                print("Add money form not valid")
                 addMoneyForm = AddMoneyForm()
 
         # Pay Money To selected user logic
@@ -81,7 +80,7 @@ def main_page(request):
                 currency2 = receiver_profile.currency  # Get receiver's currency
                 converted_amount = convert_currency(currency1, currency2, amount)
                 if converted_amount is None:
-                    # Handle currency conversion error
+                    # Currency conversion error
                     context = {
                         'conversion_error': 'Failed to convert currency.'}
                     print("Something wrong in amount conversion")
