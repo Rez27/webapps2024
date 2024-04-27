@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15667af9-9f40-473b-b125-d3e31e3fc492" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/register/register_admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0f6808a0-0805-47fb-83af-97a87fa8df10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0f6808a0-0805-47fb-83af-97a87fa8df10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/register/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/register/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/register/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/register/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/payapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/register/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/register/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/payapp/admin_ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payapp/admin_ui.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/payapp/ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payapp/ui.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webapps2024/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapps2024/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

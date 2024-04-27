@@ -20,7 +20,7 @@ timestamp_thrift = thriftpy2.load(
 Timestamp = timestamp_thrift.TimestampService
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/webapps2024/login/')
 def main_page(request):
     user = request.user  # Logged in User
     username = request.user.username
@@ -415,7 +415,7 @@ def convert_currency(currency1, currency2, amount):
         return None, None
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/webapps2024/login/')
 def admin_ui(request):
     if request.user.register_profile.is_superuser:
         users = User.objects.all()

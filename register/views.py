@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm, AdminRegistrationForm
-from .models import UserProfile
-from payapp.views import admin_ui
-from payapp.models import UserProfile
+from django.contrib.auth.decorators import login_required
+from .decorators import superuser_required
 
 
 def register(request):
@@ -44,6 +43,8 @@ def user_login(request):
     return render(request, 'register/login.html', {'form': form})
 
 
+@login_required(login_url='/webapps2024/login/')
+@superuser_required
 def register_admin(request):
     if request.method == 'POST':
         form = AdminRegistrationForm(request.POST)

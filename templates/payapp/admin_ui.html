@@ -20,6 +20,7 @@
                         {% csrf_token %}
                         <button type="submit" class="save-button" style="color: #121212">Logout</button>
                     </form>
+
                 </div>
             </div>
 
@@ -34,27 +35,18 @@
                 <div class="logo">
                     <h1 class="logo-title">
                         <div class="payments">
+                            <a href="{% url 'register_admin' %}">
                             <div class="payment">
-
+                                <div class="card-open-money-req olive">
+                                    <span style="color: #121212">Add New Admin</span>
+                                </div>
                             </div>
+                            </a>
                         </div>
                     </h1>
                 </div>
             </div>
         </header>
-
-
-        <div class="service-section-header">
-            <div class="search-field">
-                <i class="ph-magnifying-glass"></i>
-                <input type="text" placeholder="Search by Account Name">
-            </div>
-
-            <button class="flat-button" style="background-color: var(--c-olive-500); color: #121212">
-                Search
-            </button>
-        </div>
-
         {# Show Transactions Modal#}
         {#    <div class="modal" id="TransactionModal">#}
         {#        <div class="modal-content">#}
@@ -149,7 +141,9 @@
                     <div class="filter-options">
                         <a href='#' id='toggle-sent'><h2>Paid Money</h2></a>
                     </div>
+                    {% if transactions_received or transactions_sent %}
                     <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
+                    {% endif %}
                 </div>
                 <div class="transfers">
                     <div id="received-transactions" class='toggle-transactions'>
