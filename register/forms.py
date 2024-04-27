@@ -33,7 +33,6 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].required = True
         self.fields['currency'].required = True
 
-
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
@@ -43,6 +42,7 @@ class UserRegistrationForm(UserCreationForm):
             user.save()
         user_profile, created = UserProfile.objects.get_or_create(user=user)
         user_profile.currency = self.cleaned_data['currency']
+        user_profile.email = self.cleaned_data['email']
         user_profile.save()
         return user
 
@@ -55,8 +55,53 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
     is_superuser = forms.BooleanField(required=False)
 
-
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['password'].required = True
+
+
+class AdminRegistrationForm(UserCreationForm):
+    currency_choices = [
+        ('GBP', 'GBP'),
+        ('EUR', 'Euro'),
+        ('USD', 'Dollar')
+    ]
+    currency = forms.ChoiceField(choices=currency_choices)
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'currency']
+
+    def __init__(self, *args, **kwargs):
+        super(AdminRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+        self.fields['password1'].required = True
+        self.fields['password2'].required = True
+        self.fields['currency'].required = True
+
+    def save(self, commit=True):
+        user = super(AdminRegistrationForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.is_staff = user.is_superuser = True
+        user.is_superuser = True  # Set is_superuser to True for the User model
+        if commit:
+            user.save()
+            # Create or get UserProfile and set is_superuser to True
+            user_profile, created = UserProfile.objects.get_or_create(user=user)
+            user_profile.currency = self.cleaned_data['currency']
+            user_profile.email = self.cleaned_data['email']
+            user_profile.bal = 1000
+            user_profile.is_superuser = True
+            user_profile.is_superuser = True
+            user_profile.save()
+
+        return user
+
+
+

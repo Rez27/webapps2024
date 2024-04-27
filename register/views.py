@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, LoginForm
+from .forms import UserRegistrationForm, LoginForm, AdminRegistrationForm
 from .models import UserProfile
 from payapp.views import admin_ui
 from payapp.models import UserProfile
@@ -42,3 +42,19 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'register/login.html', {'form': form})
+
+
+def register_admin(request):
+    if request.method == 'POST':
+        form = AdminRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print("Successful admin registration")
+            return redirect('admin_ui')
+        else:
+            print("Register new admin Failed")
+            return render(request, 'register/register_admin.html', {'form': form})
+    else:
+        form = AdminRegistrationForm()
+        print("Register Admin Failure in request method")
+    return render(request, 'register/register_admin.html', {'form': form})

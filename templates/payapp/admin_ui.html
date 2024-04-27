@@ -131,9 +131,11 @@
                             </form>
                             <br>
                             {% if not user.is_superuser %}
+                                <form action="{% url 'admin_ui' %}" method="post">
                                 <button class="flat-button">
                                     Make Admin
                                 </button>
+                                </form>
                             {% endif %}
                         </article>
                     {% endfor %}
