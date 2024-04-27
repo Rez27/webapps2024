@@ -1,34 +1,20 @@
-from django.contrib.auth.models import User
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from django.contrib.auth.models import Group
-from register.models import UserProfile
-
-
+from django.apps import apps
 @receiver(post_migrate)
-def create_default_admin(sender, **kwargs):
-    # Check if this is the initial migration
-    if kwargs.get('app') == 'register' and kwargs.get('created_models'):
-        # Check if User model is created
-        if User in kwargs['created_models']:
-            # Create default admin user
-            admin_user, created = User.objects.get_or_create(
-                username='admin',
-                first_name='admin',
-                last_name='admin',
-                email='admin@gmc.com',
-                is_superuser=True,
-                is_staff=True
-            )
-            if created:
-                admin_user.set_password('admin')  # Set default password
-                admin_user.save()
+def create_admin_user(sender, **kwargs):
+    if kwargs.get('app_config').name == 'register':  # Ensure the signal is triggered only for the 'register' app
+        from django.contrib.auth.models import User  # Import inside the function
+        if not User.objects.filter(username='admin').exists():  # Check if admin user doesn't exist
+            admin_user = User.objects.create_superuser('admin', 'admin@gmc.com', 'admin', first_name='Admin', last_name='User')
 
-            # Create default admin UserProfile
-            admin_profile, created = UserProfile.objects.get_or_create(
-                user=admin_user,
-                email='admin@gmc.com',
-                currency='GBP',
-                is_superuser=True,
-                bal=1000
-            )
+            UserProfile = apps.get_model('register', 'UserProfile')  # Get the UserProfile model dynamically
+            if not UserProfile.objects.filter(user=admin_user).exists():  # Check if UserProfile doesn't exist for admin user
+                UserProfile.objects.create(user=admin_user, email='admin@gmc.com', currency='GBP', is_superuser=1, bal=1000)
+            else:
+                admin_profile = UserProfile.objects.get(user=admin_user)
+                admin_profile.email = 'admin@gmc.com'
+                admin_profile.currency = 'GBP'
+                admin_profile.is_superuser = True
+                admin_profile.bal = 1000
+                admin_profile.save()
