@@ -164,7 +164,8 @@ def main_page(request):
             request_form = RequestForm(request.POST)
             if request_form.is_valid():
                 amount = request_form.cleaned_data['requested_amount']
-                currency_amount = request_form.cleaned_data['request_currency_type']
+                payer_currency = request_form.cleaned_data['request_currency_type'] #Currency of money payer
+                requested_currency = user_profile.currency
                 request_first_name = request.POST['request_first_name']
                 request_last_name = request.POST['request_last_name']
                 receiver_user_name = request.POST['request_user_name']
@@ -177,7 +178,7 @@ def main_page(request):
                                                       username=receiver_user_name),
                             requester=request.user,
                             amount=amount,
-                            requested_currency=currency_amount,
+                            requested_currency=requested_currency,
                             timestamp=timestamp,
                         )
                     except:
@@ -254,7 +255,7 @@ def main_page(request):
                 print("This is the ammount that will be deducted from ironman's account after conversion",
                       converted_amount)
                 if Decimal("{:.2f}".format(converted_amount)) > user_profile.bal:
-                    error_message = "You Dont have enough Money to accept this transaction"
+                    error_message = "You don't have enough money to accept this transaction"
                     pay_form = PaymentForm()
                     addMoneyForm = AddMoneyForm()
                     request_form = RequestForm()

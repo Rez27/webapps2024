@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 {% load crispy_forms_filters %}
 {% load static %}
 {% block additional_css %}
@@ -195,8 +195,7 @@
                                             </div>
                                             <dl class="transfer-details">
                                                 <div>
-                                                    <dt></dt>
-                                                    <dd>{{ notification.requester }}</dd>
+                                                    <dt>{{ notification.requester }}</dt>
                                                 </div>
                                                 <div>
                                                     <dt>{% if notification.requested_currency == "GBP" %}
@@ -206,6 +205,11 @@
                                                     {% elif notification.requested_currency == "USD" %}
                                                         $
                                                     {% endif %}{{ notification.amount }}</dt>
+                                                </div>
+                                                <div>
+                                                    <dt>
+                                                        {{ notification.timestamp }}
+                                                    </dt>
                                                 </div>
                                                 <div>
                                                     <dd>
@@ -257,22 +261,21 @@
                                             </div>
                                             <dl class="transfer-details">
                                                 <div>
-                                                    <dt></dt>
-                                                    <dd>{{ notification.receiver }}</dd>
+                                                    <dt>{{ notification.receiver }}</dt>
                                                 </div>
                                                 <div>
-                                                    <dt>{% if notification.requested_currency == "GBP" %}
+                                                    <dt>{% if notification.requester_currency == "GBP" %}
                                                         £
-                                                    {% elif notification.requested_currency == "EUR" %}
+                                                    {% elif notification.requester_currency == "EUR" %}
                                                         €
-                                                    {% elif notification.requested_currency == "USD" %}
+                                                    {% elif notification.requester_currency == "USD" %}
                                                         $
                                                     {% endif %}{{ notification.amount }}</dt>
                                                 </div>
                                                 <div>
-                                                    <dd>
+                                                    <dt>
                                                         {{ notification.rejected_at }}
-                                                    </dd>
+                                                    </dt>
                                                 </div>
                                             </dl>
                                         </div>
