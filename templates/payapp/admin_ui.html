@@ -124,9 +124,17 @@
                             <br>
                             {% if not user.is_superuser %}
                                 <form action="{% url 'admin_ui' %}" method="post">
-                                <button class="flat-button">
-                                    Make Admin
-                                </button>
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="submit" class="flat-button" id="submit" name="make_admin" value="Make Admin">
+                                </input>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'admin_ui' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="submit" class="flat-button" id="submit" name="revoke_admin" value="Revoke Admin">
+                                    </input>
                                 </form>
                             {% endif %}
                         </article>

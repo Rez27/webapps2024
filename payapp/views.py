@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import RequestException
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from .forms import AddMoneyForm, PaymentForm, RequestForm, ShowTransactionsForm
 from .models import Transaction, Notification
 from register.models import UserProfile
@@ -417,6 +418,7 @@ def convert_currency(currency1, currency2, amount):
 
 
 @login_required(login_url='/webapps2024/login/')
+@staff_member_required
 def admin_ui(request):
     if request.user.register_profile.is_superuser:
         users = User.objects.all()
@@ -446,18 +448,48 @@ def admin_ui(request):
                         transactions_received = list(reversed(Transaction.objects.filter(receiver=user_profile)))
                         print("THis is transactions_sent", transactions_sent)
                     except (User.DoesNotExist, UserProfile.DoesNotExist):
+                        first_name = ""
+                        last_name= ""
                         print("Error in getting user data")
                         transactions = None
                 else:
+                    first_name = ""
+                    last_name= ""
                     print("Show Transaction form not valid")
                     print(show_transactions_form.errors)
+            elif 'make_admin' in request.POST:
+                user_id = request.POST.get('user_id')
+                user = User.objects.get(id=user_id) # Get the User profile for the user selected
+                user.is_superuser = True
+                user.is_staff = True
+                user.save()
+                user_profile, created = UserProfile.objects.get_or_create(user=user)
+                user_profile.is_superuser = True
+                user_profile.save()
+                return redirect('admin_ui')  # Redirect to a success page
+
+            elif 'revoke_admin' in request.POST:
+                user_id = request.POST.get('user_id')
+                user = User.objects.get(id=user_id) # Get the User profile for the user selected
+                user.is_superuser = False
+                user.is_staff = False
+                user.save()
+                user_profile, created = UserProfile.objects.get_or_create(user=user)
+                user_profile.is_superuser = False
+                user_profile.save()
+                return redirect('admin_ui')  # Redirect to a success page
+
             else:
+                first_name = ""
+                last_name= ""
                 print("Wrong in form")
         else:
             print("Request method not valid")
             show_transactions_form = ShowTransactionsForm()
             transactions_sent = []  # Set to empty list
             transactions_received = []  # Set to empty list
+            first_name = ""
+            last_name= ""
 
         context = {
             'users': users,

@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/payapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/payapp/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/payapp/admin_ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payapp/admin_ui.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/payapp/ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payapp/ui.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,7 +297,7 @@
       <workItem from="1714117704966" duration="1520000" />
       <workItem from="1714119813301" duration="1733000" />
       <workItem from="1714156557441" duration="878000" />
-      <workItem from="1714326511574" duration="3429000" />
+      <workItem from="1714326511574" duration="5381000" />
     </task>
     <servers />
   </component>
