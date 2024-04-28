@@ -36,11 +36,11 @@
                     <h1 class="logo-title">
                         <div class="payments">
                             <a href="{% url 'register_admin' %}">
-                            <div class="payment">
-                                <div class="card-open-money-req olive">
-                                    <span style="color: #121212">Add New Admin</span>
+                                <div class="payment">
+                                    <div class="card-open-money-req olive">
+                                        <span style="color: #121212">Add New Admin</span>
+                                    </div>
                                 </div>
-                            </div>
                             </a>
                         </div>
                     </h1>
@@ -93,52 +93,65 @@
                     </button>
                 </div>
                 <div class="tiles">
-                    {% for user in users %}
+                    {% if users %}
+                        {% for user in users %}
+                            <article class="tile">
+                                <div class="tile-header">
+                                    <h3>
+                                        <span> {{ user.first_name }} {{ user.last_name }}</span>
+                                        <span><h6>Username - {{ user.username }}</h6></span>
+                                        <span> <h6>Is Admin - {{ user.is_superuser }}</h6></span>
+                                        <span> Balance-{{ user.register_profile.bal }}
+
+                                            {% if user.register_profile.get_currency_display == "GBP" %}
+                                                £
+                                            {% elif user.register_profile.get_currency_display == "EUR" %}
+                                                €
+                                            {% elif user.register_profile.get_currency_display == "USD" %}
+                                                $
+                                            {% endif %}
+                            </span>
+                                    </h3>
+                                </div>
+                                <form action="{% url 'admin_ui' %}" method="post">
+                                    {% csrf_token %}
+                                    {{ show_transactions_form | crispy }}
+                                    <input type="hidden" name="show_trans_first_name" value="{{ user.first_name }}">
+                                    <input type="hidden" name="show_trans_last_name" value="{{ user.last_name }}">
+                                    <input type="hidden" name="show_trans_user_name" value="{{ user.username }}">
+                                    <input type="submit" class="flat-button" id="submit" name="show_transactions"
+                                           value="Show Transactions">
+                                </form>
+                                <br>
+                                {% if not user.is_superuser %}
+                                    <form action="{% url 'admin_ui' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <input type="submit" class="flat-button" id="submit" name="make_admin"
+                                               value="Make Admin">
+                                        </input>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'admin_ui' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <input type="submit" class="flat-button" id="submit" name="revoke_admin"
+                                               value="Revoke Admin">
+                                        </input>
+                                    </form>
+                                {% endif %}
+                            </article>
+                        {% endfor %}
+                    {% else %}
                         <article class="tile">
                             <div class="tile-header">
                                 <h3>
-                                    <span> {{ user.first_name }} {{ user.last_name }}</span>
-                                    <span><h6>Username - {{ user.username }}</h6></span>
-                                    <span> <h6>Is Admin - {{ user.is_superuser }}</h6></span>
-                                    <span> Balance-{{ user.register_profile.bal }}
-
-                                        {% if user.register_profile.get_currency_display == "GBP" %}
-                                            £
-                                        {% elif user.register_profile.get_currency_display == "EUR" %}
-                                            €
-                                        {% elif user.register_profile.get_currency_display == "USD" %}
-                                            $
-                                        {% endif %}
-                            </span>
+                                    <span>Hello Admin</span>
+                                    <span>Currently there are no users in the system.</span>
                                 </h3>
                             </div>
-                            <form action="{% url 'admin_ui' %}" method="post">
-                                {% csrf_token %}
-                                {{ show_transactions_form | crispy }}
-                                <input type="hidden" name="show_trans_first_name" value="{{ user.first_name }}">
-                                <input type="hidden" name="show_trans_last_name" value="{{ user.last_name }}">
-                                <input type="hidden" name="show_trans_user_name" value="{{ user.username }}">
-                                <input type="submit" class="flat-button" id="submit" name="show_transactions"
-                                       value="Show Transactions">
-                            </form>
-                            <br>
-                            {% if not user.is_superuser %}
-                                <form action="{% url 'admin_ui' %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                    <input type="submit" class="flat-button" id="submit" name="make_admin" value="Make Admin">
-                                </input>
-                                </form>
-                            {% else %}
-                                <form action="{% url 'admin_ui' %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                                    <input type="submit" class="flat-button" id="submit" name="revoke_admin" value="Revoke Admin">
-                                    </input>
-                                </form>
-                            {% endif %}
                         </article>
-                    {% endfor %}
+                    {% endif %}
                 </div>
 
             </section>
@@ -150,7 +163,7 @@
                         <a href='#' id='toggle-sent'><h2>Paid Money</h2></a>
                     </div>
                     {% if transactions_received or transactions_sent %}
-                    <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
+                        <span>Showing transactions for - {{ first_name }} {{ last_name }}</span>
                     {% endif %}
                 </div>
                 <div class="transfers">

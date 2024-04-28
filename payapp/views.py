@@ -421,7 +421,8 @@ def convert_currency(currency1, currency2, amount):
 @staff_member_required
 def admin_ui(request):
     if request.user.register_profile.is_superuser:
-        users = User.objects.all()
+        user = request.user
+        users = User.objects.exclude(pk=user.pk)
         user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
         transactions_sent = None
         transactions_received = None
