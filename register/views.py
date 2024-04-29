@@ -1,11 +1,10 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, LoginForm
-from .models import UserProfile
-from payapp.views import admin_ui
-from payapp.models import UserProfile
+from django.db import transaction
 
 
+@transaction.atomic
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -21,7 +20,7 @@ def register(request):
         print("Register view Fail2")
         return render(request, 'register/register.html', {'form': form})
 
-
+@transaction.atomic
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)

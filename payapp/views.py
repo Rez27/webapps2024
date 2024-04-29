@@ -8,6 +8,7 @@ from register.models import UserProfile
 from django.contrib.auth.models import User
 from decimal import Decimal
 from django.urls import reverse
+from django.db import transaction
 
 # Thrift Time Service code
 import thriftpy2
@@ -19,7 +20,7 @@ timestamp_thrift = thriftpy2.load(
     'timestamp.thrift', module_name='timestamp_thrift')
 Timestamp = timestamp_thrift.TimestampService
 
-
+@transaction.atomic
 @login_required(login_url='/login/')
 def main_page(request):
     user = request.user  # Logged in User
@@ -377,7 +378,7 @@ def main_page(request):
     }
     return render(request, 'payapp/ui.html', context)
 
-
+@transaction.atomic
 def get_or_create_user_profile(user):
     try:
         user_profile = user.register_profile
@@ -386,7 +387,6 @@ def get_or_create_user_profile(user):
         user_profile = UserProfile.objects.create(user=user)
         user_profile_exists = False
     return user_profile, user_profile_exists
-
 
 def get_currency_symbol(currency):
     if currency == 'GBP':
@@ -414,7 +414,7 @@ def convert_currency(currency1, currency2, amount):
     except requests.RequestException:
         return None, None
 
-
+@transaction.atomic
 @login_required(login_url='/login/')
 def admin_ui(request):
     if request.user.register_profile.is_superuser:
