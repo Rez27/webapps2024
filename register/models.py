@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-
+#User Profile model which saves the user profile such as email, currency, superuser status & Bank Balance
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, related_name='register_profile')
     email = models.EmailField()

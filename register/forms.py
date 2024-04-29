@@ -3,14 +3,13 @@ from .validations import user_email_check, username_check
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
-import random
 
 
 def email_val(email):
     if user_email_check(email=email):
         raise forms.ValidationError("User already exists")
 
-
+#User Registratin form consisting of basic fields along with currency choices
 class UserRegistrationForm(UserCreationForm):
     currency_choices = [
         ('GBP', 'GBP'),
@@ -33,6 +32,7 @@ class UserRegistrationForm(UserCreationForm):
         self.fields['password2'].required = True
         self.fields['currency'].required = True
 
+#Save Function to save form into the models
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
@@ -45,11 +45,7 @@ class UserRegistrationForm(UserCreationForm):
         user_profile.email = self.cleaned_data['email']
         user_profile.save()
         return user
-
-
-# def generate_bank_account_number():
-#     return ''.join([str(random.randint(0, 9)) for _ in range(8)])
-
+#Login Form for user along side is_superuser field for checking admin login
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(), required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
@@ -61,6 +57,7 @@ class LoginForm(forms.Form):
         self.fields['password'].required = True
 
 
+#Admmin Registration form similar to user registration form but only restricted to admin. Here is_superuser is set to True by default on save
 class AdminRegistrationForm(UserCreationForm):
     currency_choices = [
         ('GBP', 'GBP'),

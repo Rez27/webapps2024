@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 
 def superuser_required(function):
     """
-    Decorator for views that checks whether the user is a superuser.
+    Decorator for views that checks whether the user is a superuser or not.
     """
     actual_decorator = user_passes_test(
         lambda u: u.is_authenticated and u.is_superuser,
