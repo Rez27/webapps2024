@@ -9,7 +9,7 @@ from register.models import UserProfile
 from django.contrib.auth.models import User
 from decimal import Decimal
 from django.urls import reverse
-
+from django.db import transaction
 # Thrift Time Service code
 import thriftpy2
 from thriftpy2.rpc import make_client
@@ -20,7 +20,7 @@ timestamp_thrift = thriftpy2.load(
     'timestamp.thrift', module_name='timestamp_thrift')
 Timestamp = timestamp_thrift.TimestampService
 
-
+@transaction.atomic
 @login_required(login_url='/webapps2024/login/')
 def main_page(request):
     user = request.user  # Logged in User
@@ -81,10 +81,25 @@ def main_page(request):
                 currency2 = receiver_profile.currency  # Get receiver's currency
                 converted_amount = convert_currency(currency1, currency2, amount)
                 if converted_amount is None:
-                    # Currency conversion error
+                    error_message = "Currency Conversion API not working"
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
                     context = {
-                        'conversion_error': 'Failed to convert currency.'}
-                    print("Something wrong in amount conversion")
+                        'user_balance': user_profile.bal,
+                        'user_currency': user_profile.currency,
+                        'username': username,
+                        'users': users,
+                        'pending_notifications': pending_notifications,
+                        'rejected_notifications': rejected_notifications,
+                        'received_transactions': received_transactions,
+                        'sent_transactions': sent_transactions,
+                        'pay_form': pay_form,
+                        'addMoneyForm': addMoneyForm,
+                        'request_form':request_form,
+                        'error_message': error_message
+                    }
+                    print("Not enough balance to accept money request")
                     return render(request, 'payapp/ui.html', context)
                 try:
                     client = make_client(Timestamp, '127.0.0.1', 9090)
@@ -111,8 +126,6 @@ def main_page(request):
                             'error_message': error_message
                         }
                         return render(request, 'payapp/ui.html', context)
-                    print("THis is sender_profile.bal", converted_amount,
-                          type(float("{:.2f}".format(converted_amount))))
                     # Deduct money from sender's account
                     sender_profile.bal -= amount
                     # Add amount to receiver
@@ -121,8 +134,6 @@ def main_page(request):
                     sent_currency = currency1
                     received_currency = currency2
                     # Create transaction record
-                    print("This is transactions data", sender_profile, receiver_profile, amount, sent_currency,
-                          received_currency, timestamp)
                     transaction = Transaction.objects.create(sender=sender_profile, receiver=receiver_profile,
                                                              sent_amount=float("{:.2f}".format(amount)),
                                                              received_amount=float("{:.2f}".format(converted_amount)),
@@ -251,10 +262,27 @@ def main_page(request):
                 currency2 = user_profile.currency  # Currency of money sender(User logged in) His money should be deducted
                 converted_amount = convert_currency(currency1, currency2,
                                                     requested_amount)  # Money that will be deducted from money sender's account balance as currency conversion is carried out before
-
-                print("This is",requester_profile.user,"'s", currency1, "and this is", user_profile.user,"'s", currency2)
-                print("This is the ammount that will be deducted from ironman's account after conversion",
-                      converted_amount)
+                if converted_amount is None:
+                    error_message = "Currency Conversion API not working"
+                    pay_form = PaymentForm()
+                    addMoneyForm = AddMoneyForm()
+                    request_form = RequestForm()
+                    context = {
+                        'user_balance': user_profile.bal,
+                        'user_currency': user_profile.currency,
+                        'username': username,
+                        'users': users,
+                        'pending_notifications': pending_notifications,
+                        'rejected_notifications': rejected_notifications,
+                        'received_transactions': received_transactions,
+                        'sent_transactions': sent_transactions,
+                        'pay_form': pay_form,
+                        'addMoneyForm': addMoneyForm,
+                        'request_form':request_form,
+                        'error_message': error_message
+                    }
+                    print("Not enough balance to accept money request")
+                    return render(request, 'payapp/ui.html', context)
                 if Decimal("{:.2f}".format(converted_amount)) > user_profile.bal:
                     error_message = "You don't have enough money to accept this transaction"
                     pay_form = PaymentForm()
@@ -379,7 +407,7 @@ def main_page(request):
     }
     return render(request, 'payapp/ui.html', context)
 
-
+@transaction.atomic
 def get_or_create_user_profile(user):
     try:
         user_profile = user.register_profile
@@ -389,7 +417,7 @@ def get_or_create_user_profile(user):
         user_profile_exists = False
     return user_profile, user_profile_exists
 
-
+@transaction.atomic
 def get_currency_symbol(currency):
     if currency == 'GBP':
         return '£'
@@ -400,7 +428,7 @@ def get_currency_symbol(currency):
     else:
         return "Error in getting currency"
 
-
+@transaction.atomic
 def convert_currency(currency1, currency2, amount):
     try:
         # Generate the URL for the currency conversion endpoint
@@ -412,11 +440,11 @@ def convert_currency(currency1, currency2, amount):
             converted_amount = data['converted_amount']
             return converted_amount
         else:
-            return None, None
+            return None
     except requests.RequestException:
-        return None, None
+        return None
 
-
+@transaction.atomic
 @login_required(login_url='/webapps2024/login/')
 @staff_member_required
 def admin_ui(request):
@@ -438,7 +466,6 @@ def admin_ui(request):
                     first_name = show_transactions_form.cleaned_data['show_trans_first_name']
                     last_name = show_transactions_form.cleaned_data['show_trans_last_name']
                     username = show_transactions_form.cleaned_data['show_trans_user_name']
-
                     print("This is ", first_name, last_name)
                     try:
                         user = User.objects.get(first_name=first_name,

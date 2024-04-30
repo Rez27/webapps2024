@@ -1,3 +1,15 @@
 /venv/
 __pycache__/
 /.idea/
+register/__pycache__/__init__.cpython-39.pyc
+.idea/workspace.xml
+payapp/__pycache__/views.cpython-39.pyc
+register/__pycache__/decorators.cpython-39.pyc
+register/__pycache__/forms.cpython-39.pyc
+register/__pycache__/models.cpython-39.pyc
+register/__pycache__/signals.cpython-39.pyc
+register/__pycache__/urls.cpython-39.pyc
+register/__pycache__/validations.cpython-39.pyc
+register/__pycache__/views.cpython-39.pyc
+webapps2024/__pycache__/settings.cpython-39.pyc
+webapps2024/__pycache__/urls.cpython-39.pyc
