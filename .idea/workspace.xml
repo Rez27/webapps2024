@@ -5,11 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15667af9-9f40-473b-b125-d3e31e3fc492" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0f6808a0-0805-47fb-83af-97a87fa8df10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0f6808a0-0805-47fb-83af-97a87fa8df10.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/payapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/payapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/register/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/register/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/base/css/style1.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/base/css/style1.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/payapp/ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payapp/ui.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/webapps.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/webapps.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webapps2024/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapps2024/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webapps2024/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/webapps2024/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +67,7 @@
     &quot;Python.calculatorserver (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.calculatorserver .executor&quot;: &quot;Run&quot;,
     &quot;Python.timestampclient.executor&quot;: &quot;Run&quot;,
+    &quot;Python.timestampthrift.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -98,30 +104,7 @@
       <recent name="C:\Users\kadam\Desktop\Folder-1\University\Web Applications\webapps2024\templates\register" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.calculatorserver (1)">
-    <configuration name="calculatorclient" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="webapps2024" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/calculatorclient.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.timestampthrift">
     <configuration name="calculatorserver (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="webapps2024" />
       <option name="ENV_FILES" value="" />
@@ -214,6 +197,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="timestampthrift" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="webapps2024" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/timestampthrift.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="webapps2024" type="Python.DjangoServer" factoryName="Django server">
       <module name="webapps2024" />
       <option name="ENV_FILES" value="" />
@@ -241,11 +247,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.timestampthrift" />
         <item itemvalue="Python.calculatorserver (1)" />
         <item itemvalue="Python.timestampclient" />
         <item itemvalue="Python.calculatorserver " />
         <item itemvalue="Python.calculatorserver" />
-        <item itemvalue="Python.calculatorclient" />
       </list>
     </recent_temporary>
   </component>
@@ -300,7 +306,12 @@
       <workItem from="1714156557441" duration="878000" />
       <workItem from="1714326511574" duration="5381000" />
       <workItem from="1714386599194" duration="3095000" />
-      <workItem from="1714415774056" duration="4944000" />
+      <workItem from="1714415774056" duration="7026000" />
+      <workItem from="1714470165389" duration="5243000" />
+      <workItem from="1714487349807" duration="1050000" />
+      <workItem from="1714490192880" duration="292000" />
+      <workItem from="1714490512350" duration="27000" />
+      <workItem from="1714563789971" duration="14198000" />
     </task>
     <servers />
   </component>
@@ -328,6 +339,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/webapps2024$calculatorserver__1_.coverage" NAME="calculatorserver (1) Coverage Results" MODIFIED="1714434530317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/webapps2024$calculatorserver_.coverage" NAME="calculatorserver  Coverage Results" MODIFIED="1713529318231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/webapps2024$timestampthrift.coverage" NAME="timestampthrift Coverage Results" MODIFIED="1714636931117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/webapps2024$calculatorclient.coverage" NAME="calculatorclient Coverage Results" MODIFIED="1713268047746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/webapps2024$timestampclient.coverage" NAME="timestampclient Coverage Results" MODIFIED="1713200198797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

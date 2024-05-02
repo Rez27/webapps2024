@@ -104,7 +104,7 @@ def main_page(request):
                 try:
                     client = make_client(Timestamp, '127.0.0.1', 9090)
                     timestamp = datetime.fromtimestamp(int(str(client.getCurrentTimestamp())))
-                    print("This is time", timestamp)
+                    print("This is time from thrift", timestamp)
                     if sender_profile.bal <= 0 or float("{:.2f}".format(amount)) > sender_profile.bal:
                         print("Not enough user balance")
                         error_message = "You've got low balance. Please Add Money to your account before carrying out any transactions."
@@ -433,7 +433,7 @@ def convert_currency(currency1, currency2, amount):
     try:
         # Generate the URL for the currency conversion endpoint
         url = f"http://127.0.0.1:8000/conversion/{currency1}/{currency2}/{amount}/"
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         if response.status_code == 200:
             data = response.json()
             conversion_rate = data['conversion_rate']  # NOt returned for now. Can use this to show the conversion rate
@@ -450,10 +450,11 @@ def convert_currency(currency1, currency2, amount):
 def admin_ui(request):
     if request.user.register_profile.is_superuser:
         user = request.user
-        users = User.objects.exclude(pk=user.pk)
+        users = User.objects.all()
         user_data = [(user, UserProfile.objects.get(user=user)) for user in users]
         transactions_sent = None
         transactions_received = None
+        admin_username = request.user.username
         show_transactions_form = ShowTransactionsForm()
         transactions_sent = []  # Set to empty list
         transactions_received = []  # Set to empty list
@@ -526,7 +527,8 @@ def admin_ui(request):
             'transactions_sent': transactions_sent,
             'transactions_received': transactions_received,
             'first_name': first_name,
-            'last_name': last_name
+            'last_name': last_name,
+            'admin_username': admin_username
         }
         return render(request, 'payapp/admin_ui.html', context)
     else:

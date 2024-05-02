@@ -1,4 +1,6 @@
 from django import forms
+
+import payapp.views
 from .validations import user_email_check, username_check
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -43,6 +45,11 @@ class UserRegistrationForm(UserCreationForm):
         user_profile, created = UserProfile.objects.get_or_create(user=user)
         user_profile.currency = self.cleaned_data['currency']
         user_profile.email = self.cleaned_data['email']
+        baseline_amount = 1000
+        currency1 = 'GBP'
+        currency2 = user_profile.currency
+        converted_acc_bal = payapp.views.convert_currency(currency1, currency2, baseline_amount)
+        user_profile.bal = converted_acc_bal
         user_profile.save()
         return user
 #Login Form for user along side is_superuser field for checking admin login
@@ -93,8 +100,11 @@ class AdminRegistrationForm(UserCreationForm):
             user_profile, created = UserProfile.objects.get_or_create(user=user)
             user_profile.currency = self.cleaned_data['currency']
             user_profile.email = self.cleaned_data['email']
-            user_profile.bal = 1000
-            user_profile.is_superuser = True
+            baseline_amount = 1000
+            currency1 = 'GBP'
+            currency2 = user_profile.currency
+            converted_acc_bal = payapp.views.convert_currency(currency1, currency2, baseline_amount)
+            user_profile.bal = converted_acc_bal
             user_profile.is_superuser = True
             user_profile.save()
 
